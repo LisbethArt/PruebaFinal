@@ -27,6 +27,15 @@ export class EmpresasComponent implements OnInit {
   isOkLoading = false;
 
   constructor(private empresasService: EmpresasService) { 
+    this.initForm();
+  }
+
+  ngOnInit(): void {
+    this.loadEmpresasData();
+    this.setFormValues();
+  }
+
+  initForm(): void {
     this.validateForm = new FormGroup({
       nombreComercial: new FormControl('', Validators.required),
       razonSocial: new FormControl('', Validators.required),
@@ -45,15 +54,12 @@ export class EmpresasComponent implements OnInit {
         facebook: new FormControl(''),
         instagram: new FormControl(''),
       }),
-      fechaCreacion: new FormControl(new Date(), Validators.required),
+      fechaCreacion: new FormControl(''),
     });
   }
 
-  ngOnInit(): void {
-    this.loadEmpresasData();
-
-    // Ahora puedes establecer los valores en el formulario
-    this.validateForm.setValue({
+  setFormValues(): void {
+    this.validateForm.patchValue({
       nombreComercial: this.nuevaEmpresa.nombreComercial ?? '',
       razonSocial: this.nuevaEmpresa.razonSocial ?? '',
       actividadEconomica: this.nuevaEmpresa.actividadEconomica ?? '',
@@ -119,13 +125,17 @@ export class EmpresasComponent implements OnInit {
     // Verifica si el formulario es válido antes de proceder
     if (this.validateForm.valid) {
       this.isOkLoading = true; // Inicia la animación de carga
+  
+      // Establece la fecha de creación al momento actual
+      this.validateForm.get('fechaCreacion').setValue(new Date());
+  
       const nuevaEmpresa = new Empresas(this.validateForm.value);
       await this.createEmpresa(nuevaEmpresa);
   
       // Cierra el modal solo si el formulario es válido
       this.isOkLoading = false; // Detiene la animación de carga
       this.closeModal();
-
+  
       // Limpia el formulario
       this.validateForm.reset();
     }
@@ -139,6 +149,10 @@ export class EmpresasComponent implements OnInit {
   async createEmpresa(nuevaEmpresa: Empresas): Promise<void> {
     await this.empresasService.crearEmpresa(nuevaEmpresa);
     this.loadEmpresasData(); // Recarga las empresas después de crear una nueva
+  }
+
+  reiniciarDatos(): void {
+    this.loadEmpresasData();
   }
   
 }

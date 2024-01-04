@@ -6,7 +6,7 @@
     <ng-template #suffixIconButton>
       <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
     </ng-template>
-    <button nz-button nzType="default">
+    <button nz-button nzType="default" (click)="reiniciarDatos()">
       Reiniciar
       <span nz-icon nzType="reload"></span>
     </button>
@@ -126,14 +126,6 @@
             <input nz-input name="twitter" formControlName="twitter" id="twitter" placeholder="Twitter" />
             <input nz-input name="facebook" formControlName="facebook" id="facebook" placeholder="Facebook" />
             <input nz-input name="instagram" formControlName="instagram" id="instagram" placeholder="Instagram" />
-          </nz-form-control>
-        </nz-form-item>
-      
-        <!-- Fecha de Creación -->
-        <nz-form-item>
-          <nz-form-label [nzSpan]="9" nzFor="fechaCreacion">Fecha de creación</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="Este campo no puede estar vacío" required>
-            <nz-date-picker name="fechaCreacion" formControlName="fechaCreacion" id="fechaCreacion"></nz-date-picker>
           </nz-form-control>
         </nz-form-item>
         
