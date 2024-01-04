@@ -62,8 +62,7 @@ export class MenuComponent implements OnInit {
 
     switch (componentName) {
       case 'EmpresasComponent':
-        return EmpresasComponent; // Reemplaza 'EmpresasComponent' con el nombre real de tu componente
-      // Agrega más casos según sea necesario para otros componentes
+        return EmpresasComponent;
       default:
         return null;
     }

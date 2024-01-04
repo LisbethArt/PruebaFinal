@@ -10,7 +10,7 @@ import { MenuComponent } from './Pages/Menu/component/menu.component';
 import { AppRoutingModule } from './app-routing.module';
 import { registerLocaleData } from '@angular/common';
 import es from '@angular/common/locales/es';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -22,6 +22,9 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 registerLocaleData(es);
 
@@ -37,6 +40,7 @@ registerLocaleData(es);
     AngularFirestoreModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     NzMenuModule,
@@ -45,7 +49,10 @@ registerLocaleData(es);
     NzTableModule,
     NzLayoutModule,
     NzBreadCrumbModule,
-    NzInputModule
+    NzInputModule,
+    NzModalModule,
+    NzFormModule,
+    NzDatePickerModule
   ],
   bootstrap: [AppComponent],
   providers: [

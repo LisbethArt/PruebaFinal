@@ -10,6 +10,10 @@ import { Empresas } from '../model/empresas';
 })
 export class EmpresasComponent implements OnInit {
   empresas: Empresas[];
+  nuevaEmpresa: Empresas = {
+    ...new Empresas(),
+    redesSociales: {}
+  };
 
   loading: boolean = false;
   total: number = 0;
@@ -19,6 +23,12 @@ export class EmpresasComponent implements OnInit {
 
   isVisible = false;
   isOkLoading = false;
+
+  constructor(private empresasService: EmpresasService) { }
+
+  ngOnInit(): void {
+    this.loadEmpresasData();
+  }
 
   showModal(): void {
     this.isVisible = true;
@@ -34,12 +44,6 @@ export class EmpresasComponent implements OnInit {
 
   handleCancel(): void {
     this.isVisible = false;
-  }
-
-  constructor(private empresasService: EmpresasService) { }
-
-  ngOnInit(): void {
-    this.loadEmpresasData();
   }
 
   // Método para cargar datos de empresas con ordenación y paginación
@@ -65,5 +69,10 @@ export class EmpresasComponent implements OnInit {
     const sortOrder: 'ascend' | 'descend' | null = (currentSort && currentSort.value) as 'ascend' | 'descend' | null;
 
     this.loadEmpresasData(sortField, sortOrder);
-;
-} }
+  } 
+
+  async createEmpresa(): Promise<void> {
+    await this.empresasService.crearEmpresa(this.nuevaEmpresa);
+    this.loadEmpresasData(); // Recarga las empresas después de crear una nueva
+  }
+}

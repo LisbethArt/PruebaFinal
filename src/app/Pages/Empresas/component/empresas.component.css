@@ -11,3 +11,9 @@
     align-items: center;
     margin-bottom: 40px;
 }
+
+nz-modal {
+    width: 80%;
+    min-width: 50%;
+    max-height: 80%;
+}

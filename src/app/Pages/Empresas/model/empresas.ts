@@ -14,7 +14,7 @@ export class Empresas {
     fechaCreacion: Date;
   
     constructor(data?: Partial<Empresas>) {
-      Object.assign(this, data);
+      Object.assign(this, { redesSociales: new RedesSociales(), ...data });
     }
   }
   
