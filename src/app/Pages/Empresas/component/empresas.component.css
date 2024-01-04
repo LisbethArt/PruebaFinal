@@ -1,19 +1,23 @@
 .contenedor {
-    width: 80%;
+    width: 100%;
     min-width: 50%;
     margin: 0 auto;
 }  
 
 .botones {
     display: flex;
-    gap: 40px; /* Puedes ajustar este valor para definir la separación entre cada botón e input */
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    gap: 5%;
     margin-bottom: 40px;
-}
+  }
 
-nz-modal {
-    width: 80%;
-    min-width: 50%;
-    max-height: 80%;
-}
+.ant-btn {
+    border-radius: 10px;
+  }
+
+.tablaResponsive {
+    width: 100%;
+    overflow-x: auto;
+  }

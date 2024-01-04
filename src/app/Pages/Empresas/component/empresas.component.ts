@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EmpresasService } from '../service/empresas.service';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
-import { Empresas } from '../model/empresas';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Empresas, RedesSociales } from '../model/empresas';
 
 @Component({
   selector: 'app-empresas',
@@ -14,6 +15,7 @@ export class EmpresasComponent implements OnInit {
     ...new Empresas(),
     redesSociales: {}
   };
+  validateForm: FormGroup;
 
   loading: boolean = false;
   total: number = 0;
@@ -24,26 +26,62 @@ export class EmpresasComponent implements OnInit {
   isVisible = false;
   isOkLoading = false;
 
-  constructor(private empresasService: EmpresasService) { }
+  constructor(private empresasService: EmpresasService) { 
+    this.validateForm = new FormGroup({
+      nombreComercial: new FormControl('', Validators.required),
+      razonSocial: new FormControl('', Validators.required),
+      actividadEconomica: new FormControl('', Validators.required),
+      estado: new FormControl(false, Validators.required),
+      imagenes: new FormControl([]),
+      categoria: new FormControl('', Validators.required),
+      direccion: new FormControl(''),
+      quienesSomos: new FormControl('', Validators.required),
+      nombreContacto: new FormControl('', Validators.required),
+      telefono: new FormControl(''),
+      correo: new FormControl('', [Validators.required, Validators.email]),
+      redesSociales: new FormGroup({
+        linkedin: new FormControl(''),
+        twitter: new FormControl(''),
+        facebook: new FormControl(''),
+        instagram: new FormControl(''),
+      }),
+      fechaCreacion: new FormControl(new Date(), Validators.required),
+    });
+  }
 
   ngOnInit(): void {
     this.loadEmpresasData();
+
+    // Ahora puedes establecer los valores en el formulario
+    this.validateForm.setValue({
+      nombreComercial: this.nuevaEmpresa.nombreComercial ?? '',
+      razonSocial: this.nuevaEmpresa.razonSocial ?? '',
+      actividadEconomica: this.nuevaEmpresa.actividadEconomica ?? '',
+      estado: this.nuevaEmpresa.estado ?? '',
+      imagenes: this.nuevaEmpresa.imagenes ?? '',
+      categoria: this.nuevaEmpresa.categoria ?? '',
+      direccion: this.nuevaEmpresa.direccion ?? '',
+      quienesSomos: this.nuevaEmpresa.quienesSomos ?? '',
+      nombreContacto: this.nuevaEmpresa.nombreContacto ?? '',
+      telefono: this.nuevaEmpresa.telefono ?? '',
+      correo: this.nuevaEmpresa.correo ?? '',
+      redesSociales: {
+        linkedin: this.nuevaEmpresa.redesSociales.linkedin ?? '',
+        twitter: this.nuevaEmpresa.redesSociales.twitter ?? '',
+        facebook: this.nuevaEmpresa.redesSociales.facebook ?? '',
+        instagram: this.nuevaEmpresa.redesSociales.instagram ?? '',
+      },
+      fechaCreacion: this.nuevaEmpresa.fechaCreacion ?? '',
+    });
   }
 
   showModal(): void {
     this.isVisible = true;
   }
 
-  handleOk(): void {
-    this.isOkLoading = true;
-    setTimeout(() => {
-      this.isVisible = false;
-      this.isOkLoading = false;
-    }, 3000);
-  }
-
   handleCancel(): void {
     this.isVisible = false;
+    this.validateForm.reset(); // Limpia el formulario cuando se cancela
   }
 
   // Método para cargar datos de empresas con ordenación y paginación
@@ -71,8 +109,36 @@ export class EmpresasComponent implements OnInit {
     this.loadEmpresasData(sortField, sortOrder);
   } 
 
-  async createEmpresa(): Promise<void> {
-    await this.empresasService.crearEmpresa(this.nuevaEmpresa);
+  async submitForm(): Promise<void> {
+    // Marca todos los controles como 'touched' para que se muestren los mensajes de error
+    for (const i in this.validateForm.controls) {
+      this.validateForm.controls[i].markAsDirty();
+      this.validateForm.controls[i].updateValueAndValidity();
+    }
+  
+    // Verifica si el formulario es válido antes de proceder
+    if (this.validateForm.valid) {
+      this.isOkLoading = true; // Inicia la animación de carga
+      const nuevaEmpresa = new Empresas(this.validateForm.value);
+      await this.createEmpresa(nuevaEmpresa);
+  
+      // Cierra el modal solo si el formulario es válido
+      this.isOkLoading = false; // Detiene la animación de carga
+      this.closeModal();
+
+      // Limpia el formulario
+      this.validateForm.reset();
+    }
+  }
+  
+  closeModal(): void {
+    this.isVisible = false;
+    this.validateForm.reset(); // Limpia el formulario cuando se cierra
+  }
+
+  async createEmpresa(nuevaEmpresa: Empresas): Promise<void> {
+    await this.empresasService.crearEmpresa(nuevaEmpresa);
     this.loadEmpresasData(); // Recarga las empresas después de crear una nueva
   }
+  
 }
