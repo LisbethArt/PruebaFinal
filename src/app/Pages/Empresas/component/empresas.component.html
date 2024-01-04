@@ -1,0 +1,35 @@
+<div class="container">
+  <nz-table
+    nzShowSizeChanger
+    [nzData]="listarEmpresas"
+    [nzFrontPagination]="false"
+    [nzLoading]="loading"
+    [nzTotal]="total"
+    [nzPageSize]="pageSize"
+    [nzPageIndex]="pageIndex"
+    (nzQueryParams)="onQueryParamsChange($event)"
+  >
+    <thead>
+      <tr>
+        <th nzColumnKey="nombreComercial" [nzSortFn]="true">Nombre comercial</th>
+        <th nzColumnKey="razonSocial">Razón social</th>
+        <th nzColumnKey="actividadEconomica">Actividad económica</th>
+        <th nzColumnKey="estado">Estado</th>
+        <th nzColumnKey="editar">Editar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let empresa of listarEmpresas">
+        <td>{{ empresa.nombreComercial }}</td>
+        <td>{{ empresa.razonSocial }}</td>
+        <td>{{ empresa.actividadEconomica }}</td>
+        <td>{{ empresa.estado ? 'Activo' : 'Inactivo' }}</td>
+        <td nzCellControl="editar">
+          <button nz-button nzType="link">
+            <span nz-icon nzType="edit" nzTheme="outline"></span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
