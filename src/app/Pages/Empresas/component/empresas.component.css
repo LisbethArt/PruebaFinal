@@ -1,5 +1,13 @@
-.container {
+.contenedor {
     width: 80%;
     min-width: 50%;
     margin: 0 auto;
 }  
+
+.botones {
+    display: flex;
+    gap: 40px; /* Puedes ajustar este valor para definir la separación entre cada botón e input */
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+}

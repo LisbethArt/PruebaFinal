@@ -21,6 +21,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 registerLocaleData(es);
 
@@ -43,7 +44,8 @@ registerLocaleData(es);
     NzButtonModule,
     NzTableModule,
     NzLayoutModule,
-    NzBreadCrumbModule
+    NzBreadCrumbModule,
+    NzInputModule
   ],
   bootstrap: [AppComponent],
   providers: [

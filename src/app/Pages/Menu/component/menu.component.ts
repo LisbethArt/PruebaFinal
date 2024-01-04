@@ -1,5 +1,7 @@
-import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit, Type } from '@angular/core';
 import { Router } from '@angular/router';
+import { MenuService } from '../service/menu.service';
+import { Menus } from '../model/menu';
 import { EmpresasComponent } from 'src/app/Pages/Empresas/component/empresas.component';
 
 @Component({
@@ -7,142 +9,31 @@ import { EmpresasComponent } from 'src/app/Pages/Empresas/component/empresas.com
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit {
   @ViewChild('dynamicComponentContainer', { read: ViewContainerRef })
   dynamicComponentContainer: ViewContainerRef;
-  constructor(private componentFactoryResolver: ComponentFactoryResolver, private router: Router) {}
 
   showIcon = false;
   isCollapsed = false;
   mode = false;
   dark = false;
   theme = true;
-  menus = [
-    {
-      level: 1,
-      title: 'Inicio',
-      icon: 'home',
-      open: false,
-      selected: false,
-      disabled: false,
-      route: ''
-    },
-    {
-      level: 1,
-      title: 'Empresas',
-      icon: 'unordered-list',
-      open: true,
-      selected: false,
-      disabled: false,
-      route: "Empresas",
-      component: EmpresasComponent
-    },
-    {
-      level: 1,
-      title: 'Categorías',
-      icon: 'tags',
-      open: true,
-      selected: false,
-      disabled: false,
-    },
-    {
-      level: 1,
-      title: 'Sucursales',
-      icon: 'environment',
-      open: true,
-      selected: false,
-      disabled: false,
-    },
-    {
-      level: 1,
-      title: 'Servicios',
-      icon: 'tool',
-      open: true,
-      selected: false,
-      disabled: false,
-    },
-    {
-      level: 1,
-      title: 'Productos',
-      icon: 'shopping-cart',
-      open: true,
-      selected: false,
-      disabled: false,
-    },
-    {
-      level: 1,
-      title: 'Empresas',
-      icon: 'shop',
-      open: true,
-      selected: false,
-      disabled: false,
-      children: [
-        {
-          level: 2,
-          title: 'Group 1',
-          icon: 'bars',
-          open: false,
-          selected: false,
-          disabled: false,
-          children: [
-            {
-              level: 3,
-              title: 'Option 1',
-              selected: false,
-              disabled: false
-            },
-            {
-              level: 3,
-              title: 'Option 2',
-              selected: false,
-              disabled: true
-            }
-          ]
-        },
-        {
-          level: 2,
-          title: 'Group 2',
-          icon: 'bars',
-          selected: true,
-          disabled: false
-        },
-        {
-          level: 2,
-          title: 'Group 3',
-          icon: 'bars',
-          selected: false,
-          disabled: false
-        }
-      ]
-    },
-    {
-      level: 1,
-      title: 'Team Group',
-      icon: 'team',
-      open: false,
-      selected: false,
-      disabled: false,
-      children: [
-        {
-          level: 2,
-          title: 'User 1',
-          icon: 'user',
-          selected: false,
-          disabled: false
-        },
-        {
-          level: 2,
-          title: 'User 2',
-          icon: 'user',
-          selected: false,
-          disabled: false
-        }
-      ]
-    }
-  ];
+  menus: Menus[] = [];
+
+  constructor(
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private router: Router,
+    private menuService: MenuService
+  ) {}
+
+  ngOnInit(): void {
+    // Llama al servicio para obtener los menús cuando se inicializa el componente
+    this.menuService.getMenus().subscribe(data => {
+      this.menus = data;
+    });
+  }
 
   navigate(route: string) {
-    // Lógica de navegación, por ejemplo, cargar el componente dinámicamente
     const menuItem = this.menus.find(menu => menu.route === route);
 
     if (menuItem && menuItem.component) {
@@ -150,16 +41,31 @@ export class MenuComponent {
     }
   }
 
-  // Enrutamiento interno en lugar de enrutamiento tradicional
-  loadComponent(component: any) {
+  loadComponent(componentName: string) {
     this.dynamicComponentContainer.clear();
 
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      component
-    );
+    // Convierte el nombre del componente a un tipo Type<any>
+    const componentType: Type<any> = this.getComponentType(componentName);
 
-    const componentRef = this.dynamicComponentContainer.createComponent(
-      componentFactory
-    );
+    if (componentType) {
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(componentType);
+      const componentRef = this.dynamicComponentContainer.createComponent(componentFactory);
+    } else {
+      console.error(`Componente '${componentName}' no encontrado o no es válido.`);
+    }
+  }
+
+  // Método para convertir el nombre del componente a un tipo Type<any>
+  private getComponentType(componentName: string): Type<any> | null {
+    // Puedes implementar la lógica específica para mapear nombres de componentes a tipos aquí
+    // Por ahora, asumiré que los componentes están en el mismo módulo y se pueden acceder directamente por nombre
+
+    switch (componentName) {
+      case 'EmpresasComponent':
+        return EmpresasComponent; // Reemplaza 'EmpresasComponent' con el nombre real de tu componente
+      // Agrega más casos según sea necesario para otros componentes
+      default:
+        return null;
+    }
   }
 }
