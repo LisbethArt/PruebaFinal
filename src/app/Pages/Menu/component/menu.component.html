@@ -1,34 +1,61 @@
-<ul nz-menu nzMode="inline" style="width: 240px; height: 100%;" [nzTheme]="theme ? 'dark' : 'light'">
-  <div class="logo">
-    <img src="../../../../assets/img/admin.png"/>  
-  </div>
-  <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"></ng-container>
-  <ng-template #menuTpl let-menus>
-    <ng-container *ngFor="let menu of menus">
-      <li
-        *ngIf="!menu.children"
-        nz-menu-item
-        [nzPaddingLeft]="menu.level * 24"
-        [nzDisabled]="menu.disabled"
-        [nzSelected]="menu.selected"
-        (click)="navigate(menu.route)"
-      >
-        <span nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></span>
-        <span>{{ menu.title }}</span>
-      </li>
-      <li
-        *ngIf="menu.children"
-        nz-submenu
-        [nzPaddingLeft]="menu.level * 24"
-        [nzOpen]="menu.open"
-        [nzTitle]="menu.title"
-        [nzIcon]="menu.icon"
-        [nzDisabled]="menu.disabled"
-      >
-        <ul>
-          <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menu.children }"></ng-container>
-        </ul>
-      </li>
-    </ng-container>
-  </ng-template>
-</ul>
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <div class="logo">
+      <img *ngIf="!isCollapsed" src="../../../../assets/img/admin.png" />
+      <span *ngIf="isCollapsed">
+        <span nz-icon nzType="user" nzTheme="outline"></span>
+      </span>
+    </div>
+    <ul nz-menu nzMode="inline" [nzTheme]="theme ? 'dark' : 'light'">
+      <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"></ng-container>
+      <ng-template #menuTpl let-menus>
+        <ng-container *ngFor="let menu of menus">
+          <li
+            *ngIf="!menu.children"
+            nz-menu-item
+            [nzPaddingLeft]="menu.level * 24"
+            [nzDisabled]="menu.disabled"
+            [nzSelected]="menu.selected"
+            (click)="loadComponent(menu.component)"
+          >
+            <span nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></span>
+            <span>{{ menu.title }}</span>
+          </li>
+          <li
+            *ngIf="menu.children"
+            nz-submenu
+            [nzPaddingLeft]="menu.level * 24"
+            [nzOpen]="menu.open"
+            [nzTitle]="menu.title"
+            [nzIcon]="menu.icon"
+            [nzDisabled]="menu.disabled"
+          >
+            <ul>
+              <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menu.children }"></ng-container>
+            </ul>
+          </li>
+        </ng-container>
+      </ng-template>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <span
+        class="trigger"
+        nz-icon
+        [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+        (click)="isCollapsed = !isCollapsed"
+      ></span>
+    </nz-header>
+    <nz-content>
+      <nz-breadcrumb>
+        <nz-breadcrumb-item>User</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
+      </nz-breadcrumb>
+      <div class="inner-content">
+        <div #dynamicComponentContainer></div>
+      </div>
+    </nz-content>
+    <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+  </nz-layout>
+</nz-layout>

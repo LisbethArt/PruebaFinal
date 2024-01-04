@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { EmpresasComponent } from 'src/app/Pages/Empresas/component/empresas.component';
 
 @Component({
   selector: 'app-menu',
@@ -7,8 +8,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent {
-  constructor(private router: Router) {}
+  @ViewChild('dynamicComponentContainer', { read: ViewContainerRef })
+  dynamicComponentContainer: ViewContainerRef;
+  constructor(private componentFactoryResolver: ComponentFactoryResolver, private router: Router) {}
 
+  showIcon = false;
+  isCollapsed = false;
   mode = false;
   dark = false;
   theme = true;
@@ -29,7 +34,8 @@ export class MenuComponent {
       open: true,
       selected: false,
       disabled: false,
-      route: "Empresas"
+      route: "Empresas",
+      component: EmpresasComponent
     },
     {
       level: 1,
@@ -135,7 +141,25 @@ export class MenuComponent {
     }
   ];
 
-  navigate(route: string) { // Método para navegar a la ruta
-    this.router.navigate([route]);
+  navigate(route: string) {
+    // Lógica de navegación, por ejemplo, cargar el componente dinámicamente
+    const menuItem = this.menus.find(menu => menu.route === route);
+
+    if (menuItem && menuItem.component) {
+      this.loadComponent(menuItem.component);
+    }
+  }
+
+  // Enrutamiento interno en lugar de enrutamiento tradicional
+  loadComponent(component: any) {
+    this.dynamicComponentContainer.clear();
+
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      component
+    );
+
+    const componentRef = this.dynamicComponentContainer.createComponent(
+      componentFactory
+    );
   }
 }
