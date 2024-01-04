@@ -1,67 +1,36 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
 import { Empresas } from '../model/empresas';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmpresasService {
-  private empresas: Empresas[] = [
-    {
-      nombreComercial: 'A Empresa A',
-      razonSocial: 'Razón Social A',
-      actividadEconomica: 'Actividad A',
-      estado: true,
-      imagenes: ['imagen1.jpg', 'imagen2.jpg'],
-      categoria: 'Categoría 1',
-      direccion: 'Dirección A',
-      quienesSomos: 'Somos una empresa A',
-      nombreContacto: 'Contacto A',
-      telefono: '123456789',
-      correo: 'correoA@example.com',
-      redesSociales: {
-        linkedin: 'linkedin.com/empresaA',
-        twitter: 'twitter.com/empresaA',
-        facebook: 'facebook.com/empresaA',
-        instagram: 'instagram.com/empresaA',
-      },
-      fechaCreacion: new Date(),
-    },
-    {
-      nombreComercial: 'B Empresa B',
-      razonSocial: 'Razón Social B',
-      actividadEconomica: 'Actividad B',
-      estado: false,
-      imagenes: ['imagen3.jpg', 'imagen4.jpg'],
-      categoria: 'Categoría 2',
-      quienesSomos: 'Somos una empresa B',
-      nombreContacto: 'Contacto B',
-      correo: 'correoB@example.com',
-      fechaCreacion: new Date(),
-    },
-    // Agrega más datos de empresas según sea necesario
-  ];
+  constructor(private firestore: AngularFirestore) {}
 
-  constructor() { }
+  // Método para obtener los datos de la colección "empresas" en Firestore
+  async getListarEmpresas(): Promise<Empresas[]> {
+    const snapshot = await this.firestore.collection<Empresas>('empresas').get().toPromise();
+    return snapshot.docs.map(doc => doc.data());
+  }
 
-  // Método para obtener solo los campos requeridos para el listado
-  getListarEmpresas(): { nombreComercial: string, razonSocial: string, actividadEconomica: string, estado: boolean }[] {
-    return this.empresas.map(emp => ({
-      nombreComercial: emp.nombreComercial,
-      razonSocial: emp.razonSocial,
-      actividadEconomica: emp.actividadEconomica,
-      estado: emp.estado
-    }));
+  // Método para crear una nueva empresa
+  async crearEmpresa(nuevaEmpresa: Empresas): Promise<void> {
+    // Añade la nueva empresa a la colección "empresas" en Firestore
+    await this.firestore.collection('empresas').add({ ...nuevaEmpresa });
   }
 
   // Método para obtener datos con ordenación y paginación
-  ordenarEmpresas(
+  async ordenarEmpresas(
     pageIndex: number,
     pageSize: number,
     sortField: string | null,
     sortOrder: 'ascend' | 'descend' | null
-  ): Empresas[] {
-    // Simula obtener datos del servidor
-    const empresasCopy = [...this.empresas];
+  ): Promise<Empresas[]> {
+    // Obtiene los datos del servidor
+    const empresas = await this.getListarEmpresas();
+    const empresasCopy = [...empresas];
 
     // Aplica la ordenación si es necesario
     if (sortField && sortOrder) {
