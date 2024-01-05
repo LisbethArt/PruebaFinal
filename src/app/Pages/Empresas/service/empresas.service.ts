@@ -9,7 +9,7 @@ import { Empresas } from '../model/empresas';
 export class EmpresasService {
   constructor(private firestore: AngularFirestore) {}
 
-  // Método para obtener los datos de la colección "empresas" en Firestore
+  /*// Método para obtener los datos de la colección "empresas" en Firestore
   async getListarEmpresas(): Promise<Empresas[]> {
     const snapshot = await this.firestore.collection<Empresas>('empresas').get().toPromise();
     return snapshot.docs.map(doc => doc.data());
@@ -19,9 +19,21 @@ export class EmpresasService {
   async crearEmpresa(nuevaEmpresa: Empresas): Promise<void> {
     // Añade la nueva empresa a la colección "empresas" en Firestore
     await this.firestore.collection('empresas').add({ ...nuevaEmpresa });
+  }*/
+
+  crearEmpresa(empresa: any): Promise<any> {
+    return this.firestore.collection('empresas').add(empresa);
   }
 
-  // Método para obtener datos con ordenación y paginación
+  getListarEmpresas(): Observable<any> {
+    return this.firestore.collection('empresas', ref => ref.orderBy('fechaCreacion', 'desc')).snapshotChanges();
+  }
+
+  getNombreComercial(): Observable<any> {
+    return this.firestore.collection('empresas', ref => ref.orderBy('nombreComercial', 'asc')).snapshotChanges();
+  }
+
+  /*// Método para obtener datos con ordenación y paginación
   async ordenarEmpresas(
     pageIndex: number,
     pageSize: number,
@@ -58,5 +70,5 @@ export class EmpresasService {
   async ordenarEmpresasPorFecha(): Promise<Empresas[]> {
   const snapshot = await this.firestore.collection<Empresas>('empresas', ref => ref.orderBy('fechaCreacion', 'desc')).get().toPromise();
   return snapshot.docs.map(doc => doc.data());
-  }
+  }*/
 }

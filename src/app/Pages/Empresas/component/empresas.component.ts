@@ -3,6 +3,7 @@ import { EmpresasService } from '../service/empresas.service';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Empresas, RedesSociales } from '../model/empresas';
+import { NzTableSortOrder } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'app-empresas',
@@ -22,6 +23,7 @@ export class EmpresasComponent implements OnInit {
   pageSize: number = 10;
   pageIndex: number = 1;
   listarEmpresas: { nombreComercial: string, razonSocial: string, actividadEconomica: string, estado: boolean }[] = [];
+  sortOrderNombreComercial: NzTableSortOrder = 'ascend';
 
   isVisible = false;
   isOkLoading = false;
@@ -31,7 +33,7 @@ export class EmpresasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadEmpresasData();
+    this.getEmpresas();
     this.setFormValues();
   }
 
@@ -90,7 +92,7 @@ export class EmpresasComponent implements OnInit {
     this.validateForm.reset(); // Limpia el formulario cuando se cancela
   }
 
-  // Método de ordenamiento por defecto
+  /*// Método de ordenamiento por defecto
   async loadEmpresasData(sortField: string = 'nombreComercial', sortOrder: 'ascend' | 'descend' | 'default' = 'default'): Promise<void> {
     this.loading = true;
 
@@ -108,21 +110,62 @@ export class EmpresasComponent implements OnInit {
     }
 
     this.loading = false;
+  }*/
+
+  getEmpresas() {
+    this.empresasService.getListarEmpresas().subscribe(data => {
+      this.empresas = [];
+      data.forEach((element: any) => {
+        this.empresas.push({
+          id: element.payload.doc.id,
+          ...element.payload.doc.data()
+        });
+      });
+  
+      // Asigna los valores a this.listarEmpresas
+      this.listarEmpresas = this.empresas;
+  
+      console.log(this.listarEmpresas);
+    });
   }
 
-  // Método que maneja los cambios en los parámetros de consulta
-  onQueryParamsChange(params: NzTableQueryParams): void {
-    const { pageSize, pageIndex, sort } = params;
-    const currentSort = sort.find(item => item.value !== null);
-    const sortField = (currentSort && currentSort.key) || 'nombreComercial';
-
-    // Asegúrate de que sortOrder sea de tipo '"ascend" | "descend" | "default"'
-    let sortOrder: 'ascend' | 'descend' | 'default' = 'default';
-    if (currentSort && (currentSort.value === 'ascend' || currentSort.value === 'descend')) {
-      sortOrder = currentSort.value;
+  ordenarNombreComercial(sortOrder: NzTableSortOrder | null = null) {
+    // Si sortOrder no se proporciona, alternar entre ascendente y descendente
+    if (!sortOrder) {
+      this.sortOrderNombreComercial = this.sortOrderNombreComercial === 'ascend' ? 'descend' : 'ascend';
+    } else {
+      this.sortOrderNombreComercial = sortOrder;
     }
+  
+    const ascendente = this.sortOrderNombreComercial === 'ascend';
+  
+    // Obtener una copia de la lista de empresas para no modificar la original
+    const empresasOrdenadas = [...this.listarEmpresas];
+  
+    empresasOrdenadas.sort((a, b) => {
+      const nombreA = a.nombreComercial.toUpperCase();
+      const nombreB = b.nombreComercial.toUpperCase();
+  
+      let comparacion = 0;
+      if (nombreA > nombreB) {
+        comparacion = 1;
+      } else if (nombreA < nombreB) {
+        comparacion = -1;
+      }
+  
+      return ascendente ? comparacion : comparacion * -1;
+    });
+  
+    // Asignar la lista ordenada a la propiedad listarEmpresas
+    this.listarEmpresas = empresasOrdenadas;
+  }
+    
 
-    this.loadEmpresasData(sortField, sortOrder);
+  manejarQueryParams(params: NzTableQueryParams): void {
+    if (params && params.sort && params.sort.length > 0 && params.sort[0].key === 'nombreComercial') {
+      this.ordenarNombreComercial(params.sort[0].value);
+    }
+    // Agrega lógica para otros parámetros de ordenación si es necesario
   }
 
   async submitForm(): Promise<void> {
@@ -158,10 +201,10 @@ export class EmpresasComponent implements OnInit {
 
   async createEmpresa(nuevaEmpresa: Empresas): Promise<void> {
     await this.empresasService.crearEmpresa(nuevaEmpresa);
-    this.loadEmpresasData(); // Recarga las empresas después de crear una nueva
+    this.getEmpresas(); // Recarga las empresas después de crear una nueva
   }
 
   reiniciarDatos(): void {
-    this.loadEmpresasData('default', 'default');
+    this.getEmpresas();
   }
 }

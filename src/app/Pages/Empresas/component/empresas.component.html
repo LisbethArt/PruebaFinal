@@ -136,7 +136,7 @@
       <button nz-button nzType="primary" (click)="submitForm()" [nzLoading]="isOkLoading">Crear</button>
     </div>
   </nz-modal>
-  
+
   <nz-table
     class="tablaResponsive"
     nzShowSizeChanger
@@ -146,7 +146,7 @@
     [nzTotal]="total"
     [nzPageSize]="pageSize"
     [nzPageIndex]="pageIndex"
-    (nzQueryParams)="onQueryParamsChange($event)"
+    (nzQueryParams)="manejarQueryParams($event)"
   >
     <thead>
       <tr>
