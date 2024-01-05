@@ -17,10 +17,15 @@
   justify-content: center;
   background: rgba(152, 155, 228, 0.2);
   margin: 16px;
+  border-radius: 10px;
 }
 
 .logo img {
   height: 32px;
+}
+
+.icono-user {
+  color: white;
 }
 
 nz-header {
