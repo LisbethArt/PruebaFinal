@@ -12,4 +12,9 @@ export class ModalEmpresasService {
   crearEmpresa(empresa: any): Promise<any> {
     return this.firestore.collection('empresas').add(empresa);
   }
+
+  editarEmpresa(id: string, empresa: any): Promise<void> {
+    // Utiliza el método update para editar un documento existente
+    return this.firestore.collection('empresas').doc(id).update(empresa);
+  }
 }
