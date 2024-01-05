@@ -91,14 +91,14 @@ export class EmpresasComponent implements OnInit {
   }
 
   // Método para cargar datos de empresas con ordenación y paginación
-  async loadEmpresasData(sortField?: string, sortOrder?: 'ascend' | 'descend'): Promise<void> {
+  async loadEmpresasData(sortField: string = 'nombreComercial', sortOrder: 'ascend' | 'descend' | 'default' = 'default'): Promise<void> {
     this.loading = true;
     // Llama al servicio con parámetros de paginación y ordenación
     this.listarEmpresas = await this.empresasService.ordenarEmpresas(
       this.pageIndex,
       this.pageSize,
       sortField,
-      sortOrder
+      sortOrder === 'default' ? 'ascend' : sortOrder
     );
     this.loading = false;
   }
@@ -107,13 +107,16 @@ export class EmpresasComponent implements OnInit {
   onQueryParamsChange(params: NzTableQueryParams): void {
     const { pageSize, pageIndex, sort } = params;
     const currentSort = sort.find(item => item.value !== null);
-    const sortField = (currentSort && currentSort.key) || null;
+    const sortField = (currentSort && currentSort.key) || 'nombreComercial';
 
-    // Asegúrate de que sortOrder sea de tipo '"ascend" | "descend"'
-    const sortOrder: 'ascend' | 'descend' | null = (currentSort && currentSort.value) as 'ascend' | 'descend' | null;
+    // Asegúrate de que sortOrder sea de tipo '"ascend" | "descend" | "default"'
+    let sortOrder: 'ascend' | 'descend' | 'default' = 'default';
+    if (currentSort && (currentSort.value === 'ascend' || currentSort.value === 'descend')) {
+      sortOrder = currentSort.value;
+    }
 
     this.loadEmpresasData(sortField, sortOrder);
-  } 
+  }
 
   async submitForm(): Promise<void> {
     // Marca todos los controles como 'touched' para que se muestren los mensajes de error
