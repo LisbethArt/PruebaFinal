@@ -1,0 +1,120 @@
+<nz-modal
+    [(nzVisible)]="isVisible"
+    nzTitle="Crear nueva empresa"
+    (nzOnCancel)="handleCancel()"
+    [nzOkLoading]="isOkLoading"
+    [nzCentered]="true"
+    [nzBodyStyle]="{ maxHeight: '80vh', overflowY: 'auto' }"
+    >
+    <div *nzModalContent>
+      <form [formGroup]="validateForm" nz-form (ngSubmit)="submitForm()">
+        <!-- Nombre Comercial -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="9" nzFor="nombreComercial" nzRequired>Nombre comercial</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="Este campo no puede estar vacío">
+            <input nz-input id="nombreComercial" formControlName="nombreComercial" id="nombreComercial" type="text" required>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Razon Social -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="9" nzFor="razonSocial" nzRequired>Razón Social</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="Este campo no puede estar vacío">
+            <input nz-input id="razonSocial" formControlName="razonSocial" id="razonSocial" type="text" required>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Actividad Económica -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="9" nzFor="actividadEconomica" nzRequired>Actividad económica</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="Este campo no puede estar vacío">
+            <input nz-input name="actividadEconomica" formControlName="actividadEconomica" id="actividadEconomica" type="text" required>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Estado -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="9" nzFor="estado" nzRequired>Estado</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="Este campo no puede estar vacío" required>
+            <select formControlName="estado" name="estado" id="estado">
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            </select>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Imágenes -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="9" nzFor="imagenes" nzRequired>Imágenes</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="Este campo no puede estar vacío" required>
+            <!-- Puedes usar un componente de carga de archivos aquí -->
+            <input name="imagenes" type="file" formControlName="imagenes" id="imagenes"/>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Categoría -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="9" nzFor="categoria" nzRequired>Categoría</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="Este campo no puede estar vacío" required>
+            <input nz-input name="categoria" formControlName="categoria" id="categoria" type="text">
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Dirección -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="9" nzFor="direccion">Dirección</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="14">
+            <input nz-input name="direccion" formControlName="direccion" id="direccion" type="text">
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Quiénes Somos -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="9" nzFor="quienesSomos" nzRequired>Quiénes somos</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="Este campo no puede estar vacío" required>
+            <textarea nz-input name="quienesSomos" formControlName="quienesSomos" id="quienesSomos"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Nombre de Contacto -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="9" nzFor="nombreContacto" nzRequired>Nombre de contacto</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="Este campo no puede estar vacío" required>
+            <input nz-input name="nombreContacto" formControlName="nombreContacto" id="nombreContacto" type="text">
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Teléfono -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="9" nzFor="telefono">Teléfono</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="14">
+            <input nz-input name="telefono" formControlName="telefono" id="telefono" type="tel">
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- E-mail -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="9" nzFor="correo" nzRequired>Correo</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="Este campo no puede estar vacío" required>
+            <input nz-input name="correo" formControlName="correo" id="correo" type="email">
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Redes Sociales -->
+        <nz-form-item formGroupName="redesSociales">
+          <nz-form-label [nzSpan]="9" nzFor="redesSociales">Redes sociales</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input name="linkedin" formControlName="linkedin" id="linkedin" placeholder="LinkedIn" />
+            <input nz-input name="twitter" formControlName="twitter" id="twitter" placeholder="Twitter" />
+            <input nz-input name="facebook" formControlName="facebook" id="facebook" placeholder="Facebook" />
+            <input nz-input name="instagram" formControlName="instagram" id="instagram" placeholder="Instagram" />
+          </nz-form-control>
+        </nz-form-item>
+        
+      </form>
+    </div>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancel()">Cancelar</button>
+      <button nz-button nzType="primary" (click)="submitForm()" [nzLoading]="isOkLoading">Crear</button>
+    </div>
+  </nz-modal>
