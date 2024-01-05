@@ -53,4 +53,10 @@ export class EmpresasService {
 
     return paginatedEmpresas;
   }
+
+  // Método para ordenar empresas por fecha de creación
+  async ordenarEmpresasPorFecha(): Promise<Empresas[]> {
+  const snapshot = await this.firestore.collection<Empresas>('empresas', ref => ref.orderBy('fechaCreacion', 'desc')).get().toPromise();
+  return snapshot.docs.map(doc => doc.data());
+  }
 }

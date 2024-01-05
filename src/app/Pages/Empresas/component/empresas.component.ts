@@ -90,16 +90,23 @@ export class EmpresasComponent implements OnInit {
     this.validateForm.reset(); // Limpia el formulario cuando se cancela
   }
 
-  // Método para cargar datos de empresas con ordenación y paginación
+  // Método de ordenamiento por defecto
   async loadEmpresasData(sortField: string = 'nombreComercial', sortOrder: 'ascend' | 'descend' | 'default' = 'default'): Promise<void> {
     this.loading = true;
-    // Llama al servicio con parámetros de paginación y ordenación
-    this.listarEmpresas = await this.empresasService.ordenarEmpresas(
-      this.pageIndex,
-      this.pageSize,
-      sortField,
-      sortOrder === 'default' ? 'ascend' : sortOrder
-    );
+
+    if (sortOrder === 'default') {
+      // Si sortOrder es 'default', usa ordenarEmpresasPorFechaDescendente
+      this.listarEmpresas = await this.empresasService.ordenarEmpresasPorFecha();
+    } else {
+      // Si sortOrder no es 'default', llama al servicio con parámetros de paginación y ordenación
+      this.listarEmpresas = await this.empresasService.ordenarEmpresas(
+        this.pageIndex,
+        this.pageSize,
+        sortField,
+        sortOrder
+      );
+    }
+
     this.loading = false;
   }
 
@@ -155,7 +162,6 @@ export class EmpresasComponent implements OnInit {
   }
 
   reiniciarDatos(): void {
-    this.loadEmpresasData();
+    this.loadEmpresasData('default', 'default');
   }
-  
 }
