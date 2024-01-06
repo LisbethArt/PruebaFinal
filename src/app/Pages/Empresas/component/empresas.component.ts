@@ -177,7 +177,7 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
     this.empresasService.getListarEmpresas().subscribe(todasLasEmpresas => {
       const empresasParaExcel = todasLasEmpresas.map(empresa => {
         // Aquí puedes excluir o transformar los campos que necesites
-        const { id, fechaCreacion, ...restoDeCampos } = empresa.payload.doc.data();
+        const { id, fechaCreacion, imagenes, ...restoDeCampos } = empresa.payload.doc.data();
         const redesSociales = restoDeCampos.redesSociales;
         const ordenRedesSociales = ['linkedin', 'twitter', 'facebook', 'instagram'];
         const redesSocialesCadena = ordenRedesSociales
@@ -186,7 +186,16 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
           .join(', ');
   
         return {
-          ...restoDeCampos,
+          nombreComercial: restoDeCampos.nombreComercial,
+          razonSocial: restoDeCampos.razonSocial,
+          actividadEconomica: restoDeCampos.actividadEconomica,
+          estado: restoDeCampos.estado,
+          categoria: restoDeCampos.categoria,
+          direccion: restoDeCampos.direccion,
+          quienesSomos: restoDeCampos.quienesSomos,
+          nombreContacto: restoDeCampos.nombreContacto,
+          telefono: restoDeCampos.telefono,
+          correo: restoDeCampos.correo,
           redesSociales: redesSocialesCadena
         };
       });
@@ -196,7 +205,7 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
       XLSX.utils.book_append_sheet(wb, ws, 'Empresas');
   
       /* save to file */
-      XLSX.writeFile(wb, 'empresas.xlsx');
+      XLSX.writeFile(wb, 'Empresas.xlsx');
     });
   }
 }
