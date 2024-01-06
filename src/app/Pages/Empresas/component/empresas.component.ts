@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Empresas, RedesSociales } from '../model/empresas';
 import { NzTableSortOrder } from 'ng-zorro-antd/table';
 import { ModalEmpresasComponent } from '../modales/modal-empresas/modal-empresas.component';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-empresas',
@@ -170,5 +171,32 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
   handleCancel(): void {
     this.isVisible = false;
     this.validateForm.reset(); // Limpia el formulario cuando se cancela
+  }
+
+  exportarAExcel(): void {
+    this.empresasService.getListarEmpresas().subscribe(todasLasEmpresas => {
+      const empresasParaExcel = todasLasEmpresas.map(empresa => {
+        // Aquí puedes excluir o transformar los campos que necesites
+        const { id, fechaCreacion, ...restoDeCampos } = empresa.payload.doc.data();
+        const redesSociales = restoDeCampos.redesSociales;
+        const ordenRedesSociales = ['linkedin', 'twitter', 'facebook', 'instagram'];
+        const redesSocialesCadena = ordenRedesSociales
+          .map(red => redesSociales[red] ? `${red}: ${redesSociales[red]}` : null)
+          .filter(Boolean)
+          .join(', ');
+  
+        return {
+          ...restoDeCampos,
+          redesSociales: redesSocialesCadena
+        };
+      });
+  
+      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(empresasParaExcel);
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Empresas');
+  
+      /* save to file */
+      XLSX.writeFile(wb, 'empresas.xlsx');
+    });
   }
 }
