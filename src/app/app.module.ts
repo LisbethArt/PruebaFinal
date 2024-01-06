@@ -25,6 +25,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { ModalEmpresasComponent } from './Pages/Empresas/modales/modal-empresas/modal-empresas.component';
 
 registerLocaleData(es);
 
@@ -32,7 +33,8 @@ registerLocaleData(es);
   declarations: [
     AppComponent,
     EmpresasComponent,
-    MenuComponent
+    MenuComponent,
+    ModalEmpresasComponent
   ],
   imports: [
     BrowserModule,

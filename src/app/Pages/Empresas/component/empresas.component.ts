@@ -1,28 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { EmpresasService } from '../service/empresas.service';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Empresas, RedesSociales } from '../model/empresas';
 import { NzTableSortOrder } from 'ng-zorro-antd/table';
+import { ModalEmpresasComponent } from '../modales/modal-empresas/modal-empresas.component';
 
 @Component({
   selector: 'app-empresas',
   templateUrl: './empresas.component.html',
   styleUrls: ['./empresas.component.css']
 })
-export class EmpresasComponent implements OnInit {
+export class EmpresasComponent implements OnInit, AfterViewInit {
+  @ViewChild(ModalEmpresasComponent) modalEmpresas!: ModalEmpresasComponent;
+
   empresas: Empresas[];
-  nuevaEmpresa: Empresas = {
-    ...new Empresas(),
-    redesSociales: {}
-  };
   validateForm: FormGroup;
 
   loading: boolean = false;
   total: number = 0;
   pageSize: number = 10;
   pageIndex: number = 1;
-  listarEmpresas: { nombreComercial: string, razonSocial: string, actividadEconomica: string, estado: boolean }[] = [];
+  listarEmpresas: { id?: string, nombreComercial: string, razonSocial: string, actividadEconomica: string, estado: boolean }[] = [];
   sortOrderNombreComercial: NzTableSortOrder = 'ascend';
 
   isVisible = false;
@@ -34,8 +33,16 @@ export class EmpresasComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEmpresas();
-    this.setFormValues();
   }
+
+  ngAfterViewInit(): void {
+  // Escuchar el evento del componente hijo
+  this.modalEmpresas.childReady.subscribe(() => {
+    // Realizar las acciones necesarias cuando el componente hijo esté listo
+    // Puedes realizar acciones adicionales después de cerrar el modal, si es necesario
+    this.getEmpresas();
+  });
+}
 
   initForm(): void {
     this.validateForm = new FormGroup({
@@ -60,58 +67,6 @@ export class EmpresasComponent implements OnInit {
     });
   }
 
-  setFormValues(): void {
-    this.validateForm.patchValue({
-      nombreComercial: this.nuevaEmpresa.nombreComercial ?? '',
-      razonSocial: this.nuevaEmpresa.razonSocial ?? '',
-      actividadEconomica: this.nuevaEmpresa.actividadEconomica ?? '',
-      estado: this.nuevaEmpresa.estado ?? '',
-      imagenes: this.nuevaEmpresa.imagenes ?? '',
-      categoria: this.nuevaEmpresa.categoria ?? '',
-      direccion: this.nuevaEmpresa.direccion ?? '',
-      quienesSomos: this.nuevaEmpresa.quienesSomos ?? '',
-      nombreContacto: this.nuevaEmpresa.nombreContacto ?? '',
-      telefono: this.nuevaEmpresa.telefono ?? '',
-      correo: this.nuevaEmpresa.correo ?? '',
-      redesSociales: {
-        linkedin: this.nuevaEmpresa.redesSociales.linkedin ?? '',
-        twitter: this.nuevaEmpresa.redesSociales.twitter ?? '',
-        facebook: this.nuevaEmpresa.redesSociales.facebook ?? '',
-        instagram: this.nuevaEmpresa.redesSociales.instagram ?? '',
-      },
-      fechaCreacion: this.nuevaEmpresa.fechaCreacion ?? '',
-    });
-  }
-
-  showModal(): void {
-    this.isVisible = true;
-  }
-
-  handleCancel(): void {
-    this.isVisible = false;
-    this.validateForm.reset(); // Limpia el formulario cuando se cancela
-  }
-
-  /*// Método de ordenamiento por defecto
-  async loadEmpresasData(sortField: string = 'nombreComercial', sortOrder: 'ascend' | 'descend' | 'default' = 'default'): Promise<void> {
-    this.loading = true;
-
-    if (sortOrder === 'default') {
-      // Si sortOrder es 'default', usa ordenarEmpresasPorFechaDescendente
-      this.listarEmpresas = await this.empresasService.ordenarEmpresasPorFecha();
-    } else {
-      // Si sortOrder no es 'default', llama al servicio con parámetros de paginación y ordenación
-      this.listarEmpresas = await this.empresasService.ordenarEmpresas(
-        this.pageIndex,
-        this.pageSize,
-        sortField,
-        sortOrder
-      );
-    }
-
-    this.loading = false;
-  }*/
-
   getEmpresas() {
     this.empresasService.getListarEmpresas().subscribe(data => {
       this.empresas = [];
@@ -125,9 +80,24 @@ export class EmpresasComponent implements OnInit {
       // Asigna los valores a this.listarEmpresas
       this.listarEmpresas = this.empresas;
   
-      console.log(this.listarEmpresas);
+      //console.log(this.listarEmpresas);
     });
   }
+
+  // En algún lugar donde necesites obtener detalles de una empresa por su ID
+  getDetallesEmpresaPorId(id: string): void {
+    this.empresasService.getEmpresaId(id).subscribe(
+      (empresa: any) => {
+        // Manipula los datos de la empresa según tus necesidades
+        console.log(empresa.payload.data());
+        // Puedes llamar a otros métodos o establecer propiedades en tu componente aquí
+      },
+      (error) => {
+        console.error('Error al obtener la empresa por ID:', error);
+      }
+    );
+  }
+
 
   ordenarNombreComercial(sortOrder: NzTableSortOrder | null = null) {
     // Si sortOrder no se proporciona, alternar entre ascendente y descendente
@@ -160,43 +130,11 @@ export class EmpresasComponent implements OnInit {
     this.listarEmpresas = empresasOrdenadas;
   }
     
-
   manejarQueryParams(params: NzTableQueryParams): void {
     if (params && params.sort && params.sort.length > 0 && params.sort[0].key === 'nombreComercial') {
       this.ordenarNombreComercial(params.sort[0].value);
     }
-    // Agrega lógica para otros parámetros de ordenación si es necesario
-  }
-
-  async submitForm(): Promise<void> {
-    // Marca todos los controles como 'touched' para que se muestren los mensajes de error
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
-    }
-  
-    // Verifica si el formulario es válido antes de proceder
-    if (this.validateForm.valid) {
-      this.isOkLoading = true; // Inicia la animación de carga
-  
-      // Establece la fecha de creación al momento actual
-      this.validateForm.get('fechaCreacion').setValue(new Date());
-  
-      const nuevaEmpresa = new Empresas(this.validateForm.value);
-      await this.createEmpresa(nuevaEmpresa);
-  
-      // Cierra el modal solo si el formulario es válido
-      this.isOkLoading = false; // Detiene la animación de carga
-      this.closeModal();
-  
-      // Limpia el formulario
-      this.validateForm.reset();
-    }
-  }
-  
-  closeModal(): void {
-    this.isVisible = false;
-    this.validateForm.reset(); // Limpia el formulario cuando se cierra
+    // Agregar lógica para otros parámetros de ordenación si es necesario
   }
 
   async createEmpresa(nuevaEmpresa: Empresas): Promise<void> {
@@ -206,5 +144,31 @@ export class EmpresasComponent implements OnInit {
 
   reiniciarDatos(): void {
     this.getEmpresas();
+  }
+
+  closeModal(): void {
+    this.isVisible = false;
+    this.validateForm.reset(); // Limpia el formulario cuando se cierra
+  }
+
+  showModal() {
+    this.modalEmpresas.showModal();
+  }
+
+  editarEmpresa(empresa?: Partial<Empresas>): void {
+    if (this.modalEmpresas) {
+      console.log('método editarEmpresa: ', empresa);
+  
+      // Llama a showModal con la empresa que se está editando (o sin argumentos para un nuevo registro)
+      this.modalEmpresas.showModal(empresa);
+    } else {
+      console.log('Error: No se proporcionó un objeto ModalEmpresasComponent.');
+    }
+  }
+   
+
+  handleCancel(): void {
+    this.isVisible = false;
+    this.validateForm.reset(); // Limpia el formulario cuando se cancela
   }
 }

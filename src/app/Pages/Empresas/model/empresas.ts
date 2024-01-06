@@ -1,4 +1,5 @@
 export class Empresas {
+    id?: string;
     nombreComercial: string;
     razonSocial: string;
     actividadEconomica: string;

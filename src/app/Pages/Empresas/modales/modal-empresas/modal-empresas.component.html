@@ -1,7 +1,8 @@
 <nz-modal
     [(nzVisible)]="isVisible"
-    nzTitle="Crear nueva empresa"
+    nzTitle="{{titulo}}"
     (nzOnCancel)="handleCancel()"
+    (nzAfterOpen)="setFormValues()"
     [nzOkLoading]="isOkLoading"
     [nzCentered]="true"
     [nzBodyStyle]="{ maxHeight: '80vh', overflowY: 'auto' }"

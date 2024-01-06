@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, EventEmitter, Output, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Empresas, RedesSociales } from '../../model/empresas';
 import { ModalEmpresasService } from '../service/modal-empresas.service';
@@ -11,23 +11,29 @@ import { EmpresasComponent } from '../../component/empresas.component';
 })
 export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   @Input() empresasComponent: EmpresasComponent;
-  @Input() empresaEditar: Empresas;  // Nueva propiedad para recibir datos de empresa a editar
+  @Input() empresaEditando: Partial<Empresas>;  // Nueva propiedad para recibir datos de empresa a editar
   @Output() childReady = new EventEmitter<void>();
 
-  empresaEditando: Partial<Empresas> = {};
+  titulo = 'Crear nueva empresa';
 
   validateForm: FormGroup;
 
   isVisible = false;
   isOkLoading = false;
 
-  constructor(private modalEmpresasService: ModalEmpresasService) { 
+  constructor(private modalEmpresasService: ModalEmpresasService, private cd: ChangeDetectorRef) { 
     this.initForm();
   }
 
   ngOnInit(): void {
     this.isVisible = false; // o true, dependiendo de tu lógica
     this.setFormValues();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['empresaEditando'] && changes['empresaEditando'].currentValue) {
+      this.setFormValues();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -59,28 +65,33 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   }
 
   setFormValues(): void {
-    if (this.empresaEditar) {
+    if (this.empresaEditando) {
+      console.log('método setFormValues: ', this.empresaEditando);  // Imprime los datos de empresaEditando
+  
       // Si hay datos para editar, establece los valores en el formulario
       this.validateForm.patchValue({
-        nombreComercial: this.empresaEditar.nombreComercial || '',
-        razonSocial: this.empresaEditar.razonSocial || '',
-        actividadEconomica: this.empresaEditar.actividadEconomica || '',
-        estado: this.empresaEditar.estado || false,
-        imagenes: this.empresaEditar.imagenes || [],
-        categoria: this.empresaEditar.categoria || '',
-        direccion: this.empresaEditar.direccion || '',
-        quienesSomos: this.empresaEditar.quienesSomos || '',
-        nombreContacto: this.empresaEditar.nombreContacto || '',
-        telefono: this.empresaEditar.telefono || '',
-        correo: this.empresaEditar.correo || '',
+        nombreComercial: this.empresaEditando.nombreComercial || '',
+        razonSocial: this.empresaEditando.razonSocial || '',
+        actividadEconomica: this.empresaEditando.actividadEconomica || '',
+        estado: this.empresaEditando.estado || false,
+        imagenes: this.empresaEditando.imagenes || [],
+        categoria: this.empresaEditando.categoria || '',
+        direccion: this.empresaEditando.direccion || '',
+        quienesSomos: this.empresaEditando.quienesSomos || '',
+        nombreContacto: this.empresaEditando.nombreContacto || '',
+        telefono: this.empresaEditando.telefono || '',
+        correo: this.empresaEditando.correo || '',
         redesSociales: {
-          linkedin: this.empresaEditar.redesSociales?.linkedin || '',
-          twitter: this.empresaEditar.redesSociales?.twitter || '',
-          facebook: this.empresaEditar.redesSociales?.facebook || '',
-          instagram: this.empresaEditar.redesSociales?.instagram || '',
+          linkedin: this.empresaEditando.redesSociales?.linkedin || '',
+          twitter: this.empresaEditando.redesSociales?.twitter || '',
+          facebook: this.empresaEditando.redesSociales?.facebook || '',
+          instagram: this.empresaEditando.redesSociales?.instagram || '',
         },
-        fechaCreacion: this.empresaEditar.fechaCreacion || '',
+        fechaCreacion: this.empresaEditando.fechaCreacion || '',
       });
+      // Forzar una detección de cambios
+      this.cd.detectChanges();
+      console.log('validateForm value after patch:', this.validateForm.value);  // Imprime los valores del formulario después de la actualización
     }
   }
 
@@ -100,8 +111,8 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
 
       const nuevaEmpresa = new Empresas(this.validateForm.value);
       // Si hay datos para editar, agrega el ID al objeto
-      if (this.empresaEditar && this.empresaEditar.id) {
-        nuevaEmpresa.id = this.empresaEditar.id;
+      if (this.empresaEditando && this.empresaEditando.id) {
+        nuevaEmpresa.id = this.empresaEditando.id;
       }
 
       await this.createEmpresa(nuevaEmpresa);
@@ -126,18 +137,22 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   
     if (empresa) {
       // Modo edición
+      this.titulo = 'Editar empresa';
       this.empresaEditando = { ...empresa };
-      // Actualiza el formulario con la información de la empresa que se está editando
-      this.setFormValues();
     } else {
       // Modo creación
+      this.titulo = 'Crear nueva empresa';
       this.empresaEditando = {};
     }
   
     // Muestra el modal después de configurar el estado
     this.isVisible = true;
-  }
   
+    // Actualiza el formulario con la información de la empresa que se está editando
+    if (empresa) {
+      this.setFormValues();
+    }
+  }
 
   handleCancel(): void {
     this.isVisible = false;
