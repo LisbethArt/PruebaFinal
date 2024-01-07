@@ -225,14 +225,31 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
     }).catch(error => console.log(error));
   }
 
-  eliminarImagen(imagenUrl: string) {
+  eliminarImagen(event: Event, imagenUrl: string) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  
     // Extraer el nombre del archivo de la URL de la imagen
     const fileRef = this.storage.refFromURL(imagenUrl);
-    fileRef.delete().subscribe(() => {
-      // Elimina la imagen del array de imágenes
+  
+    // Intenta descargar la imagen
+    fileRef.getDownloadURL().subscribe(() => {
+      // Si la imagen existe, elimínala
+      fileRef.delete().subscribe(() => {
+        // Crea un nuevo array sin la imagen eliminada
+        this.imagenes = this.imagenes.filter(img => img !== imagenUrl);
+  
+        // Forzar la actualización de la vista
+        this.cd.detectChanges();
+      }, error => {
+        console.log(error);
+      });
+    }, () => {
+      // Si la imagen no existe, simplemente elimínala del array
       this.imagenes = this.imagenes.filter(img => img !== imagenUrl);
-    }, error => {
-      console.log(error);
+  
+      // Forzar la actualización de la vista
+      this.cd.detectChanges();
     });
   }
 }
