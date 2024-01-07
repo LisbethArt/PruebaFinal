@@ -1,10 +1,9 @@
-import { Component, OnInit, AfterViewInit, Input, EventEmitter, Output, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, EventEmitter, Output, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Empresas, RedesSociales } from '../../model/empresas';
+import { Empresas } from '../../model/empresas';
 import { ModalEmpresasService } from '../service/modal-empresas.service';
 import { EmpresasComponent } from '../../component/empresas.component';
 import { AngularFireStorage, AngularFireStorageReference, GetDownloadURLPipe } from '@angular/fire/compat/storage';
-import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-modal-empresas',
@@ -25,6 +24,8 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
 
   imagenes: string[] = [];
   imagenesRefs: AngularFireStorageReference[] = [];
+  editando = false;
+  empresaOriginal: Partial<Empresas>;
 
   constructor(private modalEmpresasService: ModalEmpresasService, private cd: ChangeDetectorRef, private storage: AngularFireStorage) { 
     this.initForm();
@@ -146,13 +147,16 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
     if (empresa) {
       // Modo edición
       this.titulo = 'Editar empresa';
+      this.empresaOriginal = { ...empresa };  // Guarda los datos originales
       this.empresaEditando = { ...empresa };
       // Asigna las imágenes de la empresa a editar al array 'imagenes'
       this.imagenes = empresa.imagenes || [];
+      this.editando = true;  // Estamos en modo de edición
     } else {
       // Modo creación
       this.titulo = 'Crear nueva empresa';
       this.empresaEditando = {};
+      this.editando = false;  // No estamos en modo de edición
     }
   
     // Muestra el modal después de configurar el estado
@@ -166,19 +170,27 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
 
   handleCancel(): void {
     this.isVisible = false;
-    this.validateForm.reset(); // Limpia el formulario cuando se cancela
   
-    // Eliminar todas las imágenes subidas
-    this.imagenesRefs.forEach(ref => {
-      ref.delete().subscribe(() => {
-        console.log('Imagen eliminada');
-      }, error => {
-        console.log('Error al eliminar la imagen', error);
+    // Si estamos en modo de edición, restaura los datos originales
+    if (this.editando) {
+      this.empresaEditando = { ...this.empresaOriginal };
+      this.imagenes = this.empresaOriginal.imagenes || [];
+    } else {
+      // Si estamos en modo de creación, elimina cualquier dato nuevo
+      this.validateForm.reset(); // Limpia el formulario cuando se cancela
+  
+      // Eliminar todas las imágenes subidas
+      this.imagenesRefs.forEach(ref => {
+        ref.delete().subscribe(() => {
+          console.log('Imagen eliminada');
+        }, error => {
+          console.log('Error al eliminar la imagen', error);
+        });
       });
-    });
   
-    // Limpiar el array de referencias a imágenes
-    this.imagenesRefs = [];
+      // Limpiar el array de referencias a imágenes
+      this.imagenesRefs = [];
+    }
   }
 
   async createEmpresa(nuevaEmpresa: Empresas): Promise<void> {
@@ -206,24 +218,39 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   }
   
   subirImagenes($event: any) {
-    const file = $event.target.files[0];
-    console.log('subirImagen', file);
-  
-    const imgRef = this.storage.ref(`empresas/${file.name}`);
-  
-    // Guardar la referencia a la imagen subida
-    this.imagenesRefs.push(imgRef);
-  
-    const uploadTask = this.storage.upload(`empresas/${file.name}`, file);
-  
-    uploadTask.then(response => {
-      console.log(response);
-      // Obtén la URL de la imagen subida y agrégala al array de imágenes
-      response.ref.getDownloadURL().then(url => {
-        this.imagenes.push(url);
-      });
-    }).catch(error => console.log(error));
+  const file = $event.target.files[0];
+  console.log('subirImagen', file);
+
+  // Validar el tipo de archivo
+  const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+  if (!validFileTypes.includes(file.type)) {
+    alert('Solo se permiten archivos jpg, jpeg y png.');
+    return;
   }
+
+  // Validar el tamaño del archivo (6MB max)
+  const maxSizeMB = 6;
+  const maxSizeBytes = maxSizeMB * 1024 * 1024;
+  if (file.size > maxSizeBytes) {
+    alert(`El tamaño del archivo no debe superar los ${maxSizeMB}MB.`);
+    return;
+  }
+
+  const imgRef = this.storage.ref(`empresas/${file.name}`);
+
+  // Guardar la referencia a la imagen subida
+  this.imagenesRefs.push(imgRef);
+
+  const uploadTask = this.storage.upload(`empresas/${file.name}`, file);
+
+  uploadTask.then(response => {
+    console.log(response);
+    // Obtén la URL de la imagen subida y agrégala al array de imágenes
+    response.ref.getDownloadURL().then(url => {
+      this.imagenes.push(url);
+    });
+  }).catch(error => console.log(error));
+}
 
   eliminarImagen(event: Event, imagenUrl: string) {
     event.preventDefault();
