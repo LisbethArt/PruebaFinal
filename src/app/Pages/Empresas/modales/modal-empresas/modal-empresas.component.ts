@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Empresas, RedesSociales } from '../../model/empresas';
 import { ModalEmpresasService } from '../service/modal-empresas.service';
 import { EmpresasComponent } from '../../component/empresas.component';
+import { AngularFireStorage, GetDownloadURLPipe } from '@angular/fire/compat/storage';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-modal-empresas',
@@ -21,8 +23,11 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   isVisible = false;
   isOkLoading = false;
 
-  constructor(private modalEmpresasService: ModalEmpresasService, private cd: ChangeDetectorRef) { 
+  imagenes: { url: string, path: string }[] = [];
+
+  constructor(private modalEmpresasService: ModalEmpresasService, private cd: ChangeDetectorRef, private storage: AngularFireStorage) { 
     this.initForm();
+    this.imagenes = [];
   }
 
   ngOnInit(): void {
@@ -134,6 +139,8 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   showModal(empresa?: Partial<Empresas>): void {
     // Reinicia el formulario antes de abrir el modal
     this.validateForm.reset();
+    // Reinicia el array de imágenes
+    this.imagenes = [];
   
     if (empresa) {
       // Modo edición
@@ -177,6 +184,30 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
     // Verifica que this.empresasComponent esté definido antes de llamar al método
     if (this.empresasComponent && this.empresasComponent.getEmpresas) {
       this.empresasComponent.getEmpresas();
+      }
     }
-  }  
+    
+    subirImagenes($event: any) {
+      const file = $event.target.files[0];
+      console.log('subirImagen', file);
+    
+      const imgRef = this.storage.ref(`empresas/${file.name}`);
+      
+      const uploadTask = this.storage.upload(`empresas/${file.name}`, file);
+    
+      uploadTask.then(response => {
+        console.log(response);
+        // Obtén la URL de la imagen subida y agrégala al array de imágenes
+        response.ref.getDownloadURL().then(url => {
+          this.imagenes.push({ url, path: `empresas/${file.name}` });
+        });
+      }).catch(error => console.log(error));
+    }
+
+    eliminarImagen(imagen) {
+      this.storage.ref(imagen.path).delete().subscribe(() => {
+        // Elimina la imagen del array de imágenes
+        this.imagenes = this.imagenes.filter(img => img !== imagen);
+      });
+    }
 }

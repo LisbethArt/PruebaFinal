@@ -39,7 +39,13 @@
           <nz-form-label [nzSpan]="10" nzFor="imagenes" nzRequired>Imágenes</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
             <!-- Puedes usar un componente de carga de archivos aquí -->
-            <input name="imagenes" type="file" formControlName="imagenes" id="imagenes"/>
+            <input name="imagenes" type="file" formControlName="imagenes" id="imagenes" (change)="subirImagenes($event)"/>
+            <div class="imagenes">
+              <div *ngFor="let imagen of imagenes">
+                <img [src]="imagen.url" width="100px">
+                <button (click)="eliminarImagen(imagen)">Eliminar</button>
+              </div>
+            </div>
           </nz-form-control>
         </nz-form-item>
       
