@@ -37,13 +37,13 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-  // Escuchar el evento del componente hijo
-  this.modalEmpresas.childReady.subscribe(() => {
+    // Escuchar el evento del componente hijo
+    this.modalEmpresas.childReady.subscribe(() => {
     // Realizar las acciones necesarias cuando el componente hijo esté listo
     // Puedes realizar acciones adicionales después de cerrar el modal, si es necesario
     this.getEmpresas();
-  });
-}
+    });
+  }
 
   initForm(): void {
     this.validateForm = new FormGroup({

@@ -1,1 +1,50 @@
-<p>categorias works!</p>
+<div class="contenedor">
+  <div class="botones">
+    <div class="botonesIzquierda">
+      <button nz-button nzType="primary" (click)="modalCategorias && modalCategorias.showModal()" [nzLoading]="isOkLoading">
+        Crear categoría
+        <span nz-icon nzType="plus"></span>
+      </button>
+      <button nz-button nzType="default" (click)="reiniciarDatos()">
+        Limpiar filtros
+        <span nz-icon nzType="reload"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- CategoríasComponent HTML -->
+<app-modal-categorias #modalCategorias></app-modal-categorias>
+
+  <nz-table
+    class="tablaResponsive"
+    nzShowSizeChanger
+    [nzData]="listarCategorias"
+    [nzFrontPagination]="false"
+    [nzLoading]="loading"
+    [nzTotal]="total"
+    [nzPageSize]="pageSize"
+    [nzPageIndex]="pageIndex"
+    (nzQueryParams)="manejarQueryParams($event)"
+  >
+    <thead>
+      <tr>
+        <th nzColumnKey="nombreCategoria" [nzSortFn]="true">Nombre de categoría</th>
+        <th nzColumnKey="descripcion">Descripción</th>
+        <th nzColumnKey="estado">Estado</th>
+        <th nzColumnKey="editar">Editar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let categoria of listarCategorias">
+        <td>{{ categoria.nombreCategoria }}</td>
+        <td>{{ categoria.descripcion }}</td>
+        <td>{{ categoria.estado ? 'Activo' : 'Inactivo' }}</td>
+        <td nzCellControl="editar">
+          <button nz-button nzType="link" (click)="editarCategoria(categoria)">
+            <span nz-icon nzType="edit" nzTheme="outline"></span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

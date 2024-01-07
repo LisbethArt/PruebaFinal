@@ -1,1 +1,46 @@
-<p>modal-categorias works!</p>
+<nz-modal
+    [(nzVisible)]="isVisible"
+    nzTitle="{{titulo}}"
+    (nzOnCancel)="handleCancel()"
+    (nzAfterOpen)="setFormValues()"
+    [nzOkLoading]="isOkLoading"
+    [nzCentered]="true"
+    [nzBodyStyle]="{ maxHeight: '80vh', overflowY: 'auto' }"
+    [nzWidth]="'50%'"
+    >
+    <div *nzModalContent>
+      <form [formGroup]="validateForm" nz-form (ngSubmit)="submitForm()">
+        <!-- Nombre Categoria -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="nombreCategoria" nzRequired>Nombre de categoría</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+            <input nz-input id="nombreCategoria" formControlName="nombreCategoria" id="nombreCategoria" type="text" required>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Descripción -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="descripcion" nzRequired>Descripción</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+            <input nz-input id="descripcion" formControlName="descripcion" id="descripcion" type="text" required>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Estado -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="estado" nzRequired>Estado</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+            <select formControlName="estado" name="estado" id="estado">
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            </select>
+          </nz-form-control>
+        </nz-form-item>
+        
+      </form>
+    </div>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancel()">Cancelar</button>
+      <button nz-button nzType="primary" (click)="submitForm()" [nzLoading]="isOkLoading">Guardar</button>
+    </div>
+  </nz-modal>
