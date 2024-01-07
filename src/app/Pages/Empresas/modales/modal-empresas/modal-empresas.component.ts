@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Empresas, RedesSociales } from '../../model/empresas';
 import { ModalEmpresasService } from '../service/modal-empresas.service';
 import { EmpresasComponent } from '../../component/empresas.component';
-import { AngularFireStorage, GetDownloadURLPipe } from '@angular/fire/compat/storage';
+import { AngularFireStorage, AngularFireStorageReference, GetDownloadURLPipe } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -23,7 +23,8 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   isVisible = false;
   isOkLoading = false;
 
-  imagenes: { url: string, path: string }[] = [];
+  imagenes: string[] = [];
+  imagenesRefs: AngularFireStorageReference[] = [];
 
   constructor(private modalEmpresasService: ModalEmpresasService, private cd: ChangeDetectorRef, private storage: AngularFireStorage) { 
     this.initForm();
@@ -146,6 +147,8 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
       // Modo edición
       this.titulo = 'Editar empresa';
       this.empresaEditando = { ...empresa };
+      // Asigna las imágenes de la empresa a editar al array 'imagenes'
+      this.imagenes = empresa.imagenes || [];
     } else {
       // Modo creación
       this.titulo = 'Crear nueva empresa';
@@ -164,11 +167,26 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   handleCancel(): void {
     this.isVisible = false;
     this.validateForm.reset(); // Limpia el formulario cuando se cancela
+  
+    // Eliminar todas las imágenes subidas
+    this.imagenesRefs.forEach(ref => {
+      ref.delete().subscribe(() => {
+        console.log('Imagen eliminada');
+      }, error => {
+        console.log('Error al eliminar la imagen', error);
+      });
+    });
+  
+    // Limpiar el array de referencias a imágenes
+    this.imagenesRefs = [];
   }
 
   async createEmpresa(nuevaEmpresa: Empresas): Promise<void> {
     // Convertir el objeto Empresas a un objeto plano
     const empresaData = { ...nuevaEmpresa };
+  
+    // Agregar las URLs de las imágenes al objeto de datos de la empresa
+    empresaData.imagenes = this.imagenes;
   
     // Eliminar propiedades no deseadas o convertirlas según sea necesario
     delete empresaData.id;  // Si id no debe incluirse en los datos de Firestore
@@ -184,30 +202,37 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
     // Verifica que this.empresasComponent esté definido antes de llamar al método
     if (this.empresasComponent && this.empresasComponent.getEmpresas) {
       this.empresasComponent.getEmpresas();
-      }
     }
-    
-    subirImagenes($event: any) {
-      const file = $event.target.files[0];
-      console.log('subirImagen', file);
-    
-      const imgRef = this.storage.ref(`empresas/${file.name}`);
-      
-      const uploadTask = this.storage.upload(`empresas/${file.name}`, file);
-    
-      uploadTask.then(response => {
-        console.log(response);
-        // Obtén la URL de la imagen subida y agrégala al array de imágenes
-        response.ref.getDownloadURL().then(url => {
-          this.imagenes.push({ url, path: `empresas/${file.name}` });
-        });
-      }).catch(error => console.log(error));
-    }
-
-    eliminarImagen(imagen) {
-      this.storage.ref(imagen.path).delete().subscribe(() => {
-        // Elimina la imagen del array de imágenes
-        this.imagenes = this.imagenes.filter(img => img !== imagen);
+  }
+  
+  subirImagenes($event: any) {
+    const file = $event.target.files[0];
+    console.log('subirImagen', file);
+  
+    const imgRef = this.storage.ref(`empresas/${file.name}`);
+  
+    // Guardar la referencia a la imagen subida
+    this.imagenesRefs.push(imgRef);
+  
+    const uploadTask = this.storage.upload(`empresas/${file.name}`, file);
+  
+    uploadTask.then(response => {
+      console.log(response);
+      // Obtén la URL de la imagen subida y agrégala al array de imágenes
+      response.ref.getDownloadURL().then(url => {
+        this.imagenes.push(url);
       });
-    }
+    }).catch(error => console.log(error));
+  }
+
+  eliminarImagen(imagenUrl: string) {
+    // Extraer el nombre del archivo de la URL de la imagen
+    const fileRef = this.storage.refFromURL(imagenUrl);
+    fileRef.delete().subscribe(() => {
+      // Elimina la imagen del array de imágenes
+      this.imagenes = this.imagenes.filter(img => img !== imagenUrl);
+    }, error => {
+      console.log(error);
+    });
+  }
 }

@@ -42,7 +42,7 @@
             <input name="imagenes" type="file" formControlName="imagenes" id="imagenes" (change)="subirImagenes($event)"/>
             <div class="imagenes">
               <div *ngFor="let imagen of imagenes">
-                <img [src]="imagen.url" width="100px">
+                <img [src]="imagen" width="100px">
                 <button (click)="eliminarImagen(imagen)">Eliminar</button>
               </div>
             </div>
