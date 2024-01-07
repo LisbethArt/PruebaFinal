@@ -6,8 +6,6 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
-import { EmpresasComponent } from './Pages/Empresas/component/empresas.component';
-import { MenuComponent } from './Pages/Menu/component/menu.component';
 import { AppRoutingModule } from './app-routing.module';
 import { registerLocaleData } from '@angular/common';
 import es from '@angular/common/locales/es';
@@ -26,7 +24,11 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { MenuComponent } from './Pages/Menu/component/menu.component';
+import { EmpresasComponent } from './Pages/Empresas/component/empresas.component';
 import { ModalEmpresasComponent } from './Pages/Empresas/modales/modal-empresas/modal-empresas.component';
+import { CategoriasComponent } from './Pages/Categorias/component/categorias.component';
+import { ModalCategoriasComponent } from './Pages/Categorias/modales/modal-categorias/modal-categorias.component';
 
 registerLocaleData(es);
 
@@ -35,7 +37,9 @@ registerLocaleData(es);
     AppComponent,
     EmpresasComponent,
     MenuComponent,
-    ModalEmpresasComponent
+    ModalEmpresasComponent,
+    CategoriasComponent,
+    ModalCategoriasComponent
   ],
   imports: [
     BrowserModule,

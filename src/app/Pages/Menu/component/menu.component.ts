@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MenuService } from '../service/menu.service';
 import { Menus } from '../model/menu';
 import { EmpresasComponent } from 'src/app/Pages/Empresas/component/empresas.component';
+import { CategoriasComponent } from '../../Categorias/component/categorias.component';
 
 @Component({
   selector: 'app-menu',
@@ -57,12 +58,11 @@ export class MenuComponent implements OnInit {
 
   // Método para convertir el nombre del componente a un tipo Type<any>
   private getComponentType(componentName: string): Type<any> | null {
-    // Puedes implementar la lógica específica para mapear nombres de componentes a tipos aquí
-    // Por ahora, asumiré que los componentes están en el mismo módulo y se pueden acceder directamente por nombre
-
     switch (componentName) {
       case 'EmpresasComponent':
         return EmpresasComponent;
+      case 'CategoriasComponent':
+        return CategoriasComponent;
       default:
         return null;
     }
