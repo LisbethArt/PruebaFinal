@@ -31,6 +31,8 @@ import { CategoriasComponent } from './Pages/Categorias/component/categorias.com
 import { ModalCategoriasComponent } from './Pages/Categorias/modales/modal-categorias/modal-categorias.component';
 import { ServiciosComponent } from './Pages/Servicios/component/servicios.component';
 import { ModalServiciosComponent } from './Pages/Servicios/modales/modal-servicios/modal-servicios.component';
+import { ProductosComponent } from './Pages/Productos/component/productos.component';
+import { ModalProductosComponent } from './Pages/Productos/modales/modal-productos/modal-productos.component';
 
 registerLocaleData(es);
 
@@ -43,7 +45,9 @@ registerLocaleData(es);
     CategoriasComponent,
     ModalCategoriasComponent,
     ServiciosComponent,
-    ModalServiciosComponent
+    ModalServiciosComponent,
+    ProductosComponent,
+    ModalProductosComponent
   ],
   imports: [
     BrowserModule,

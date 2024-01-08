@@ -5,6 +5,7 @@ import { MenuService } from '../service/menu.service';
 import { CategoriasComponent } from '../../Categorias/component/categorias.component';
 import { EmpresasComponent } from 'src/app/Pages/Empresas/component/empresas.component';
 import { ServiciosComponent } from '../../Servicios/component/servicios.component';
+import { ProductosComponent } from '../../Productos/component/productos.component';
 
 @Component({
   selector: 'app-menu',
@@ -65,7 +66,9 @@ export class MenuComponent implements OnInit {
       case 'EmpresasComponent':
         return EmpresasComponent;
       case 'ServiciosComponent':
-        return ServiciosComponent
+        return ServiciosComponent;
+      case 'ProductosComponent':
+        return ProductosComponent;
       default:
         return null;
     }
