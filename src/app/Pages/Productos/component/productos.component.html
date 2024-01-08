@@ -1,1 +1,50 @@
-<p>productos works!</p>
+<div class="contenedor">
+    <div class="botones">
+      <div class="botonesIzquierda">
+        <button nz-button nzType="primary" (click)="modalProductos && modalProductos.showModal()" [nzLoading]="isOkLoading">
+          Crear producto
+          <span nz-icon nzType="plus"></span>
+        </button>
+        <button nz-button nzType="default" (click)="reiniciarDatos()">
+          Limpiar filtros
+          <span nz-icon nzType="reload"></span>
+        </button>
+      </div>
+    </div>
+  
+    <!-- ProductosComponent HTML -->
+  <app-modal-productos #modalProductos></app-modal-productos>
+  
+    <nz-table
+      class="tablaResponsive"
+      nzShowSizeChanger
+      [nzData]="listarProductos"
+      [nzFrontPagination]="false"
+      [nzLoading]="loading"
+      [nzTotal]="total"
+      [nzPageSize]="pageSize"
+      [nzPageIndex]="pageIndex"
+      (nzQueryParams)="manejarQueryParams($event)"
+    >
+      <thead>
+        <tr>
+          <th nzColumnKey="nombreProducto" [nzSortFn]="true">Nombre del producto</th>
+          <th nzColumnKey="descripcion">Descripción</th>
+          <th nzColumnKey="funcionalidades">Funcionalidades</th>
+          <th nzColumnKey="editar">Editar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let producto of listarProductos">
+          <td>{{ producto.nombreProducto }}</td>
+          <td>{{ producto.descripcion }}</td>
+          <td>{{ producto.funcionalidades }}</td>
+          <td nzCellControl="editar">
+            <button nz-button nzType="link" (click)="editarProducto(producto)">
+              <span nz-icon nzType="edit" nzTheme="outline"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>

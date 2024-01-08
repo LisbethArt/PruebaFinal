@@ -24,6 +24,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { MenuComponent } from './Pages/Menu/component/menu.component';
 import { EmpresasComponent } from './Pages/Empresas/component/empresas.component';
 import { ModalEmpresasComponent } from './Pages/Empresas/modales/modal-empresas/modal-empresas.component';
@@ -68,7 +69,8 @@ registerLocaleData(es);
     NzInputModule,
     NzModalModule,
     NzFormModule,
-    NzDatePickerModule
+    NzDatePickerModule,
+    NzUploadModule
   ],
   bootstrap: [AppComponent],
   providers: [
