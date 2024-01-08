@@ -16,12 +16,4 @@ export class CategoriasService {
   getListarCategorias(): Observable<any> {
     return this.firestore.collection('categorias', ref => ref.orderBy('fechaCreacion', 'desc')).snapshotChanges();
   }
-
-  getNombreCategoria(): Observable<any> {
-    return this.firestore.collection('categorias', ref => ref.orderBy('nombreCategoria', 'asc')).snapshotChanges();
-  }
-
-  getCategoriaId(id: string): Observable<any> {
-    return this.firestore.collection('categorias').doc(id).snapshotChanges();
-  }
 }

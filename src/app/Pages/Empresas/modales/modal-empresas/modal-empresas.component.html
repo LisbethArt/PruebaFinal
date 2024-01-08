@@ -53,7 +53,10 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="categoria" nzRequired>Categoría</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
-            <input nz-input name="categoria" formControlName="categoria" id="categoria" type="text">
+            <select formControlName="categoria" id="categoria" class="form-control" required>
+              <option value="" disabled selected>Selecciona la categoría</option>
+              <option *ngFor="let categoria of categorias" [value]="categoria">{{categoria}}</option>
+            </select>
           </nz-form-control>
         </nz-form-item>
       
@@ -108,12 +111,13 @@
           </nz-form-control>
         </nz-form-item>
 
+        <!-- Estado -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="estado" nzRequired>Estado</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
             <select formControlName="estado" name="estado" id="estado">
-              <option value="activo">Activo</option>
-              <option value="inactivo">Inactivo</option>
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
             </select>
           </nz-form-control>
         </nz-form-item>

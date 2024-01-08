@@ -1,9 +1,9 @@
 import { Component, OnInit, AfterViewInit, Input, EventEmitter, Output, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/compat/storage';
+import { EmpresasComponent } from '../../component/empresas.component';
 import { Empresas } from '../../model/empresas';
 import { ModalEmpresasService } from '../service/modal-empresas.service';
-import { EmpresasComponent } from '../../component/empresas.component';
-import { AngularFireStorage, AngularFireStorageReference, GetDownloadURLPipe } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-modal-empresas',
@@ -26,6 +26,7 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   imagenesRefs: AngularFireStorageReference[] = [];
   editando = false;
   empresaOriginal: Partial<Empresas>;
+  categorias: string[] = [];
 
   constructor(private modalEmpresasService: ModalEmpresasService, private cd: ChangeDetectorRef, private storage: AngularFireStorage) { 
     this.initForm();
@@ -35,6 +36,10 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.isVisible = false; // o true, dependiendo de tu lógica
     this.setFormValues();
+    this.modalEmpresasService.getCategorias().subscribe(categorias => {
+    console.log(categorias);  // Agrega esta línea
+    this.categorias = categorias;
+  });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -53,7 +58,7 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
       nombreComercial: new FormControl('', Validators.required),
       razonSocial: new FormControl('', Validators.required),
       actividadEconomica: new FormControl('', Validators.required),
-      estado: new FormControl(false, Validators.required),
+      estado: new FormControl('Activo', Validators.required),
       imagenes: new FormControl([]),
       categoria: new FormControl('', Validators.required),
       direccion: new FormControl(''),
@@ -80,7 +85,7 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
         nombreComercial: this.empresaEditando.nombreComercial || '',
         razonSocial: this.empresaEditando.razonSocial || '',
         actividadEconomica: this.empresaEditando.actividadEconomica || '',
-        estado: this.empresaEditando.estado || false,
+        estado: this.empresaEditando.estado || 'Activo', // Asegura que el estado se establece correctamente
         imagenes: this.empresaEditando.imagenes || [],
         categoria: this.empresaEditando.categoria || '',
         direccion: this.empresaEditando.direccion || '',
@@ -108,26 +113,28 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
-
+  
     // Verifica si el formulario es válido antes de proceder
     if (this.validateForm.valid) {
       this.isOkLoading = true; // Inicia la animación de carga
-
-      // Establece la fecha de creación al momento actual
-      this.validateForm.get('fechaCreacion').setValue(new Date());
-
+  
+      // Establece la fecha de creación al momento actual solo si estamos en modo de creación
+      if (!this.editando) {
+        this.validateForm.get('fechaCreacion').setValue(new Date());
+      }
+  
       const nuevaEmpresa = new Empresas(this.validateForm.value);
       // Si hay datos para editar, agrega el ID al objeto
       if (this.empresaEditando && this.empresaEditando.id) {
         nuevaEmpresa.id = this.empresaEditando.id;
       }
-
+  
       await this.createEmpresa(nuevaEmpresa);
-
+  
       // Cierra el modal solo si el formulario es válido
       this.isOkLoading = false; // Detiene la animación de carga
       this.closeModal();
-
+  
       // Limpia el formulario
       this.validateForm.reset();
     }
@@ -139,8 +146,9 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   }
 
   showModal(empresa?: Partial<Empresas>): void {
-    // Reinicia el formulario antes de abrir el modal
+    // Reinicia el formulario antes de establecer cualquier valor
     this.validateForm.reset();
+  
     // Reinicia el array de imágenes
     this.imagenes = [];
   
@@ -199,6 +207,9 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   
     // Agregar las URLs de las imágenes al objeto de datos de la empresa
     empresaData.imagenes = this.imagenes;
+  
+    // Asegurarse de que el estado de la empresa se guarda correctamente
+    empresaData.estado = this.validateForm.get('estado').value;
   
     // Eliminar propiedades no deseadas o convertirlas según sea necesario
     delete empresaData.id;  // Si id no debe incluirse en los datos de Firestore

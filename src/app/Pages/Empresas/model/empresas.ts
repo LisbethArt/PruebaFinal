@@ -3,7 +3,7 @@ export class Empresas {
     nombreComercial: string;
     razonSocial: string;
     actividadEconomica: string;
-    estado: boolean;
+    estado: string;
     imagenes: string[];
     categoria: string;
     direccion?: string;

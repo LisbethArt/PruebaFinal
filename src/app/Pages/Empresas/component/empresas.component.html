@@ -44,7 +44,7 @@
         <td>{{ empresa.nombreComercial }}</td>
         <td>{{ empresa.razonSocial }}</td>
         <td>{{ empresa.actividadEconomica }}</td>
-        <td>{{ empresa.estado ? 'Activo' : 'Inactivo' }}</td>
+        <td>{{ empresa.estado }}</td>
         <td nzCellControl="editar">
           <button nz-button nzType="link" (click)="editarEmpresa(empresa)">
             <span nz-icon nzType="edit" nzTheme="outline"></span>

@@ -21,8 +21,8 @@
         <!-- Descripción -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="descripcion" nzRequired>Descripción</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
-            <input nz-input id="descripcion" formControlName="descripcion" id="descripcion" type="text" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+            <textarea nz-input id="descripcion" formControlName="descripcion" id="descripcion" type="text" required></textarea>
           </nz-form-control>
         </nz-form-item>
       
@@ -31,8 +31,8 @@
           <nz-form-label [nzSpan]="10" nzFor="estado" nzRequired>Estado</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
             <select formControlName="estado" name="estado" id="estado">
-              <option value="activo">Activo</option>
-              <option value="inactivo">Inactivo</option>
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
             </select>
           </nz-form-control>
         </nz-form-item>

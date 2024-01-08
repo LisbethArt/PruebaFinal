@@ -38,7 +38,7 @@
       <tr *ngFor="let categoria of listarCategorias">
         <td>{{ categoria.nombreCategoria }}</td>
         <td>{{ categoria.descripcion }}</td>
-        <td>{{ categoria.estado ? 'Activo' : 'Inactivo' }}</td>
+        <td>{{ categoria.estado }}</td>
         <td nzCellControl="editar">
           <button nz-button nzType="link" (click)="editarCategoria(categoria)">
             <span nz-icon nzType="edit" nzTheme="outline"></span>

@@ -16,12 +16,4 @@ export class EmpresasService {
   getListarEmpresas(): Observable<any> {
     return this.firestore.collection('empresas', ref => ref.orderBy('fechaCreacion', 'desc')).snapshotChanges();
   }
-
-  getNombreComercial(): Observable<any> {
-    return this.firestore.collection('empresas', ref => ref.orderBy('nombreComercial', 'asc')).snapshotChanges();
-  }
-
-  getEmpresaId(id: string): Observable<any> {
-    return this.firestore.collection('empresas').doc(id).snapshotChanges();
-  }
 }

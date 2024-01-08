@@ -1,8 +1,8 @@
 import { Component, OnInit, AfterViewInit, Input, EventEmitter, Output, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Categorias } from '../../model/categorias';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { CategoriasComponent } from '../../component/categorias.component';
-import { AngularFireStorage, AngularFireStorageReference, GetDownloadURLPipe } from '@angular/fire/compat/storage';
+import { Categorias } from '../../model/categorias';
 import { ModalCategoriasService } from '../service/modal-categorias.service';
 
 @Component({
@@ -49,7 +49,7 @@ export class ModalCategoriasComponent implements OnInit, AfterViewInit {
     this.validateForm = new FormGroup({
       nombreCategoria: new FormControl('', Validators.required),
       descripcion: new FormControl('', Validators.required),
-      estado: new FormControl(false, Validators.required),
+      estado: new FormControl('Activo', Validators.required),
       fechaCreacion: new FormControl(''),
     });
   }
@@ -61,7 +61,7 @@ export class ModalCategoriasComponent implements OnInit, AfterViewInit {
       this.validateForm.patchValue({
         nombreCategoria: this.categoriaEditando.nombreCategoria,
         descripcion: this.categoriaEditando.descripcion,
-        estado: this.categoriaEditando.estado,
+        estado: this.categoriaEditando.estado || 'Activo', // Asegura que el estado se establece correctamente
         fechaCreacion: this.categoriaEditando.fechaCreacion,
       });
 
@@ -111,14 +111,14 @@ export class ModalCategoriasComponent implements OnInit, AfterViewInit {
   
     if (categoria) {
       // Modo edición
-      this.titulo = 'Editar empresa';
+      this.titulo = 'Editar categoría';
       this.categoriaOriginal = { ...categoria };  // Guarda los datos originales
       this.categoriaEditando = { ...categoria };
 
       this.editando = true;  // Estamos en modo de edición
     } else {
       // Modo creación
-      this.titulo = 'Crear nueva empresa';
+      this.titulo = 'Crear nueva categoría';
       this.categoriaEditando = {};
       this.editando = false;  // No estamos en modo de edición
     }

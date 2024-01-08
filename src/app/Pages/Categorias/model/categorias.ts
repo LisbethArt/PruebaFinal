@@ -2,7 +2,7 @@ export class Categorias {
     id?: string;
     nombreCategoria: string;
     descripcion: string;
-    estado: boolean;
+    estado: string;
     fechaCreacion: Date;
 
     constructor(data?: Partial<Categorias>) {

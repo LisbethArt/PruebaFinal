@@ -1,11 +1,10 @@
 import { Component, OnInit, AfterViewInit, EventEmitter, Output, ViewChild } from '@angular/core';
-import { CategoriasService } from '../service/categorias.service';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Categorias } from '../model/categorias';
 import { NzTableSortOrder } from 'ng-zorro-antd/table';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ModalCategoriasComponent } from '../modales/modal-categorias/modal-categorias.component';
-import * as XLSX from 'xlsx';
+import { Categorias } from '../model/categorias';
+import { CategoriasService } from '../service/categorias.service';
 
 @Component({
   selector: 'app-categorias',
@@ -22,7 +21,7 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
   total: number = 0;
   pageSize: number = 10;
   pageIndex: number = 1;
-  listarCategorias: { id?: string, nombreCategoria: string, descripcion: string, estado: boolean }[] = [];
+  listarCategorias: { id?: string, nombreCategoria: string, descripcion: string, estado: string }[] = [];
   sortOrderNombreCategoria: NzTableSortOrder = 'ascend';
 
   isVisible = false;
@@ -49,7 +48,7 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
     this.validateForm = new FormGroup({
       nombreCategoria: new FormControl('', Validators.required),
       descripcion: new FormControl('', Validators.required),
-      estado: new FormControl(false, Validators.required),
+      estado: new FormControl('Activo', Validators.required),
       fechaCreacion: new FormControl(''),
     });
   }

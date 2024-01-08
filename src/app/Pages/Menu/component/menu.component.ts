@@ -1,9 +1,9 @@
 import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit, Type } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuService } from '../service/menu.service';
 import { Menus } from '../model/menu';
-import { EmpresasComponent } from 'src/app/Pages/Empresas/component/empresas.component';
+import { MenuService } from '../service/menu.service';
 import { CategoriasComponent } from '../../Categorias/component/categorias.component';
+import { EmpresasComponent } from 'src/app/Pages/Empresas/component/empresas.component';
 
 @Component({
   selector: 'app-menu',
@@ -59,10 +59,10 @@ export class MenuComponent implements OnInit {
   // Método para convertir el nombre del componente a un tipo Type<any>
   private getComponentType(componentName: string): Type<any> | null {
     switch (componentName) {
-      case 'EmpresasComponent':
-        return EmpresasComponent;
       case 'CategoriasComponent':
         return CategoriasComponent;
+      case 'EmpresasComponent':
+        return EmpresasComponent;
       default:
         return null;
     }

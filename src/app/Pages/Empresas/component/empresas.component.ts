@@ -1,11 +1,11 @@
-import { Component, OnInit, AfterViewInit, EventEmitter, Output, ViewChild } from '@angular/core';
-import { EmpresasService } from '../service/empresas.service';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Empresas, RedesSociales } from '../model/empresas';
 import { NzTableSortOrder } from 'ng-zorro-antd/table';
-import { ModalEmpresasComponent } from '../modales/modal-empresas/modal-empresas.component';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as XLSX from 'xlsx';
+import { ModalEmpresasComponent } from '../modales/modal-empresas/modal-empresas.component';
+import { Empresas } from '../model/empresas';
+import { EmpresasService } from '../service/empresas.service';
 
 @Component({
   selector: 'app-empresas',
@@ -22,7 +22,7 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
   total: number = 0;
   pageSize: number = 10;
   pageIndex: number = 1;
-  listarEmpresas: { id?: string, nombreComercial: string, razonSocial: string, actividadEconomica: string, estado: boolean }[] = [];
+  listarEmpresas: { id?: string, nombreComercial: string, razonSocial: string, actividadEconomica: string, estado: string }[] = [];
   sortOrderNombreComercial: NzTableSortOrder = 'ascend';
 
   isVisible = false;
@@ -50,7 +50,7 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
       nombreComercial: new FormControl('', Validators.required),
       razonSocial: new FormControl('', Validators.required),
       actividadEconomica: new FormControl('', Validators.required),
-      estado: new FormControl(false, Validators.required),
+      estado: new FormControl('Activo', Validators.required),
       imagenes: new FormControl([]),
       categoria: new FormControl('', Validators.required),
       direccion: new FormControl(''),
@@ -84,21 +84,6 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
       //console.log(this.listarEmpresas);
     });
   }
-
-  // En algún lugar donde necesites obtener detalles de una empresa por su ID
-  getDetallesEmpresaPorId(id: string): void {
-    this.empresasService.getEmpresaId(id).subscribe(
-      (empresa: any) => {
-        // Manipula los datos de la empresa según tus necesidades
-        console.log(empresa.payload.data());
-        // Puedes llamar a otros métodos o establecer propiedades en tu componente aquí
-      },
-      (error) => {
-        console.error('Error al obtener la empresa por ID:', error);
-      }
-    );
-  }
-
 
   ordenarNombreComercial(sortOrder: NzTableSortOrder | null = null) {
     // Si sortOrder no se proporciona, alternar entre ascendente y descendente
@@ -167,7 +152,6 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
     }
   }
    
-
   handleCancel(): void {
     this.isVisible = false;
     this.validateForm.reset(); // Limpia el formulario cuando se cancela
