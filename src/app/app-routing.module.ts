@@ -3,11 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { MenuComponent } from './Pages/Menu/component/menu.component';
 import { EmpresasComponent } from './Pages/Empresas/component/empresas.component';
 import { CategoriasComponent } from './Pages/Categorias/component/categorias.component';
+import { ServiciosComponent } from './Pages/Servicios/component/servicios.component';
 
 const routes: Routes = [
   { path: "", component: MenuComponent },
   { path: "Categorias", component: CategoriasComponent },
-  { path: "Empresas", component: EmpresasComponent }
+  { path: "Empresas", component: EmpresasComponent },
+  { path: "Servicios", component: ServiciosComponent }
 ];
 
 @NgModule({

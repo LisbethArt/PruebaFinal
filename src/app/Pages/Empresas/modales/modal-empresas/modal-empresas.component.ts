@@ -1,9 +1,10 @@
 import { Component, OnInit, AfterViewInit, Input, EventEmitter, Output, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/compat/storage';
-import { EmpresasComponent } from '../../component/empresas.component';
 import { Empresas } from '../../model/empresas';
 import { ModalEmpresasService } from '../service/modal-empresas.service';
+import { EmpresasComponent } from '../../component/empresas.component';
+
 
 @Component({
   selector: 'app-modal-empresas',

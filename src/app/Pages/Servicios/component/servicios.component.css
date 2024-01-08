@@ -1,0 +1,39 @@
+.contenedor {
+    width: 100%;
+    min-width: 50%;
+    margin: 0 auto;
+}  
+
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.botones > div > button,
+.botones > button {
+  flex: 1 0 auto;
+  margin: 5px;
+  max-width: 200px;  /* Establecer un tamaño máximo de 100px */
+}
+
+@media (max-width: 600px) {
+  .botones {
+    flex-direction: column;
+  }
+}
+
+.botonesIzquierda {
+  display: flex;
+  gap: 5%;
+}
+
+.ant-btn {
+  border-radius: 10px;
+}
+
+.tablaResponsive {
+  width: 100%;
+   overflow-x: auto;
+}

@@ -8,7 +8,7 @@ export class Empresas {
     categoria: string;
     direccion?: string;
     quienesSomos: string;
-    nombreContacto: string;
+    nombreContacto?: string;
     telefono?: string;
     correo: string;
     redesSociales?: RedesSociales;

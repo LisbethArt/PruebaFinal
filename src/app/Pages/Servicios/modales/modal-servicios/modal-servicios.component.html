@@ -1,0 +1,90 @@
+<nz-modal
+    [(nzVisible)]="isVisible"
+    nzTitle="{{titulo}}"
+    (nzOnCancel)="handleCancel()"
+    (nzAfterOpen)="setFormValues()"
+    [nzOkLoading]="isOkLoading"
+    [nzCentered]="true"
+    [nzBodyStyle]="{ maxHeight: '80vh', overflowY: 'auto' }"
+    [nzWidth]="'50%'"
+    >
+    <div *nzModalContent>
+      <form [formGroup]="validateForm" nz-form (ngSubmit)="submitForm()">
+        <!-- Nombre servicio -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="nombreServicio" nzRequired>Nombre servicio</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+            <input nz-input id="nombreServicio" formControlName="nombreServicio" id="nombreServicio" type="text" required>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Descripción -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="10" nzFor="descripcion" nzRequired>Descripción</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+              <textarea nz-input id="descripcion" formControlName="descripcion" id="descripcion" type="text" required></textarea>
+            </nz-form-control>
+          </nz-form-item>
+      
+        <!-- Fecha -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="fecha" nzRequired>Fecha</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+            <input nz-input name="fecha" formControlName="fecha" id="fecha" type="date" required>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Costo -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="10" nzFor="costo">Costo</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSpan]="10">
+              <input nz-input name="costo" formControlName="costo" id="costo" type="number">
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- IVA -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="10" nzFor="iva" nzRequired>IVA</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+              <select formControlName="iva" id="iva" class="form-control" required>
+                <option value="" disabled selected>¿Incluye IVA?</option>
+                <option value="Si">Si</option>
+                <option value="No">No</option>
+              </select>
+            </nz-form-control>
+        </nz-form-item>
+        
+        <!-- Descripción del servicio -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="10" nzFor="descripcionServicio" nzRequired>Descripción del servicio</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+                <textarea nz-input id="descripcionServicio" formControlName="descripcionServicio" id="descripcionServicio" type="text" required></textarea>
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- Duración del servicio -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="10" nzFor="duracionServicio">Duración del servicio</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSpan]="10">
+              <input nz-input name="duracionServicio" formControlName="duracionServicio" id="duracionServicio" type="date">
+            </nz-form-control>
+          </nz-form-item>
+      
+        <!-- Empresa -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="empresa" nzRequired>Empresa</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+            <select formControlName="empresa" id="empresa" class="form-control" required>
+              <option value="" disabled selected>Selecciona la empresa</option>
+              <option *ngFor="let empresa of empresas" [value]="empresa">{{empresa}}</option>
+            </select>
+          </nz-form-control>
+        </nz-form-item>
+      
+      </form>
+    </div>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancel()">Cancelar</button>
+      <button nz-button nzType="primary" (click)="submitForm()" [nzLoading]="isOkLoading">Guardar</button>
+    </div>
+  </nz-modal>

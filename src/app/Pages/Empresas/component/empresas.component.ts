@@ -55,7 +55,7 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
       categoria: new FormControl('', Validators.required),
       direccion: new FormControl(''),
       quienesSomos: new FormControl('', Validators.required),
-      nombreContacto: new FormControl('', Validators.required),
+      nombreContacto: new FormControl(''),
       telefono: new FormControl(''),
       correo: new FormControl('', [Validators.required, Validators.email]),
       redesSociales: new FormGroup({

@@ -1,0 +1,58 @@
+<div class="contenedor">
+    <div class="botones">
+      <div class="botonesIzquierda">
+        <button nz-button nzType="primary" (click)="modalServicios && modalServicios.showModal()" [nzLoading]="isOkLoading">
+          Crear servicio
+          <span nz-icon nzType="plus"></span>
+        </button>
+        <button nz-button nzType="default" (click)="reiniciarDatos()">
+          Limpiar filtros
+          <span nz-icon nzType="reload"></span>
+        </button>
+      </div>
+    </div>
+  
+    <!-- EmpresasComponent HTML -->
+  <app-modal-servicios #modalServicios></app-modal-servicios>
+  
+    <nz-table
+      class="tablaResponsive"
+      nzShowSizeChanger
+      [nzData]="listarServicios"
+      [nzFrontPagination]="false"
+      [nzLoading]="loading"
+      [nzTotal]="total"
+      [nzPageSize]="pageSize"
+      [nzPageIndex]="pageIndex"
+      (nzQueryParams)="manejarQueryParams($event)"
+    >
+      <thead>
+        <tr>
+          <th nzColumnKey="nombreServicio" [nzSortFn]="true">Nombre del servicio</th>
+          <th nzColumnKey="descripcion">Descripción</th>
+          <th nzColumnKey="fecha">Fecha</th>
+          <th nzColumnKey="costo">Costo</th>
+          <th nzColumnKey="descripcionServicio">Descripción del servicio</th>
+          <th nzColumnKey="duracionServicio">Duración del servicio</th>
+          <th nzColumnKey="empresa">Empresa</th>
+          <th nzColumnKey="editar">Editar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let servicio of listarServicios">
+          <td>{{ servicio.nombreServicio }}</td>
+          <td>{{ servicio.descripcion }}</td>
+          <td>{{ servicio.fecha }}</td>
+          <td>{{ servicio.costo }}</td>
+          <td>{{ servicio.descripcionServicio }}</td>
+          <td>{{ servicio.duracionServicio }}</td>
+          <td>{{ servicio.empresa }}</td>
+          <td nzCellControl="editar">
+            <button nz-button nzType="link" (click)="editarServicio(servicio)">
+              <span nz-icon nzType="edit" nzTheme="outline"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
