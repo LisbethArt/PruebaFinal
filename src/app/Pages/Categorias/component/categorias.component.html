@@ -25,10 +25,10 @@
     [nzPageSize]="pageSize"
     [nzPageIndex]="pageIndex"
     (nzQueryParams)="manejarQueryParams($event)"
-  >
+    >
     <thead>
       <tr>
-        <th nzColumnKey="nombreCategoria" [nzSortFn]="true">Nombre de categoría</th>
+        <th nzColumnKey="nombreCategoria" [nzSortFn]="ordenarNombreCategoria" (click)="nombreCategoriaClick()">Nombre de categoría</th>
         <th nzColumnKey="descripcion">Descripción</th>
         <th nzColumnKey="estado">Estado</th>
         <th nzColumnKey="editar">Editar</th>
@@ -46,5 +46,5 @@
         </td>
       </tr>
     </tbody>
-  </nz-table>
+    </nz-table>
 </div>

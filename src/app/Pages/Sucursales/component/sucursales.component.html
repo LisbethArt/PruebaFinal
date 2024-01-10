@@ -49,7 +49,7 @@
     >
       <thead>
         <tr>
-          <th nzColumnKey="nombreSucursal" [nzSortFn]="true">Nombre sucursal</th>
+          <th nzColumnKey="nombreSucursal" [nzSortFn]="ordenarNombreSucursal" (click)="nombreSucursalClick()">Nombre de sucursal</th>
           <th nzColumnKey="tipoSucursal">Tipo de sucursal</th>
           <th nzColumnKey="ubicacion">Ubicación</th>
           <th nzColumnKey="estado">Estado</th>

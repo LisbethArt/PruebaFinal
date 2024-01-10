@@ -23,6 +23,11 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
   pageIndex: number = 1;
   listarCategorias: { id?: string, nombreCategoria: string, descripcion: string, estado: string }[] = [];
   sortOrderNombreCategoria: NzTableSortOrder = 'ascend';
+  sortOrderFechaCreacion: NzTableSortOrder = 'descend'; // Ordena por fechaCreacion en orden descendente por defecto
+  nombreCategoriaClicked: boolean = false;
+  nombreCategoriaClick(): void {
+    this.nombreCategoriaClicked = true;
+  }
 
   isVisible = false;
   isOkLoading = false;
@@ -63,49 +68,66 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
         });
       });
   
-      // Asigna los valores a this.listarEmpresas
+      // Asigna los valores a this.listarCategorias
       this.listarCategorias = this.categorias;
-  
-      //console.log(this.listarEmpresas);
     });
   }
 
-  ordenarNombreCategoria(sortOrder: NzTableSortOrder | null = null) {
-    // Si sortOrder no se proporciona, alternar entre ascendente y descendente
+  ordenarFechaCreacion(sortOrder: NzTableSortOrder | null = null) {
+    if (!sortOrder) {
+      this.sortOrderFechaCreacion = this.sortOrderFechaCreacion === 'ascend' ? 'descend' : 'ascend';
+    } else {
+      this.sortOrderFechaCreacion = sortOrder;
+    }
+  
+    const ascendente = this.sortOrderFechaCreacion === 'ascend';
+  
+    // Obtener una copia de la lista de categorias para no modificar la original
+    const categoriasOrdenadas = [...this.listarCategorias];
+  
+    categoriasOrdenadas.sort((a: Categorias, b: Categorias) => {
+      const fechaA = new Date(a.fechaCreacion);
+      const fechaB = new Date(b.fechaCreacion);
+    
+      return ascendente ? fechaA.getTime() - fechaB.getTime() : fechaB.getTime() - fechaA.getTime();
+    });
+  
+    // Asignar la lista ordenada a la propiedad listarCategorias
+    this.listarCategorias = categoriasOrdenadas;
+  }
+
+  ordenarNombreCategoria = (a: Categorias, b: Categorias) => {
+    const nombreA = a.nombreCategoria.toUpperCase();
+    const nombreB = b.nombreCategoria.toUpperCase();
+  
+    let comparacion = 0;
+    if (nombreA > nombreB) {
+      comparacion = 1;
+    } else if (nombreA < nombreB) {
+      comparacion = -1;
+    }
+  
+    return this.sortOrderNombreCategoria === 'ascend' ? comparacion : comparacion * -1;
+  };
+
+  cambiarOrdenNombreCategoria(sortOrder: NzTableSortOrder | null = null) {
     if (!sortOrder) {
       this.sortOrderNombreCategoria = this.sortOrderNombreCategoria === 'ascend' ? 'descend' : 'ascend';
     } else {
       this.sortOrderNombreCategoria = sortOrder;
     }
   
-    const ascendente = this.sortOrderNombreCategoria === 'ascend';
-  
-    // Obtener una copia de la lista de empresas para no modificar la original
-    const categoriasOrdenadas = [...this.listarCategorias];
-  
-    categoriasOrdenadas.sort((a, b) => {
-      const nombreA = a.nombreCategoria.toUpperCase();
-      const nombreB = b.nombreCategoria.toUpperCase();
-  
-      let comparacion = 0;
-      if (nombreA > nombreB) {
-        comparacion = 1;
-      } else if (nombreA < nombreB) {
-        comparacion = -1;
-      }
-  
-      return ascendente ? comparacion : comparacion * -1;
-    });
-  
-    // Asignar la lista ordenada a la propiedad listarEmpresas
-    this.listarCategorias = categoriasOrdenadas;
+    this.listarCategorias.sort(this.ordenarNombreCategoria);
   }
     
   manejarQueryParams(params: NzTableQueryParams): void {
-    if (params && params.sort && params.sort.length > 0 && params.sort[0].key === 'nombreCategoria') {
-      this.ordenarNombreCategoria(params.sort[0].value);
+    if (params && params.sort && params.sort.length > 0) {
+      if (params.sort[0].key === 'nombreCategoria' && this.nombreCategoriaClicked) {
+        this.cambiarOrdenNombreCategoria(params.sort[0].value);
+      } else if (params.sort[0].key === 'fechaCreacion') {
+        this.ordenarFechaCreacion(params.sort[0].value);
+      }
     }
-    // Agregar lógica para otros parámetros de ordenación si es necesario
   }
 
   async createCategoria(nuevaCategoria: Categorias): Promise<void> {

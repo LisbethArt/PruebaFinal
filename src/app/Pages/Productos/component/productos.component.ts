@@ -23,6 +23,11 @@ export class ProductosComponent implements OnInit, AfterViewInit {
   pageIndex: number = 1;
   listarProductos: { id?: string, nombreProducto: string, descripcion: string, funcionalidades: string }[] = [];
   sortOrderNombreProducto: NzTableSortOrder = 'ascend';
+  sortOrderFechaCreacion: NzTableSortOrder = 'descend'; // Ordena por fechaCreacion en orden descendente por defecto
+  nombreProductoClicked: boolean = false;
+  nombreProductoClick(): void {
+    this.nombreProductoClicked = true;
+  }
 
   isVisible = false;
   isOkLoading = false;
@@ -72,42 +77,61 @@ export class ProductosComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ordenarNombreProducto(sortOrder: NzTableSortOrder | null = null) {
-    // Si sortOrder no se proporciona, alternar entre ascendente y descendente
+  ordenarFechaCreacion(sortOrder: NzTableSortOrder | null = null) {
+    if (!sortOrder) {
+      this.sortOrderFechaCreacion = this.sortOrderFechaCreacion === 'ascend' ? 'descend' : 'ascend';
+    } else {
+      this.sortOrderFechaCreacion = sortOrder;
+    }
+  
+    const ascendente = this.sortOrderFechaCreacion === 'ascend';
+  
+    // Obtener una copia de la lista de productos para no modificar la original
+    const productosOrdenados = [...this.listarProductos];
+  
+    productosOrdenados.sort((a: Productos, b: Productos) => {
+      const fechaA = new Date(a.fechaCreacion);
+      const fechaB = new Date(b.fechaCreacion);
+    
+      return ascendente ? fechaA.getTime() - fechaB.getTime() : fechaB.getTime() - fechaA.getTime();
+    });
+  
+    // Asignar la lista ordenada a la propiedad listarProductos
+    this.listarProductos = productosOrdenados;
+  }
+
+  ordenarNombreProducto = (a: Productos, b: Productos) => {
+    const nombreA = a.nombreProducto.toUpperCase();
+    const nombreB = b.nombreProducto.toUpperCase();
+  
+    let comparacion = 0;
+    if (nombreA > nombreB) {
+      comparacion = 1;
+    } else if (nombreA < nombreB) {
+      comparacion = -1;
+    }
+  
+    return this.sortOrderNombreProducto === 'ascend' ? comparacion : comparacion * -1;
+  };
+
+  cambiarOrdenNombreProducto(sortOrder: NzTableSortOrder | null = null) {
     if (!sortOrder) {
       this.sortOrderNombreProducto = this.sortOrderNombreProducto === 'ascend' ? 'descend' : 'ascend';
     } else {
       this.sortOrderNombreProducto = sortOrder;
     }
   
-    const ascendente = this.sortOrderNombreProducto === 'ascend';
-  
-    // Obtener una copia de la lista de empresas para no modificar la original
-    const productosOrdenados = [...this.listarProductos];
-  
-    productosOrdenados.sort((a, b) => {
-      const nombreA = a.nombreProducto.toUpperCase();
-      const nombreB = b.nombreProducto.toUpperCase();
-  
-      let comparacion = 0;
-      if (nombreA > nombreB) {
-        comparacion = 1;
-      } else if (nombreA < nombreB) {
-        comparacion = -1;
-      }
-  
-      return ascendente ? comparacion : comparacion * -1;
-    });
-  
-    // Asignar la lista ordenada a la propiedad listarEmpresas
-    this.listarProductos = productosOrdenados;
+    this.listarProductos.sort(this.ordenarNombreProducto);
   }
     
   manejarQueryParams(params: NzTableQueryParams): void {
-    if (params && params.sort && params.sort.length > 0 && params.sort[0].key === 'nombreProducto') {
-      this.ordenarNombreProducto(params.sort[0].value);
+    if (params && params.sort && params.sort.length > 0) {
+      if (params.sort[0].key === 'nombreProducto' && this.nombreProductoClicked) {
+        this.cambiarOrdenNombreProducto(params.sort[0].value);
+      } else if (params.sort[0].key === 'fechaCreacion') {
+        this.ordenarFechaCreacion(params.sort[0].value);
+      }
     }
-    // Agregar lógica para otros parámetros de ordenación si es necesario
   }
 
   async createProducto(nuevoProducto: Productos): Promise<void> {

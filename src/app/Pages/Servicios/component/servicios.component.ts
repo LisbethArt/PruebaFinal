@@ -23,6 +23,11 @@ export class ServiciosComponent implements OnInit, AfterViewInit {
   pageIndex: number = 1;
   listarServicios: { id?: string, nombreServicio: string, descripcion: string, fecha: Date, costo: number, iva: string, descripcionServicio: string, duracionServicio: Date, empresa: string }[] = [];
   sortOrderNombreServicio: NzTableSortOrder = 'ascend';
+  sortOrderFechaCreacion: NzTableSortOrder = 'descend'; // Ordena por fechaCreacion en orden descendente por defecto
+  nombreServicioClicked: boolean = false;
+  nombreServicioClick(): void {
+    this.nombreServicioClicked = true;
+  }
 
   isVisible = false;
   isOkLoading = false;
@@ -71,41 +76,61 @@ export class ServiciosComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ordenarNombreServicio(sortOrder: NzTableSortOrder | null = null) {
+  ordenarFechaCreacion(sortOrder: NzTableSortOrder | null = null) {
+    if (!sortOrder) {
+      this.sortOrderFechaCreacion = this.sortOrderFechaCreacion === 'ascend' ? 'descend' : 'ascend';
+    } else {
+      this.sortOrderFechaCreacion = sortOrder;
+    }
+  
+    const ascendente = this.sortOrderFechaCreacion === 'ascend';
+  
+    // Obtener una copia de la lista de servicios para no modificar la original
+    const serviciosOrdenados = [...this.listarServicios];
+  
+    serviciosOrdenados.sort((a: Servicios, b: Servicios) => {
+      const fechaA = new Date(a.fechaCreacion);
+      const fechaB = new Date(b.fechaCreacion);
+    
+      return ascendente ? fechaA.getTime() - fechaB.getTime() : fechaB.getTime() - fechaA.getTime();
+    });
+  
+    // Asignar la lista ordenada a la propiedad listarServicios
+    this.listarServicios = serviciosOrdenados;
+  }
+
+  ordenarNombreServicio = (a: Servicios, b: Servicios) => {
+    const nombreA = a.nombreServicio.toUpperCase();
+    const nombreB = b.nombreServicio.toUpperCase();
+  
+    let comparacion = 0;
+    if (nombreA > nombreB) {
+      comparacion = 1;
+    } else if (nombreA < nombreB) {
+      comparacion = -1;
+    }
+  
+    return this.sortOrderNombreServicio === 'ascend' ? comparacion : comparacion * -1;
+  };
+
+  cambiarOrdenNombreServicio(sortOrder: NzTableSortOrder | null = null) {
     if (!sortOrder) {
       this.sortOrderNombreServicio = this.sortOrderNombreServicio === 'ascend' ? 'descend' : 'ascend';
     } else {
       this.sortOrderNombreServicio = sortOrder;
     }
   
-    const ascendente = this.sortOrderNombreServicio === 'ascend';
-  
-    // Obtener una copia de la lista de empresas para no modificar la original
-    const serviciosOrdenados = [...this.listarServicios];
-  
-    serviciosOrdenados.sort((a, b) => {
-      const nombreA = a.nombreServicio.toUpperCase();
-      const nombreB = b.nombreServicio.toUpperCase();
-  
-      let comparacion = 0;
-      if (nombreA > nombreB) {
-        comparacion = 1;
-      } else if (nombreA < nombreB) {
-        comparacion = -1;
-      }
-  
-      return ascendente ? comparacion : comparacion * -1;
-    });
-  
-    // Asignar la lista ordenada a la propiedad listarEmpresas
-    this.listarServicios = serviciosOrdenados;
+    this.listarServicios.sort(this.ordenarNombreServicio);
   }
-
+    
   manejarQueryParams(params: NzTableQueryParams): void {
-    if (params && params.sort && params.sort.length > 0 && params.sort[0].key === 'nombreServicio') {
-      this.ordenarNombreServicio(params.sort[0].value);
+    if (params && params.sort && params.sort.length > 0) {
+      if (params.sort[0].key === 'nombreServicio' && this.nombreServicioClicked) {
+        this.cambiarOrdenNombreServicio(params.sort[0].value);
+      } else if (params.sort[0].key === 'fechaCreacion') {
+        this.ordenarFechaCreacion(params.sort[0].value);
+      }
     }
-    // Agregar lógica para otros parámetros de ordenación si es necesario
   }
 
   async createServicio(nuevoServicio: Servicios): Promise<void> {

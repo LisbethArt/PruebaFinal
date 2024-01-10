@@ -28,7 +28,7 @@
     >
       <thead>
         <tr>
-          <th nzColumnKey="nombreServicio" [nzSortFn]="true">Nombre del servicio</th>
+          <th nzColumnKey="nombreServicio" [nzSortFn]="ordenarNombreServicio" (click)="nombreServicioClick()">Nombre de servicio</th>
           <th nzColumnKey="descripcion">Descripción</th>
           <th nzColumnKey="fecha">Fecha</th>
           <th nzColumnKey="costo">Costo</th>

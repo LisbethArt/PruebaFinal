@@ -32,7 +32,7 @@
   >
     <thead>
       <tr>
-        <th nzColumnKey="nombreComercial" [nzSortFn]="true">Nombre comercial</th>
+        <th nzColumnKey="nombreComercial" [nzSortFn]="ordenarNombreComercial" (click)="nombreComercialClick()">Nombre comercial</th>
         <th nzColumnKey="razonSocial">Razón social</th>
         <th nzColumnKey="actividadEconomica">Actividad económica</th>
         <th nzColumnKey="estado">Estado</th>

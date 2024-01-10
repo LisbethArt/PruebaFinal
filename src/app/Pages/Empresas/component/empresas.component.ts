@@ -24,6 +24,11 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
   pageIndex: number = 1;
   listarEmpresas: { id?: string, nombreComercial: string, razonSocial: string, actividadEconomica: string, estado: string }[] = [];
   sortOrderNombreComercial: NzTableSortOrder = 'ascend';
+  sortOrderFechaCreacion: NzTableSortOrder = 'descend'; // Ordena por fechaCreacion en orden descendente por defecto
+  nombreComercialClicked: boolean = false;
+  nombreComercialClick(): void {
+    this.nombreComercialClicked = true;
+  }
 
   isVisible = false;
   isOkLoading = false;
@@ -85,42 +90,61 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ordenarNombreComercial(sortOrder: NzTableSortOrder | null = null) {
-    // Si sortOrder no se proporciona, alternar entre ascendente y descendente
+  ordenarFechaCreacion(sortOrder: NzTableSortOrder | null = null) {
+    if (!sortOrder) {
+      this.sortOrderFechaCreacion = this.sortOrderFechaCreacion === 'ascend' ? 'descend' : 'ascend';
+    } else {
+      this.sortOrderFechaCreacion = sortOrder;
+    }
+  
+    const ascendente = this.sortOrderFechaCreacion === 'ascend';
+  
+    // Obtener una copia de la lista de categorias para no modificar la original
+    const empresasOrdenadas = [...this.listarEmpresas];
+  
+    empresasOrdenadas.sort((a: Empresas, b: Empresas) => {
+      const fechaA = new Date(a.fechaCreacion);
+      const fechaB = new Date(b.fechaCreacion);
+    
+      return ascendente ? fechaA.getTime() - fechaB.getTime() : fechaB.getTime() - fechaA.getTime();
+    });
+  
+    // Asignar la lista ordenada a la propiedad listarEmpresas
+    this.listarEmpresas = empresasOrdenadas;
+  }
+
+  ordenarNombreComercial = (a: Empresas, b: Empresas) => {
+    const nombreA = a.nombreComercial.toUpperCase();
+    const nombreB = b.nombreComercial.toUpperCase();
+  
+    let comparacion = 0;
+    if (nombreA > nombreB) {
+      comparacion = 1;
+    } else if (nombreA < nombreB) {
+      comparacion = -1;
+    }
+  
+    return this.sortOrderNombreComercial === 'ascend' ? comparacion : comparacion * -1;
+  };
+    
+  cambiarOrdenNombreComercial(sortOrder: NzTableSortOrder | null = null) {
     if (!sortOrder) {
       this.sortOrderNombreComercial = this.sortOrderNombreComercial === 'ascend' ? 'descend' : 'ascend';
     } else {
       this.sortOrderNombreComercial = sortOrder;
     }
   
-    const ascendente = this.sortOrderNombreComercial === 'ascend';
-  
-    // Obtener una copia de la lista de empresas para no modificar la original
-    const empresasOrdenadas = [...this.listarEmpresas];
-  
-    empresasOrdenadas.sort((a, b) => {
-      const nombreA = a.nombreComercial.toUpperCase();
-      const nombreB = b.nombreComercial.toUpperCase();
-  
-      let comparacion = 0;
-      if (nombreA > nombreB) {
-        comparacion = 1;
-      } else if (nombreA < nombreB) {
-        comparacion = -1;
-      }
-  
-      return ascendente ? comparacion : comparacion * -1;
-    });
-  
-    // Asignar la lista ordenada a la propiedad listarEmpresas
-    this.listarEmpresas = empresasOrdenadas;
+    this.listarEmpresas.sort(this.ordenarNombreComercial);
   }
     
   manejarQueryParams(params: NzTableQueryParams): void {
-    if (params && params.sort && params.sort.length > 0 && params.sort[0].key === 'nombreComercial') {
-      this.ordenarNombreComercial(params.sort[0].value);
+    if (params && params.sort && params.sort.length > 0) {
+      if (params.sort[0].key === 'nombreComercial' && this.nombreComercialClicked) {
+        this.cambiarOrdenNombreComercial(params.sort[0].value);
+      } else if (params.sort[0].key === 'fechaCreacion') {
+        this.ordenarFechaCreacion(params.sort[0].value);
+      }
     }
-    // Agregar lógica para otros parámetros de ordenación si es necesario
   }
 
   async createEmpresa(nuevaEmpresa: Empresas): Promise<void> {

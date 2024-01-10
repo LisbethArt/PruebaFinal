@@ -23,6 +23,11 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
   pageIndex: number = 1;
   listarSucursales: { id?: string, nombreSucursal: string, tipoSucursal: string, ubicacion: { latitud: number, longitud: number }, estado: string }[] = [];
   sortOrderNombreSucursal: NzTableSortOrder = 'ascend';
+  sortOrderFechaCreacion: NzTableSortOrder = 'descend'; // Ordena por fechaCreacion en orden descendente por defecto
+  nombreSucursalClicked: boolean = false;
+  nombreSucursalClick(): void {
+    this.nombreSucursalClicked = true;
+  }
 
   isVisible = false;
   isOkLoading = false;
@@ -61,6 +66,7 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
       correo: new FormControl('', Validators.required),
       telefono: new FormControl('', Validators.required),
       horariosSucursal: new FormControl([], Validators.required),
+      fechaCreacion: new FormControl(''),
     });
   }
 
@@ -83,42 +89,61 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
     });
   }
 
-  ordenarNombreSucursal(sortOrder: NzTableSortOrder | null = null) {
-    // Si sortOrder no se proporciona, alternar entre ascendente y descendente
+  ordenarFechaCreacion(sortOrder: NzTableSortOrder | null = null) {
     if (!sortOrder) {
-      this.sortOrderNombreSucursal = this.sortOrderNombreSucursal === 'ascend' ? 'descend' : 'ascend';
+      this.sortOrderFechaCreacion = this.sortOrderFechaCreacion === 'ascend' ? 'descend' : 'ascend';
     } else {
-      this.sortOrderNombreSucursal = sortOrder;
+      this.sortOrderFechaCreacion = sortOrder;
     }
   
-    const ascendente = this.sortOrderNombreSucursal === 'ascend';
-  
-    // Obtener una copia de la lista de empresas para no modificar la original
+    const ascendente = this.sortOrderFechaCreacion === 'ascend';
+
+    // Obtener una copia de la lista de sucursales para no modificar la original
     const sucursalesOrdenadas = [...this.listarSucursales];
   
-    sucursalesOrdenadas.sort((a, b) => {
-      const nombreA = a.nombreSucursal.toUpperCase();
-      const nombreB = b.nombreSucursal.toUpperCase();
-  
-      let comparacion = 0;
-      if (nombreA > nombreB) {
-        comparacion = 1;
-      } else if (nombreA < nombreB) {
-        comparacion = -1;
-      }
-  
-      return ascendente ? comparacion : comparacion * -1;
+    sucursalesOrdenadas.sort((a: Sucursales, b: Sucursales) => {
+      const fechaA = new Date(a.fechaCreacion);
+      const fechaB = new Date(b.fechaCreacion);
+    
+      return ascendente ? fechaA.getTime() - fechaB.getTime() : fechaB.getTime() - fechaA.getTime();
     });
   
     // Asignar la lista ordenada a la propiedad listarEmpresas
     this.listarSucursales = sucursalesOrdenadas;
   }
     
-  manejarQueryParams(params: NzTableQueryParams): void {
-    if (params && params.sort && params.sort.length > 0 && params.sort[0].key === 'nombreSucursal') {
-      this.ordenarNombreSucursal(params.sort[0].value);
+  ordenarNombreSucursal = (a: Sucursales, b: Sucursales) => {
+    const nombreA = a.nombreSucursal.toUpperCase();
+    const nombreB = b.nombreSucursal.toUpperCase();
+  
+    let comparacion = 0;
+    if (nombreA > nombreB) {
+      comparacion = 1;
+    } else if (nombreA < nombreB) {
+      comparacion = -1;
     }
-    // Agregar lógica para otros parámetros de ordenación si es necesario
+  
+    return this.sortOrderNombreSucursal === 'ascend' ? comparacion : comparacion * -1;
+  };
+
+  cambiarOrdenNombreSucursal(sortOrder: NzTableSortOrder | null = null) {
+    if (!sortOrder) {
+      this.sortOrderNombreSucursal = this.sortOrderNombreSucursal === 'ascend' ? 'descend' : 'ascend';
+    } else {
+      this.sortOrderNombreSucursal = sortOrder;
+    }
+  
+    this.listarSucursales.sort(this.ordenarNombreSucursal);
+  }
+    
+  manejarQueryParams(params: NzTableQueryParams): void {
+    if (params && params.sort && params.sort.length > 0) {
+      if (params.sort[0].key === 'nombreSucursal' && this.nombreSucursalClicked) {
+        this.cambiarOrdenNombreSucursal(params.sort[0].value);
+      } else if (params.sort[0].key === 'fechaCreacion') {
+        this.ordenarFechaCreacion(params.sort[0].value);
+      }
+    }
   }
 
   async createSucursal(nuevaSucursal: Sucursales): Promise<void> {

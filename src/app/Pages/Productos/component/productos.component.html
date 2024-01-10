@@ -28,7 +28,7 @@
     >
       <thead>
         <tr>
-          <th nzColumnKey="nombreProducto" [nzSortFn]="true">Nombre del producto</th>
+          <th nzColumnKey="nombreProducto" [nzSortFn]="ordenarNombreProducto" (click)="nombreProductoClick()">Nombre del producto</th>
           <th nzColumnKey="descripcion">Descripción</th>
           <th nzColumnKey="funcionalidades">Funcionalidades</th>
           <th nzColumnKey="editar">Editar</th>
