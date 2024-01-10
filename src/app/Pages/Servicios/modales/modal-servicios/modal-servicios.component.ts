@@ -60,7 +60,7 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
       descripcionServicio: new FormControl('', Validators.required),
       duracionServicio: new FormControl(null),  // Cambiado de '' a null
       empresa: new FormControl('', Validators.required),
-      fechaCreacion: new FormControl(null, Validators.required),  // Cambiado de '' a null
+      fechaCreacion: new FormControl(''),  // Cambiado de '' a null
     });
   }
 
@@ -77,7 +77,7 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
         descripcionServicio: this.servicioEditando.descripcionServicio || '',
         duracionServicio: this.servicioEditando.duracionServicio || null,
         empresa: this.servicioEditando.empresa || '',
-        fechaCreacion: this.servicioEditando.fechaCreacion ? new Date(this.servicioEditando.fechaCreacion) : null,
+        fechaCreacion: this.servicioEditando.fechaCreacion || '',
       });
       this.cd.detectChanges();
       console.log('validateForm', this.validateForm.value);
@@ -85,36 +85,33 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
   }
 
   async submitForm(): Promise<void> {
+    // Marca todos los controles como 'touched' para que se muestren los mensajes de error
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
-
-    // Imprime el estado del formulario y sus controles
-    console.log('Form status:', this.validateForm.status);
-    console.log('Form controls:', this.validateForm.controls);
-
-    // Establece la fecha de creación al momento actual
-    this.validateForm.get('fechaCreacion').setValue(new Date());
-
+  
     // Verifica si el formulario es válido antes de proceder
     if (this.validateForm.valid) {
       this.isOkLoading = true; // Inicia la animación de carga
-
-      const formValues = this.validateForm.value;
-
-      const nuevoServicio = new Servicios(formValues);
+  
+      // Establece la fecha de creación al momento actual solo si estamos en modo de creación
+      if (!this.editando) {
+        this.validateForm.get('fechaCreacion').setValue(new Date());
+      }
+  
+      const nuevoServicio = new Servicios(this.validateForm.value);
       // Si hay datos para editar, agrega el ID al objeto
       if (this.servicioEditando && this.servicioEditando.id) {
         nuevoServicio.id = this.servicioEditando.id;
       }
-
+  
       await this.createServicio(nuevoServicio);
-
+  
       // Cierra el modal solo si el formulario es válido
       this.isOkLoading = false; // Detiene la animación de carga
       this.closeModal();
-
+  
       // Limpia el formulario
       this.validateForm.reset();
     }

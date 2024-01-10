@@ -49,7 +49,8 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
     this.validateForm = new FormGroup({
       nombreSucursal: new FormControl('', Validators.required),
       tipoSucursal: new FormControl('', Validators.required),
-      direccion: new FormGroup({
+      direccion: new FormControl('', Validators.required),
+      ubicacion: new FormGroup({
         latitud: new FormControl(null, Validators.required),
         longitud: new FormControl(null, Validators.required)
       }),
@@ -69,7 +70,8 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
       this.validateForm.patchValue({
         nombreSucursal: this.sucursalEditando.nombreSucursal || '',
         tipoSucursal: this.sucursalEditando.tipoSucursal || '',
-        direccion: this.sucursalEditando.direccion || { latitud: null, longitud: null },
+        direccion: this.sucursalEditando.direccion || '',
+        ubicacion: this.sucursalEditando.ubicacion || { latitud: null, longitud: null },
         estado: this.sucursalEditando.estado || 'Activo',
         nombreResponsable: this.sucursalEditando.nombreResponsable || '',
         correo: this.sucursalEditando.correo || '',
@@ -103,7 +105,7 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
   
       const nuevaSucursal = new Sucursales({
         ...this.validateForm.value,
-        direccion: this.validateForm.value.direccion // No necesitas crear una nueva instancia de Direccion
+        ubicacion: this.validateForm.value.ubicacion // No necesitas crear una nueva instancia de Ubicacion
       });
       // Si hay datos para editar, agrega el ID al objeto
       if (this.sucursalEditando && this.sucursalEditando.id) {

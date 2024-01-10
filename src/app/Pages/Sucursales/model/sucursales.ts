@@ -2,7 +2,8 @@ export class Sucursales {
     id?: string;
     nombreSucursal: string;
     tipoSucursal: string;
-    direccion: Direccion;
+    direccion: string;
+    ubicacion: Ubicacion;
     estado: string;
     nombreResponsable: string;
     correo : string;
@@ -15,7 +16,7 @@ export class Sucursales {
     }
 }
 
-export class Direccion {
+export class Ubicacion {
     latitud: number = null; 
     longitud: number = null;
   }

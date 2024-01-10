@@ -54,7 +54,7 @@ export class ServiciosComponent implements OnInit, AfterViewInit {
       descripcionServicio: new FormControl('', Validators.required),
       duracionServicio: new FormControl(null),  // Cambiado de '' a null
       empresa: new FormControl('', Validators.required),
-      fechaCreacion: new FormControl(null, Validators.required),  // Cambiado de '' a null
+      fechaCreacion: new FormControl(''),  // Cambiado de '' a null
     });
   }
 

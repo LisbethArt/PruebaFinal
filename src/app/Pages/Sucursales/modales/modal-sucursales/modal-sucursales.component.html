@@ -27,8 +27,16 @@
         </nz-form-item>
 
         <!-- Dirección -->
-        <nz-form-item formGroupName="direccion">
+        <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="direccion" nzRequired>Dirección</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+            <input nz-input id="direccion" formControlName="direccion" id="direccion" type="text" required>
+          </nz-form-control>
+        </nz-form-item>
+
+        <!-- Ubicación -->
+        <nz-form-item formGroupName="ubicacion">
+          <nz-form-label [nzSpan]="10" nzFor="ubicacion" nzRequired>Ubicación</nz-form-label>
           <nz-form-control [nzSpan]="10" nzErrorTip="Estos campos no puedes estar vacíos" required>
             <input nz-input name="latitud" formControlName="latitud" id="latitud" placeholder="Latitud" type="number"><br><br>
             <input nz-input name="longitud" formControlName="longitud" id="longitud" placeholder="Longitud" type="number"><br>

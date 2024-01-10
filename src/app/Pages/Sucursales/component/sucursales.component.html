@@ -26,9 +26,9 @@
       <mgl-map
         [style]="'https://api.maptiler.com/maps/streets/style.json?key=XZhFPJDkmovigwBqkvEd'"
         [zoom]="[14]"
-        [center]="[direccionSucursal.longitud, direccionSucursal.latitud]"
+        [center]="[ubicacionSucursal.longitud, ubicacionSucursal.latitud]"
       >
-      <mgl-marker [lngLat]="[direccionSucursal.longitud, direccionSucursal.latitud]"></mgl-marker>
+      <mgl-marker [lngLat]="[ubicacionSucursal.longitud, ubicacionSucursal.latitud]"></mgl-marker>
         <mgl-control mglNavigation position="top-left"></mgl-control>
       </mgl-map>
       <div class="footerModal">
@@ -51,7 +51,7 @@
         <tr>
           <th nzColumnKey="nombreSucursal" [nzSortFn]="true">Nombre sucursal</th>
           <th nzColumnKey="tipoSucursal">Tipo de sucursal</th>
-          <th nzColumnKey="direccion">Dirección</th>
+          <th nzColumnKey="ubicacion">Ubicación</th>
           <th nzColumnKey="estado">Estado</th>
           <th nzColumnKey="editar">Editar</th>
         </tr>
@@ -60,8 +60,8 @@
         <tr *ngFor="let sucursal of listarSucursales">
           <td>{{ sucursal.nombreSucursal }}</td>
           <td>{{ sucursal.tipoSucursal }}</td>
-          <td nzCellControl="direccion">
-            <button nz-button nzType="link" (click)="getDireccion(sucursal.id); isMapVisible = true">
+          <td nzCellControl="ubicacion">
+            <button nz-button nzType="link" (click)="getUbicacion(sucursal.id); isMapVisible = true">
               Ver mapa
             </button>
           </td>

@@ -75,26 +75,28 @@ export class ModalCategoriasComponent implements OnInit, AfterViewInit {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
-
+  
     // Verifica si el formulario es válido antes de proceder
     if (this.validateForm.valid) {
       this.isOkLoading = true; // Inicia la animación de carga
-
-      // Establece la fecha de creación al momento actual
-      this.validateForm.get('fechaCreacion').setValue(new Date());
-
+  
+      // Establece la fecha de creación al momento actual solo si no estamos en modo de edición
+      if (!this.editando) {
+        this.validateForm.get('fechaCreacion').setValue(new Date());
+      }
+  
       const nuevaCategoria = new Categorias(this.validateForm.value);
       // Si hay datos para editar, agrega el ID al objeto
       if (this.categoriaEditando && this.categoriaEditando.id) {
         nuevaCategoria.id = this.categoriaEditando.id;
       }
-
+  
       await this.createCategoria(nuevaCategoria);
-
+  
       // Cierra el modal solo si el formulario es válido
       this.isOkLoading = false; // Detiene la animación de carga
       this.closeModal();
-
+  
       // Limpia el formulario
       this.validateForm.reset();
     }

@@ -21,14 +21,14 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
   total: number = 0;
   pageSize: number = 10;
   pageIndex: number = 1;
-  listarSucursales: { id?: string, nombreSucursal: string, tipoSucursal: string, direccion: { latitud: number, longitud: number }, estado: string }[] = [];
+  listarSucursales: { id?: string, nombreSucursal: string, tipoSucursal: string, ubicacion: { latitud: number, longitud: number }, estado: string }[] = [];
   sortOrderNombreSucursal: NzTableSortOrder = 'ascend';
 
   isVisible = false;
   isOkLoading = false;
 
   isMapVisible = false;
-  direccionSucursal = { latitud: 0, longitud: 0 };
+  ubicacionSucursal = { latitud: 0, longitud: 0 };
 
   constructor(private sucursalesService: SucursalesService) { 
     this.initForm();
@@ -51,7 +51,8 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
     this.validateForm = new FormGroup({
       nombreSucursal: new FormControl('', Validators.required),
       tipoSucursal: new FormControl('', Validators.required),
-      direccion: new FormGroup({ // Cambia esto a un FormGroup
+      direccion: new FormControl('', Validators.required),
+      ubicacion: new FormGroup({ // Cambia esto a un FormGroup
         latitud: new FormControl(null, Validators.required),
         longitud: new FormControl(null, Validators.required)
       }),
@@ -70,9 +71,9 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
         this.sucursales.push({
           id: element.payload.doc.id,
           ...element.payload.doc.data(),
-          direccion: { // Asegúrate de manejar la dirección como un objeto
-            latitud: element.payload.doc.data().direccion.latitud,
-            longitud: element.payload.doc.data().direccion.longitud
+          ubicacion: { // Asegúrate de manejar la dirección como un objeto
+            latitud: element.payload.doc.data().ubicacion.latitud,
+            longitud: element.payload.doc.data().ubicacion.longitud
           }
         });
       });
@@ -154,16 +155,16 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
     this.validateForm.reset(); // Limpia el formulario cuando se cancela
   }
 
-  getDireccion(id: string) {
+  getUbicacion(id: string) {
     // Primero, obtén la lista de sucursales
     this.getSucursales();
   
     // Luego, encuentra la sucursal con el ID especificado
     const sucursal = this.sucursales.find(sucursal => sucursal.id === id);
   
-    // Si la sucursal existe, actualiza direccionSucursal con su dirección
+    // Si la sucursal existe, actualiza ubicacionSucursal con su dirección
     if (sucursal) {
-      this.direccionSucursal = sucursal.direccion;
+      this.ubicacionSucursal = sucursal.ubicacion;
     }
   }
 } 
