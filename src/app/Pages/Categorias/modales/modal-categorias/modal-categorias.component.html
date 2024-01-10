@@ -22,7 +22,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="descripcion" nzRequired>Descripción</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
-            <textarea nz-input id="descripcion" formControlName="descripcion" id="descripcion" type="text" required></textarea>
+            <textarea nz-input id="descripcion" formControlName="descripcion" id="descripcion" [nzAutosize]="{ minRows: 6}" type="text" required></textarea>
           </nz-form-control>
         </nz-form-item>
       

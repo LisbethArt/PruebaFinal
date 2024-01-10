@@ -20,7 +20,7 @@ export class ModalServiciosService {
   }
 
   getEmpresas(): Observable<any[]> {
-    return this.firestore.collection('empresas', ref => ref.orderBy('nombreComercial')).snapshotChanges().pipe(
+    return this.firestore.collection('empresas', ref => ref.where('estado', '!=', 'Inactivo')).snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as { nombreComercial: string };
         return data.nombreComercial;

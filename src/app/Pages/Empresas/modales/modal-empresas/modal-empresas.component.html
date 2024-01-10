@@ -71,7 +71,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="quienesSomos" nzRequired>Quiénes somos</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
-            <textarea nz-input name="quienesSomos" formControlName="quienesSomos" id="quienesSomos"></textarea>
+            <textarea nz-input name="quienesSomos" formControlName="quienesSomos" id="quienesSomos" [nzAutosize]="{ minRows: 6}" type="text"></textarea>
           </nz-form-control>
         </nz-form-item>
       
