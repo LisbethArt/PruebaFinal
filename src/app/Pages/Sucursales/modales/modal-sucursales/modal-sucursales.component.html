@@ -1,0 +1,87 @@
+<nz-modal
+    [(nzVisible)]="isVisible"
+    nzTitle="{{titulo}}"
+    (nzOnCancel)="handleCancel()"
+    (nzAfterOpen)="setFormValues()"
+    [nzOkLoading]="isOkLoading"
+    [nzCentered]="true"
+    [nzBodyStyle]="{ maxHeight: '80vh', overflowY: 'auto' }"
+    [nzWidth]="'50%'"
+    >
+    <div *nzModalContent>
+      <form [formGroup]="validateForm" nz-form (ngSubmit)="submitForm()">
+        <!-- Nombre sucursal -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="nombreSucursal" nzRequired>Nombre sucursal</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+            <input nz-input id="nombreSucursal" formControlName="nombreSucursal" id="nombreSucursal" type="text" required>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Tipo sucursal -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="tipoSucursal" nzRequired>Tipo de sucursal</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+            <input nz-input id="tipoSucursal" formControlName="tipoSucursal" id="tipoSucursal" type="text" required>
+          </nz-form-control>
+        </nz-form-item>
+
+        <!-- Dirección -->
+        <nz-form-item formGroupName="direccion">
+          <nz-form-label [nzSpan]="10" nzFor="direccion">Dirección</nz-form-label>
+          <nz-form-control [nzSpan]="10">
+            <input nz-input name="latitud" formControlName="latitud" id="latitud" placeholder="Latitud" type="number"><br><br>
+            <input nz-input name="longitud" formControlName="longitud" id="longitud" placeholder="Longitud" type="number"><br>
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Nombre del responsable -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="nombreResponsable">Nombre del responsable</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10">
+            <input nz-input name="nombreResponsable" formControlName="nombreResponsable" id="nombreResponsable" type="text">
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Correo -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="correo">Correo</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10">
+            <input nz-input name="correo" formControlName="correo" id="correo" type="text">
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Teléfono -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="telefono">Teléfono</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10">
+            <input nz-input name="telefono" formControlName="telefono" id="telefono" type="tel">
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Horarios de sucursal -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="horariosSucursal" nzRequired>Horarios de sucursal</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+            <input nz-input name="horariosSucursal" formControlName="horariosSucursal" id="horariosSucursal" type="text">
+          </nz-form-control>
+        </nz-form-item>
+      
+        <!-- Estado -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="estado" nzRequired>Estado</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+            <select formControlName="estado" name="estado" id="estado">
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+            </select>
+          </nz-form-control>
+        </nz-form-item>
+        
+      </form>
+    </div>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancel()">Cancelar</button>
+      <button nz-button nzType="primary" (click)="submitForm()" [nzLoading]="isOkLoading">Guardar</button>
+    </div>
+  </nz-modal>

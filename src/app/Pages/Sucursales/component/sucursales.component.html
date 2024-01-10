@@ -1,0 +1,52 @@
+<div class="contenedor">
+    <div class="botones">
+      <div class="botonesIzquierda">
+        <button nz-button nzType="primary" (click)="modalSucursales && modalSucursales.showModal()" [nzLoading]="isOkLoading">
+          Crear sucursales
+          <span nz-icon nzType="plus"></span>
+        </button>
+        <button nz-button nzType="default" (click)="reiniciarDatos()">
+          Limpiar filtros
+          <span nz-icon nzType="reload"></span>
+        </button>
+      </div>
+    </div>
+  
+    <!-- SucursalesComponent HTML -->
+  <app-modal-sucursales #modalSucursales></app-modal-sucursales>
+  
+    <nz-table
+      class="tablaResponsive"
+      nzShowSizeChanger
+      [nzData]="listarSucursales"
+      [nzFrontPagination]="false"
+      [nzLoading]="loading"
+      [nzTotal]="total"
+      [nzPageSize]="pageSize"
+      [nzPageIndex]="pageIndex"
+      (nzQueryParams)="manejarQueryParams($event)"
+    >
+      <thead>
+        <tr>
+          <th nzColumnKey="nombreSucursal" [nzSortFn]="true">Nombre sucursal</th>
+          <th nzColumnKey="tipoSucursal">Tipo de sucursal</th>
+          <th nzColumnKey="direccion">Ver mapa</th>
+          <th nzColumnKey="estado">Estado</th>
+          <th nzColumnKey="editar">Editar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sucursal of listarSucursales">
+          <td>{{ sucursal.nombreSucursal }}</td>
+          <td>{{ sucursal.tipoSucursal }}</td>
+          <td>{{ sucursal.direccion }}</td>
+          <td>{{ sucursal.estado }}</td>
+          <td nzCellControl="editar">
+            <button nz-button nzType="link" (click)="editarSucursal(sucursal)">
+              <span nz-icon nzType="edit" nzTheme="outline"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>

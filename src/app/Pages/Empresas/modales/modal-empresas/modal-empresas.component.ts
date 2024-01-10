@@ -79,7 +79,7 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
 
   setFormValues(): void {
     if (this.empresaEditando) {
-      console.log('método setFormValues: ', this.empresaEditando);  // Imprime los datos de empresaEditando
+      console.log('método setFormValues Empresa: ', this.empresaEditando);  // Imprime los datos de empresaEditando
   
       // Si hay datos para editar, establece los valores en el formulario
       this.validateForm.patchValue({

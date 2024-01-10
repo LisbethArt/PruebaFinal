@@ -1,11 +1,11 @@
 import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit, Type } from '@angular/core';
-import { Router } from '@angular/router';
 import { Menus } from '../model/menu';
 import { MenuService } from '../service/menu.service';
 import { CategoriasComponent } from '../../Categorias/component/categorias.component';
 import { EmpresasComponent } from 'src/app/Pages/Empresas/component/empresas.component';
 import { ServiciosComponent } from '../../Servicios/component/servicios.component';
 import { ProductosComponent } from '../../Productos/component/productos.component';
+import { SucursalesComponent } from '../../Sucursales/component/sucursales.component';
 
 @Component({
   selector: 'app-menu',
@@ -25,7 +25,6 @@ export class MenuComponent implements OnInit {
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
-    private router: Router,
     private menuService: MenuService
   ) {}
 
@@ -67,6 +66,8 @@ export class MenuComponent implements OnInit {
         return EmpresasComponent;
       case 'ServiciosComponent':
         return ServiciosComponent;
+      case 'SucursalesComponent':
+        return SucursalesComponent
       case 'ProductosComponent':
         return ProductosComponent;
       default:

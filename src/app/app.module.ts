@@ -34,6 +34,8 @@ import { ServiciosComponent } from './Pages/Servicios/component/servicios.compon
 import { ModalServiciosComponent } from './Pages/Servicios/modales/modal-servicios/modal-servicios.component';
 import { ProductosComponent } from './Pages/Productos/component/productos.component';
 import { ModalProductosComponent } from './Pages/Productos/modales/modal-productos/modal-productos.component';
+import { SucursalesComponent } from './Pages/Sucursales/component/sucursales.component';
+import { ModalSucursalesComponent } from './Pages/Sucursales/modales/modal-sucursales/modal-sucursales.component';
 
 registerLocaleData(es);
 
@@ -48,7 +50,9 @@ registerLocaleData(es);
     ServiciosComponent,
     ModalServiciosComponent,
     ProductosComponent,
-    ModalProductosComponent
+    ModalProductosComponent,
+    SucursalesComponent,
+    ModalSucursalesComponent
   ],
   imports: [
     BrowserModule,
