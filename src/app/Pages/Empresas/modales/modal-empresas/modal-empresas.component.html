@@ -115,10 +115,10 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="estado" nzRequired>Estado</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
-            <select formControlName="estado" name="estado" id="estado">
-              <option value="Activo">Activo</option>
-              <option value="Inactivo">Inactivo</option>
-            </select>
+            <nz-select formControlName="estado" name="estado" id="estado">
+              <nz-option value="Activo" nzValue="Activo" nzLabel="Activo"></nz-option>
+              <nz-option value="Inactivo" nzValue="Inactivo" nzLabel="Inactivo"></nz-option>
+            </nz-select>
           </nz-form-control>
         </nz-form-item>
         

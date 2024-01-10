@@ -1,10 +1,8 @@
 import { Component, OnInit, AfterViewInit, Input, EventEmitter, Output, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/compat/storage';
 import { Sucursales } from '../../model/sucursales';
 import { ModalSucursalesService } from '../service/modal-sucursales.service';
 import { SucursalesComponent } from '../../component/sucursales.component';
-import { Direccion } from '../../model/sucursales';
 
 @Component({
   selector: 'app-modal-sucursales',
@@ -23,13 +21,11 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
   isVisible = false;
   isOkLoading = false;
 
-  imagenes: string[] = [];
-  imagenesRefs: AngularFireStorageReference[] = [];
   editando = false;
   sucursalOriginal: Partial<Sucursales>;
   categorias: string[] = [];
 
-  constructor(private modalSucursalesService: ModalSucursalesService, private cd: ChangeDetectorRef, private storage: AngularFireStorage) { 
+  constructor(private modalSucursalesService: ModalSucursalesService, private cd: ChangeDetectorRef) { 
     this.initForm();
   }
 
@@ -54,8 +50,8 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
       nombreSucursal: new FormControl('', Validators.required),
       tipoSucursal: new FormControl('', Validators.required),
       direccion: new FormGroup({
-        latitud: new FormControl(null),
-        longitud: new FormControl(null)
+        latitud: new FormControl(null, Validators.required),
+        longitud: new FormControl(null, Validators.required)
       }),
       estado: new FormControl('Activo', Validators.required),
       nombreResponsable: new FormControl('', Validators.required),
