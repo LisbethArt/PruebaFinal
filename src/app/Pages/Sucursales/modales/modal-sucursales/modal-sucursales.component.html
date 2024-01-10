@@ -28,8 +28,8 @@
 
         <!-- Dirección -->
         <nz-form-item formGroupName="direccion">
-          <nz-form-label [nzSpan]="10" nzFor="direccion">Dirección</nz-form-label>
-          <nz-form-control [nzSpan]="10">
+          <nz-form-label [nzSpan]="10" nzFor="direccion" nzRequired>Dirección</nz-form-label>
+          <nz-form-control [nzSpan]="10" nzErrorTip="Estos campos no puedes estar vacíos" required>
             <input nz-input name="latitud" formControlName="latitud" id="latitud" placeholder="Latitud" type="number"><br><br>
             <input nz-input name="longitud" formControlName="longitud" id="longitud" placeholder="Longitud" type="number"><br>
           </nz-form-control>
@@ -37,24 +37,24 @@
       
         <!-- Nombre del responsable -->
         <nz-form-item>
-          <nz-form-label [nzSpan]="10" nzFor="nombreResponsable">Nombre del responsable</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10">
+          <nz-form-label [nzSpan]="10" nzFor="nombreResponsable" nzRequired>Nombre del responsable</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
             <input nz-input name="nombreResponsable" formControlName="nombreResponsable" id="nombreResponsable" type="text">
           </nz-form-control>
         </nz-form-item>
       
         <!-- Correo -->
         <nz-form-item>
-          <nz-form-label [nzSpan]="10" nzFor="correo">Correo</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10">
+          <nz-form-label [nzSpan]="10" nzFor="correo" nzRequired>Correo</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
             <input nz-input name="correo" formControlName="correo" id="correo" type="text">
           </nz-form-control>
         </nz-form-item>
       
         <!-- Teléfono -->
         <nz-form-item>
-          <nz-form-label [nzSpan]="10" nzFor="telefono">Teléfono</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10">
+          <nz-form-label [nzSpan]="10" nzFor="telefono" nzRequired>Teléfono</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
             <input nz-input name="telefono" formControlName="telefono" id="telefono" type="tel">
           </nz-form-control>
         </nz-form-item>

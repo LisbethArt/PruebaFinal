@@ -15,4 +15,8 @@ export class SucursalesService {
   getListarSucursales(): Observable<any> {
     return this.firestore.collection('sucursales', ref => ref.orderBy('fechaCreacion', 'desc')).snapshotChanges();
   }
+
+  getDireccion(id: string): Observable<any> {
+    return this.firestore.collection('sucursales').doc(id).valueChanges();
+  }
 }

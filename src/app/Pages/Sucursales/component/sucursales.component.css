@@ -37,3 +37,42 @@
   width: 100%;
    overflow-x: auto;
 }
+
+mgl-map {
+  height: 100%;
+  width: 100%;
+}
+
+.map-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 45vw; /* Ajusta el ancho según tus necesidades */
+  height: 75vh; /* Ajusta la altura según tus necesidades */
+  z-index: 1000; /* Asegúrate de que este valor es mayor que el z-index de cualquier otro elemento en tu página */
+  background: white; /* Fondo blanco */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 40px; /* Espacio alrededor del contenido del modal */
+  box-shadow: 0 0 1500px rgba(0, 0, 0, 0.8); /* Sombra alrededor del modal */
+  
+  /* Agrega estas líneas para centrar los elementos hijos */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-container .headerModal {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.map-container .footerModal {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}

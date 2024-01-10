@@ -27,6 +27,9 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
   isVisible = false;
   isOkLoading = false;
 
+  isMapVisible = false;
+  direccionSucursal = { latitud: 0, longitud: 0 };
+
   constructor(private sucursalesService: SucursalesService) { 
     this.initForm();
   }
@@ -149,5 +152,18 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
   handleCancel(): void {
     this.isVisible = false;
     this.validateForm.reset(); // Limpia el formulario cuando se cancela
+  }
+
+  getDireccion(id: string) {
+    // Primero, obtén la lista de sucursales
+    this.getSucursales();
+  
+    // Luego, encuentra la sucursal con el ID especificado
+    const sucursal = this.sucursales.find(sucursal => sucursal.id === id);
+  
+    // Si la sucursal existe, actualiza direccionSucursal con su dirección
+    if (sucursal) {
+      this.direccionSucursal = sucursal.direccion;
+    }
   }
 } 

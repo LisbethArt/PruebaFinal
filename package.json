@@ -20,6 +20,8 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
+    "@maplibre/ngx-maplibre-gl": "^16.0.0",
+    "@maptiler/sdk": "^1.2.1",
     "firebase": "^10.7.1",
     "ng-zorro-antd": "^16.2.2",
     "rxjs": "~7.8.0",

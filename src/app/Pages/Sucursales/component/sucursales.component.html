@@ -13,7 +13,28 @@
     </div>
   
     <!-- SucursalesComponent HTML -->
-  <app-modal-sucursales #modalSucursales></app-modal-sucursales>
+    <app-modal-sucursales #modalSucursales></app-modal-sucursales>
+    
+    <!-- Utiliza la directiva *ngIf para mostrar el mapa sólo cuando isMapVisible es true -->
+    <div class="map-container" *ngIf="isMapVisible">
+      <div class="headerModal">
+        <h3>Dirección (georreferenciada)</h3>
+        <button nz-button nzType="default" (click)="isMapVisible = false">
+          <span nz-icon nzType="close"></span>
+        </button>
+      </div>
+      <mgl-map
+        [style]="'https://api.maptiler.com/maps/streets/style.json?key=XZhFPJDkmovigwBqkvEd'"
+        [zoom]="[14]"
+        [center]="[direccionSucursal.longitud, direccionSucursal.latitud]"
+      >
+      <mgl-marker [lngLat]="[direccionSucursal.longitud, direccionSucursal.latitud]"></mgl-marker>
+        <mgl-control mglNavigation position="top-left"></mgl-control>
+      </mgl-map>
+      <div class="footerModal">
+        <button nz-button nzType="primary" (click)="isMapVisible = false">Aceptar</button>
+      </div>
+    </div>
   
     <nz-table
       class="tablaResponsive"
@@ -30,7 +51,7 @@
         <tr>
           <th nzColumnKey="nombreSucursal" [nzSortFn]="true">Nombre sucursal</th>
           <th nzColumnKey="tipoSucursal">Tipo de sucursal</th>
-          <th nzColumnKey="direccion">Ver mapa</th>
+          <th nzColumnKey="direccion">Dirección</th>
           <th nzColumnKey="estado">Estado</th>
           <th nzColumnKey="editar">Editar</th>
         </tr>
@@ -39,7 +60,11 @@
         <tr *ngFor="let sucursal of listarSucursales">
           <td>{{ sucursal.nombreSucursal }}</td>
           <td>{{ sucursal.tipoSucursal }}</td>
-          <td>{{ sucursal.direccion }}</td>
+          <td nzCellControl="direccion">
+            <button nz-button nzType="link" (click)="getDireccion(sucursal.id); isMapVisible = true">
+              Ver mapa
+            </button>
+          </td>
           <td>{{ sucursal.estado }}</td>
           <td nzCellControl="editar">
             <button nz-button nzType="link" (click)="editarSucursal(sucursal)">

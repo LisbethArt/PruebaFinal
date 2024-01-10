@@ -36,6 +36,7 @@ import { ProductosComponent } from './Pages/Productos/component/productos.compon
 import { ModalProductosComponent } from './Pages/Productos/modales/modal-productos/modal-productos.component';
 import { SucursalesComponent } from './Pages/Sucursales/component/sucursales.component';
 import { ModalSucursalesComponent } from './Pages/Sucursales/modales/modal-sucursales/modal-sucursales.component';
+import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl';
 
 registerLocaleData(es);
 
@@ -52,7 +53,7 @@ registerLocaleData(es);
     ProductosComponent,
     ModalProductosComponent,
     SucursalesComponent,
-    ModalSucursalesComponent
+    ModalSucursalesComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,7 +75,8 @@ registerLocaleData(es);
     NzModalModule,
     NzFormModule,
     NzDatePickerModule,
-    NzUploadModule
+    NzUploadModule,
+    NgxMapLibreGLModule
   ],
   bootstrap: [AppComponent],
   providers: [
