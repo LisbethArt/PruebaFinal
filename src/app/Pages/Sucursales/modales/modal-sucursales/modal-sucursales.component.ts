@@ -43,7 +43,6 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
       this.validateForm.get('horariosSucursal').setValue([...this.validateForm.get('horariosSucursal').value, horario]);
       this.horarioForm.reset();
     } else {
-      // Muestra un mensaje de error
     }
   }
   
