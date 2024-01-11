@@ -58,7 +58,7 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
       costo: new FormControl(0),  // Cambiado de '' a 0
       iva: new FormControl('', Validators.required),
       descripcionServicio: new FormControl('', Validators.required),
-      duracionServicio: new FormControl(null),  // Cambiado de '' a null
+      duracionServicio: new FormControl([null, null], Validators.required),
       empresa: new FormControl('', Validators.required),
       fechaCreacion: new FormControl(''),  // Cambiado de '' a null
     });
@@ -67,6 +67,9 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
   setFormValues(): void {
     if (this.servicioEditando) {
       console.log('setFormServicios', this.servicioEditando);
+
+      // Agrega esta línea para verificar los objetos en duracionServicio
+      console.log('duracionServicio', this.servicioEditando.duracionServicio);
   
       this.validateForm.patchValue({
         nombreServicio: this.servicioEditando.nombreServicio || '',
@@ -75,12 +78,13 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
         costo: this.servicioEditando.costo ? Number(this.servicioEditando.costo) : 0,
         iva: this.servicioEditando.iva || '',
         descripcionServicio: this.servicioEditando.descripcionServicio || '',
-        duracionServicio: this.servicioEditando.duracionServicio || null,
+        duracionServicio: Array.isArray(this.servicioEditando.duracionServicio)
+          ? this.servicioEditando.duracionServicio.map(timestamp => new Date(((timestamp as any).seconds * 1000) + ((timestamp as any).nanoseconds / 1000000))) 
+          : [null, null],
         empresa: this.servicioEditando.empresa || '',
         fechaCreacion: this.servicioEditando.fechaCreacion || '',
       });
       this.cd.detectChanges();
-      console.log('validateForm', this.validateForm.value);
     }
   }
 
@@ -90,6 +94,9 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
+    // Imprime el estado del formulario y sus controles
+    console.log('Form status servicios', this.validateForm.status);
+    console.log('Form value servicios', this.validateForm.controls);
   
     // Verifica si el formulario es válido antes de proceder
     if (this.validateForm.valid) {
@@ -180,5 +187,15 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
     if (this.serviciosComponent && this.serviciosComponent.getServicios) {
       this.serviciosComponent.getServicios();
     }
+  }
+
+  onCalendarChange(event: any): void {
+    console.log('Calendar change: ', event);
+    // Aquí puedes manejar el cambio de calendario
+  }
+  
+  onOk(event: any): void {
+    console.log('OK: ', event);
+    // Aquí puedes manejar el evento OK
   }
 }

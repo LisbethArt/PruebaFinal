@@ -36,11 +36,13 @@
       
         <!-- Costo -->
         <nz-form-item>
-            <nz-form-label [nzSpan]="10" nzFor="costo">Costo</nz-form-label>
-            <nz-form-control nzHasFeedback [nzSpan]="10">
-              <input nz-input name="costo" formControlName="costo" id="costo" type="number">
-            </nz-form-control>
-        </nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="costo">Costo</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10">
+            <nz-input-group nzSuffix="USD" nzPrefix="$">
+              <input nz-input name="costo" formControlName="costo" id="costo" type="number" nz-input/>
+            </nz-input-group>
+          </nz-form-control>
+      </nz-form-item>
 
         <!-- IVA -->
         <nz-form-item>
@@ -61,13 +63,19 @@
             </nz-form-control>
         </nz-form-item>
 
-        <!-- Duración del servicio -->
+        <!-- Duración del servicio Prueba -->
         <nz-form-item>
-            <nz-form-label [nzSpan]="10" nzFor="duracionServicio">Duración del servicio</nz-form-label>
-            <nz-form-control nzHasFeedback [nzSpan]="10">
-              <input nz-input name="duracionServicio" formControlName="duracionServicio" id="duracionServicio" type="date">
-            </nz-form-control>
-          </nz-form-item>
+          <nz-form-label [nzSpan]="10" nzFor="duracionServicio">Duración del servicio</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="10">
+            <nz-range-picker
+              [nzShowTime]="{ nzFormat: 'HH:mm' }"
+              nzFormat="yyyy-MM-dd HH:mm"
+              formControlName="duracionServicio"
+              (nzOnCalendarChange)="onCalendarChange($event)"
+              (nzOnOk)="onOk($event)"
+            ></nz-range-picker>
+          </nz-form-control>
+        </nz-form-item>
 
         <!-- Empresa -->
         <nz-form-item>

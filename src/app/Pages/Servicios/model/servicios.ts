@@ -6,7 +6,7 @@ export class Servicios {
     costo: number;
     iva: string;
     descripcionServicio: string;
-    duracionServicio: Date;
+    duracionServicio: Date[]; // Modificado para ser un array de fechas
     empresa: string;
     fechaCreacion: Date;
 

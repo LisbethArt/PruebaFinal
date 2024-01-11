@@ -21,7 +21,7 @@ export class ServiciosComponent implements OnInit, AfterViewInit {
   total: number = 0;
   pageSize: number = 10;
   pageIndex: number = 1;
-  listarServicios: { id?: string, nombreServicio: string, descripcion: string, fecha: Date, costo: number, iva: string, descripcionServicio: string, duracionServicio: Date, empresa: string }[] = [];
+  listarServicios: { id?: string, nombreServicio: string, descripcion: string, fecha: Date, costo: number, iva: string, descripcionServicio: string, duracionServicio: Date[], empresa: string }[] = [];
   sortOrderNombreServicio: NzTableSortOrder = 'ascend';
   sortOrderFechaCreacion: NzTableSortOrder = 'descend'; // Ordena por fechaCreacion en orden descendente por defecto
   nombreServicioClicked: boolean = false;
@@ -57,7 +57,7 @@ export class ServiciosComponent implements OnInit, AfterViewInit {
       costo: new FormControl(0),  // Cambiado de '' a 0
       iva: new FormControl('', Validators.required),
       descripcionServicio: new FormControl('', Validators.required),
-      duracionServicio: new FormControl(null),  // Cambiado de '' a null
+      duracionServicio: new FormControl([null, null], Validators.required),
       empresa: new FormControl('', Validators.required),
       fechaCreacion: new FormControl(''),  // Cambiado de '' a null
     });
@@ -165,5 +165,16 @@ export class ServiciosComponent implements OnInit, AfterViewInit {
   handleCancel(): void {
     this.isVisible = false;
     this.validateForm.reset(); // Limpia el formulario cuando se cancela
+  }
+
+  formatTimestamps(timestamps: any[]): string {
+    if (!Array.isArray(timestamps) || timestamps.length !== 2) {
+      return '';
+    }
+  
+    const inicio = new Date(((timestamps[0] as any).seconds * 1000) + ((timestamps[0] as any).nanoseconds / 1000000));
+    const fin = new Date(((timestamps[1] as any).seconds * 1000) + ((timestamps[1] as any).nanoseconds / 1000000));
+  
+    return `${inicio.toLocaleDateString()} ${inicio.toLocaleTimeString()} - ${fin.toLocaleDateString()} ${fin.toLocaleTimeString()}`;
   }
 }
