@@ -48,7 +48,7 @@ export class ModalCategoriasComponent implements OnInit, AfterViewInit {
   initForm(): void {
     this.validateForm = new FormGroup({
       nombreCategoria: new FormControl('', Validators.required),
-      descripcion: new FormControl('', Validators.required),
+      descripcion: new FormControl(''),
       estado: new FormControl('Activo', Validators.required),
       fechaCreacion: new FormControl(''),
     });
@@ -60,7 +60,7 @@ export class ModalCategoriasComponent implements OnInit, AfterViewInit {
 
       this.validateForm.patchValue({
         nombreCategoria: this.categoriaEditando.nombreCategoria,
-        descripcion: this.categoriaEditando.descripcion,
+        descripcion: this.categoriaEditando.descripcion || '',
         estado: this.categoriaEditando.estado || 'Activo', // Asegura que el estado se establece correctamente
         fechaCreacion: this.categoriaEditando.fechaCreacion,
       });

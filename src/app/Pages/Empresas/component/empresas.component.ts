@@ -56,7 +56,7 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
       razonSocial: new FormControl('', Validators.required),
       actividadEconomica: new FormControl('', Validators.required),
       estado: new FormControl('Activo', Validators.required),
-      imagenes: new FormControl([]),
+      imagenes: new FormControl([], Validators.required),
       categoria: new FormControl('', Validators.required),
       direccion: new FormControl(''),
       quienesSomos: new FormControl('', Validators.required),

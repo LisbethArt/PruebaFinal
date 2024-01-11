@@ -69,7 +69,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="empresa" nzRequired>Empresa</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
-            <nz-select nzPlaceHolder="Selecciona la empresa" formControlName="empresa">
+            <nz-select nzPlaceHolder="Seleccione la empresa" formControlName="empresa">
               <nz-option *ngFor="let empresa of empresas" [nzValue]="empresa" [nzLabel]="empresa"></nz-option>
             </nz-select>
           </nz-form-control>

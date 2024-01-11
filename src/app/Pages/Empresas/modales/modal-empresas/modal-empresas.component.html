@@ -13,7 +13,7 @@
         <!-- Nombre Comercial -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="nombreComercial" nzRequired>Nombre comercial</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el nombre comercial">
             <input nz-input id="nombreComercial" formControlName="nombreComercial" id="nombreComercial" type="text" required>
           </nz-form-control>
         </nz-form-item>
@@ -21,7 +21,7 @@
         <!-- Razon Social -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="razonSocial" nzRequired>Razón Social</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese la razón social">
             <input nz-input id="razonSocial" formControlName="razonSocial" id="razonSocial" type="text" required>
           </nz-form-control>
         </nz-form-item>
@@ -29,7 +29,7 @@
         <!-- Actividad Económica -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="actividadEconomica" nzRequired>Actividad económica</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese la actividad económica">
             <input nz-input name="actividadEconomica" formControlName="actividadEconomica" id="actividadEconomica" type="text" required>
           </nz-form-control>
         </nz-form-item>
@@ -37,7 +37,7 @@
         <!-- Imágenes -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="imagenes" nzRequired>Imágenes</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Se requiere al menos una imagen" required>
             <!-- Puedes usar un componente de carga de archivos aquí -->
             <input name="imagenes" type="file" formControlName="imagenes" id="imagenes" (change)="subirImagenes($event)" required/>
             <div class="imagenes">
@@ -52,8 +52,8 @@
         <!-- Categoría -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="categoria" nzRequired>Categoría</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
-            <nz-select nzPlaceHolder="Selecciona la categoría" formControlName="categoria">
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Se requiere que seleccione una categoría" required>
+            <nz-select nzPlaceHolder="Seleccione la categoría" formControlName="categoria">
               <nz-option *ngFor="let categoria of categorias" [nzValue]="categoria" [nzLabel]="categoria"></nz-option>
             </nz-select>
           </nz-form-control>
@@ -94,7 +94,7 @@
         <!-- Correo -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="correo" nzRequired>Correo</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="El correo no es válido" required>
             <input nz-input name="correo" formControlName="correo" id="correo" type="email">
           </nz-form-control>
         </nz-form-item>
@@ -113,7 +113,7 @@
         <!-- Estado -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="estado" nzRequired>Estado</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Se requiere que seleccione el estado" required>
             <nz-select formControlName="estado" name="estado" id="estado">
               <nz-option value="Activo" nzValue="Activo" nzLabel="Activo"></nz-option>
               <nz-option value="Inactivo" nzValue="Inactivo" nzLabel="Inactivo"></nz-option>

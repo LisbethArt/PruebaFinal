@@ -13,7 +13,7 @@
         <!-- Nombre servicio -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="nombreServicio" nzRequired>Nombre servicio</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el nombre del servicio">
             <input nz-input id="nombreServicio" formControlName="nombreServicio" id="nombreServicio" type="text" required>
           </nz-form-control>
         </nz-form-item>
@@ -21,7 +21,7 @@
         <!-- Descripción -->
         <nz-form-item>
             <nz-form-label [nzSpan]="10" nzFor="descripcion" nzRequired>Descripción</nz-form-label>
-            <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+            <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese la descripción" required>
               <textarea nz-input id="descripcion" formControlName="descripcion" id="descripcion" [nzAutosize]="{ minRows: 6}" type="text" required></textarea>
             </nz-form-control>
           </nz-form-item>
@@ -29,7 +29,7 @@
         <!-- Fecha -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="fecha" nzRequired>Fecha</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese la fecha">
             <input nz-input name="fecha" formControlName="fecha" id="fecha" type="date" required>
           </nz-form-control>
         </nz-form-item>
@@ -47,7 +47,7 @@
         <!-- IVA -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="iva" nzRequired>IVA</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Seleccione una opción" required>
             <nz-select formControlName="iva" name="iva" id="iva">
               <nz-option value="Si" nzValue="Si" nzLabel="Si"></nz-option>
               <nz-option value="No" nzValue="No" nzLabel="No"></nz-option>
@@ -58,7 +58,7 @@
         <!-- Descripción del servicio -->
         <nz-form-item>
             <nz-form-label [nzSpan]="10" nzFor="descripcionServicio" nzRequired>Descripción del servicio</nz-form-label>
-            <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+            <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese la descripción del servicio" required>
                 <textarea nz-input id="descripcionServicio" formControlName="descripcionServicio" id="descripcionServicio" [nzAutosize]="{ minRows: 6}" type="text" required></textarea>
             </nz-form-control>
         </nz-form-item>
@@ -80,8 +80,8 @@
         <!-- Empresa -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="empresa" nzRequired>Empresa</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
-            <nz-select nzPlaceHolder="Selecciona la empresa" formControlName="empresa">
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Seleccione la empresa" required>
+            <nz-select nzPlaceHolder="Seleccione la empresa" formControlName="empresa">
               <nz-option *ngFor="let empresa of empresas" [nzValue]="empresa" [nzLabel]="empresa"></nz-option>
             </nz-select>
           </nz-form-control>

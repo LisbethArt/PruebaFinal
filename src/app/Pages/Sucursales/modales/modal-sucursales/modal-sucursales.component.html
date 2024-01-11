@@ -13,7 +13,7 @@
         <!-- Nombre sucursal -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="nombreSucursal" nzRequired>Nombre sucursal</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el nombre de la sucursal">
             <input nz-input id="nombreSucursal" formControlName="nombreSucursal" id="nombreSucursal" type="text" required>
           </nz-form-control>
         </nz-form-item>
@@ -21,7 +21,7 @@
         <!-- Tipo sucursal -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="tipoSucursal" nzRequired>Tipo de sucursal</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el tipo de sucursal">
             <input nz-input id="tipoSucursal" formControlName="tipoSucursal" id="tipoSucursal" type="text" required>
           </nz-form-control>
         </nz-form-item>
@@ -29,7 +29,7 @@
         <!-- Dirección -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="direccion" nzRequired>Dirección</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese la dirección">
             <input nz-input id="direccion" formControlName="direccion" id="direccion" type="text" required>
           </nz-form-control>
         </nz-form-item>
@@ -37,7 +37,7 @@
         <!-- Ubicación -->
         <nz-form-item formGroupName="ubicacion">
           <nz-form-label [nzSpan]="10" nzFor="ubicacion" nzRequired>Ubicación</nz-form-label>
-          <nz-form-control [nzSpan]="10" nzErrorTip="Estos campos no puedes estar vacíos" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Estos campos no puedes estar vacíos" required>
             <input nz-input name="latitud" formControlName="latitud" id="latitud" placeholder="Latitud" type="number"><br><br>
             <input nz-input name="longitud" formControlName="longitud" id="longitud" placeholder="Longitud" type="number"><br>
           </nz-form-control>
@@ -46,7 +46,7 @@
         <!-- Nombre del responsable -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="nombreResponsable" nzRequired>Nombre del responsable</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el nombre del responsable" required>
             <input nz-input name="nombreResponsable" formControlName="nombreResponsable" id="nombreResponsable" type="text">
           </nz-form-control>
         </nz-form-item>
@@ -54,7 +54,7 @@
         <!-- Correo -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="correo" nzRequired>Correo</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="El correo no es válido" required>
             <input nz-input name="correo" formControlName="correo" id="correo" type="email">
           </nz-form-control>
         </nz-form-item>
@@ -62,23 +62,15 @@
         <!-- Teléfono -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="telefono" nzRequired>Teléfono</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el teléfono" required>
             <input nz-input name="telefono" formControlName="telefono" id="telefono" type="tel">
           </nz-form-control>
         </nz-form-item>
-      
-        <!-- Horarios de sucursal 
-        <nz-form-item>
-          <nz-form-label [nzSpan]="10" nzFor="horariosSucursal" nzRequired>Horarios de sucursal</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
-            <input nz-input name="horariosSucursal" formControlName="horariosSucursal" id="horariosSucursal" type="text">
-          </nz-form-control>
-        </nz-form-item> -->
 
         <!-- Horarios de sucursal -->
         <nz-form-item [formGroup]="horarioForm">
           <nz-form-label [nzSpan]="8" zRequired>Horarios de sucursal</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="14">
+          <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="Estos campos no pueden estar vacíos">
             <div style="display: flex; align-items: center;">
               <nz-select style="flex: 1;" formControlName="dia" nzPlaceHolder="Día">
                 <nz-option *ngFor="let dia of dias" [nzLabel]="dia" [nzValue]="dia" [nzDisabled]="diaSeleccionado(dia)"></nz-option>
@@ -92,7 +84,7 @@
 
         <nz-form-item>
           <nz-form-label [nzSpan]="12" nzFor="horariosSucursal" nzRequired>Horarios seleccionados</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="12">
+          <nz-form-control nzHasFeedback [nzSpan]="12" nzErrorTip="Seleccione sus horarios">
             <nz-tag *ngFor="let horario of horarios; let i = index" nzMode="closeable" (nzOnClose)="borrarHorario(i)">
               {{ horario.dia }}: {{ horario.horaInicio | date:'shortTime' }} - {{ horario.horaFin | date:'shortTime' }}
             </nz-tag>
@@ -102,7 +94,7 @@
         <!-- Estado -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="estado" nzRequired>Estado</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Se requiere que seleccione el estado" required>
             <nz-select formControlName="estado" name="estado" id="estado">
               <nz-option value="Activo" nzValue="Activo" nzLabel="Activo"></nz-option>
               <nz-option value="Inactivo" nzValue="Inactivo" nzLabel="Inactivo"></nz-option>

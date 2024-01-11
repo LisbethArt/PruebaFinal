@@ -58,7 +58,7 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
       costo: new FormControl(0),  // Cambiado de '' a 0
       iva: new FormControl('', Validators.required),
       descripcionServicio: new FormControl('', Validators.required),
-      duracionServicio: new FormControl([null, null], Validators.required),
+      duracionServicio: new FormControl([null, null]),
       empresa: new FormControl('', Validators.required),
       fechaCreacion: new FormControl(''),  // Cambiado de '' a null
     });

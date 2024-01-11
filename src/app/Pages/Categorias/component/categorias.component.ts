@@ -52,7 +52,7 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
   initForm(): void {
     this.validateForm = new FormGroup({
       nombreCategoria: new FormControl('', Validators.required),
-      descripcion: new FormControl('', Validators.required),
+      descripcion: new FormControl(''),
       estado: new FormControl('Activo', Validators.required),
       fechaCreacion: new FormControl(''),
     });
