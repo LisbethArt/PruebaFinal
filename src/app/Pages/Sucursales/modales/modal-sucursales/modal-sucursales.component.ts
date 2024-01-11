@@ -61,7 +61,7 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.isVisible = false; // o true, dependiendo de tu lógica
+    this.isVisible = false;  
     this.setFormValues();
   }
 

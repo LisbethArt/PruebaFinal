@@ -31,7 +31,7 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.isVisible = false; // o true, dependiendo de tu lógica
+    this.isVisible = false;  
     this.setFormValues();
     this.modalServiciosService.getEmpresas().subscribe(empresas => {
     console.log(empresas);  // Agrega esta línea
@@ -58,9 +58,22 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
       costo: new FormControl(0),  // Cambiado de '' a 0
       iva: new FormControl('', Validators.required),
       descripcionServicio: new FormControl('', Validators.required),
-      duracionServicio: new FormControl([null, null]),
+      duracionServicio: new FormControl(null),
       empresa: new FormControl('', Validators.required),
       fechaCreacion: new FormControl(''),  // Cambiado de '' a null
+    });
+    // Agrega el listener aquí
+    this.validateForm.get('costo').valueChanges.subscribe(value => {
+      if (typeof value === 'number') {
+        value = value.toFixed(2);
+        this.validateForm.get('costo').patchValue(value, {emitEvent: false});
+      } else {
+        const strValue = value.toString();
+        const decimalIndex = strValue.indexOf('.');
+        if (decimalIndex !== -1 && strValue.length > decimalIndex + 3) {
+          this.validateForm.get('costo').patchValue(parseFloat(strValue.slice(0, decimalIndex + 3)), {emitEvent: false});
+        }
+      }
     });
   }
 
@@ -145,6 +158,9 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
       this.titulo = 'Crear nuevo servicio';
       this.servicioEditando = {};
       this.editando = false;  // No estamos en modo de edición
+
+      // Restablece el campo duracionServicio a un valor nulo
+      this.validateForm.get('duracionServicio').setValue([null, null]);
     }
   
     // Muestra el modal después de configurar el estado
@@ -183,7 +199,7 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
       await this.modalServiciosService.crearServicio(servicioData);
     }
   
-    // Verifica que this.empresasComponent esté definido antes de llamar al método
+    // Verifica que this.serviciosComponent esté definido antes de llamar al método
     if (this.serviciosComponent && this.serviciosComponent.getServicios) {
       this.serviciosComponent.getServicios();
     }

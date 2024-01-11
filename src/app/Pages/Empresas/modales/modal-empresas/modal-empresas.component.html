@@ -14,7 +14,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="nombreComercial" nzRequired>Nombre comercial</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el nombre comercial">
-            <input nz-input id="nombreComercial" formControlName="nombreComercial" id="nombreComercial" type="text" required>
+            <input nz-input id="nombreComercial" formControlName="nombreComercial" id="nombreComercial" type="text" minlength="5" required>
           </nz-form-control>
         </nz-form-item>
       
@@ -30,7 +30,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="actividadEconomica" nzRequired>Actividad económica</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese la actividad económica">
-            <input nz-input name="actividadEconomica" formControlName="actividadEconomica" id="actividadEconomica" type="text" required>
+            <input nz-input name="actividadEconomica" formControlName="actividadEconomica" id="actividadEconomica" type="text" minlength="5" required>
           </nz-form-control>
         </nz-form-item>
       
@@ -63,15 +63,15 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="direccion">Dirección</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10">
-            <input nz-input name="direccion" formControlName="direccion" id="direccion" type="text">
+            <input nz-input name="direccion" formControlName="direccion" id="direccion" minlength="5" type="text">
           </nz-form-control>
         </nz-form-item>
       
         <!-- Quiénes Somos -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="quienesSomos" nzRequired>Quiénes somos</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
-            <textarea nz-input name="quienesSomos" formControlName="quienesSomos" id="quienesSomos" [nzAutosize]="{ minRows: 6}" type="text"></textarea>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese más información de su empresa" required>
+            <textarea nz-input name="quienesSomos" formControlName="quienesSomos" id="quienesSomos" [nzAutosize]="{ minRows: 6}" minlength="5" type="text"></textarea>
           </nz-form-control>
         </nz-form-item>
       
@@ -79,7 +79,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="nombreContacto">Nombre de contacto</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10">
-            <input nz-input name="nombreContacto" formControlName="nombreContacto" id="nombreContacto" type="text">
+            <input nz-input name="nombreContacto" formControlName="nombreContacto" id="nombreContacto" minlength="5" type="text">
           </nz-form-control>
         </nz-form-item>
       
@@ -87,7 +87,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="telefono">Teléfono</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10">
-            <input nz-input name="telefono" formControlName="telefono" id="telefono" type="tel">
+            <input nz-input name="telefono" formControlName="telefono" id="telefono" maxlength="9" type="tel">
           </nz-form-control>
         </nz-form-item>
       
@@ -95,7 +95,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="correo" nzRequired>Correo</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="El correo no es válido" required>
-            <input nz-input name="correo" formControlName="correo" id="correo" type="email">
+            <input nz-input name="correo" formControlName="correo" id="correo" minlength="5" type="email">
           </nz-form-control>
         </nz-form-item>
       

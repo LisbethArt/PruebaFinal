@@ -44,8 +44,6 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Escuchar el evento del componente hijo
     this.modalEmpresas.childReady.subscribe(() => {
-    // Realizar las acciones necesarias cuando el componente hijo esté listo
-    // Puedes realizar acciones adicionales después de cerrar el modal, si es necesario
     this.getEmpresas();
     });
   }
@@ -99,7 +97,7 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
   
     const ascendente = this.sortOrderFechaCreacion === 'ascend';
   
-    // Obtener una copia de la lista de categorias para no modificar la original
+    // Obtener una copia de la lista de empresas para no modificar la original
     const empresasOrdenadas = [...this.listarEmpresas];
   
     empresasOrdenadas.sort((a: Empresas, b: Empresas) => {

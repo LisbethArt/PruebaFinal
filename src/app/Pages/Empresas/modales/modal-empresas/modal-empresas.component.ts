@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, Input, EventEmitter, Output, ChangeDetectorRef, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/compat/storage';
 import { Empresas } from '../../model/empresas';
 import { ModalEmpresasService } from '../service/modal-empresas.service';
@@ -35,7 +35,7 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.isVisible = false; // o true, dependiendo de tu lógica
+    this.isVisible = false;  
     this.setFormValues();
     this.modalEmpresasService.getCategorias().subscribe(categorias => {
     console.log(categorias);  // Agrega esta línea
@@ -54,6 +54,13 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
     this.childReady.emit();
   }
 
+  telefonoValidador(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const valid = /^\d{4}-\d{4}$/.test(control.value);
+      return valid ? null : {invalidNumber: {value: control.value}};
+    };
+  }
+
   initForm(): void {
     this.validateForm = new FormGroup({
       nombreComercial: new FormControl('', Validators.required),
@@ -65,7 +72,7 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
       direccion: new FormControl(''),
       quienesSomos: new FormControl('', Validators.required),
       nombreContacto: new FormControl(''),
-      telefono: new FormControl(''),
+      telefono: new FormControl('', [Validators.required, this.telefonoValidador()]),
       correo: new FormControl('', [Validators.required, Validators.email]),
       redesSociales: new FormGroup({
         linkedin: new FormControl(''),
@@ -74,6 +81,12 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
         instagram: new FormControl(''),
       }),
       fechaCreacion: new FormControl(''),
+    });
+    // Agrega el listener aquí
+    this.validateForm.get('telefono').valueChanges.subscribe(value => {
+      if (value.length === 4 && !value.includes('-')) {
+        this.validateForm.get('telefono').setValue(value + '-');
+      }
     });
   }
 

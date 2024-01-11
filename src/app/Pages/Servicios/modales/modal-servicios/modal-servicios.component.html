@@ -14,7 +14,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="nombreServicio" nzRequired>Nombre servicio</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el nombre del servicio">
-            <input nz-input id="nombreServicio" formControlName="nombreServicio" id="nombreServicio" type="text" required>
+            <input nz-input id="nombreServicio" formControlName="nombreServicio" id="nombreServicio" minlength="5" type="text" required>
           </nz-form-control>
         </nz-form-item>
       
@@ -22,7 +22,7 @@
         <nz-form-item>
             <nz-form-label [nzSpan]="10" nzFor="descripcion" nzRequired>Descripción</nz-form-label>
             <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese la descripción" required>
-              <textarea nz-input id="descripcion" formControlName="descripcion" id="descripcion" [nzAutosize]="{ minRows: 6}" type="text" required></textarea>
+              <textarea nz-input id="descripcion" formControlName="descripcion" id="descripcion" [nzAutosize]="{ minRows: 6}" minlength="5" type="text" required></textarea>
             </nz-form-control>
           </nz-form-item>
       
@@ -48,7 +48,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="iva" nzRequired>IVA</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Seleccione una opción" required>
-            <nz-select formControlName="iva" name="iva" id="iva">
+            <nz-select formControlName="iva" name="iva" id="iva" nzPlaceHolder="¿Incluye IVA?">
               <nz-option value="Si" nzValue="Si" nzLabel="Si"></nz-option>
               <nz-option value="No" nzValue="No" nzLabel="No"></nz-option>
             </nz-select>
@@ -59,14 +59,14 @@
         <nz-form-item>
             <nz-form-label [nzSpan]="10" nzFor="descripcionServicio" nzRequired>Descripción del servicio</nz-form-label>
             <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese la descripción del servicio" required>
-                <textarea nz-input id="descripcionServicio" formControlName="descripcionServicio" id="descripcionServicio" [nzAutosize]="{ minRows: 6}" type="text" required></textarea>
+                <textarea nz-input id="descripcionServicio" formControlName="descripcionServicio" id="descripcionServicio" [nzAutosize]="{ minRows: 6}" minlength="5" type="text" required></textarea>
             </nz-form-control>
         </nz-form-item>
 
         <!-- Duración del servicio Prueba -->
         <nz-form-item>
-          <nz-form-label [nzSpan]="10" nzFor="duracionServicio">Duración del servicio</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10">
+          <nz-form-label [nzSpan]="9" nzFor="duracionServicio">Duración del servicio</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="13">
             <nz-range-picker
               [nzShowTime]="{ nzFormat: 'HH:mm' }"
               nzFormat="yyyy-MM-dd HH:mm"

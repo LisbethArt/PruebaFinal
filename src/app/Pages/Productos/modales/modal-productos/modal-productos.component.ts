@@ -36,7 +36,7 @@ export class ModalProductosComponent  implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.isVisible = false; // o true, dependiendo de tu lógica
+    this.isVisible = false;  
     this.setFormValues();
     this.modalProductosService.getEmpresas().subscribe(empresas => {
     console.log(empresas);  // Agrega esta línea

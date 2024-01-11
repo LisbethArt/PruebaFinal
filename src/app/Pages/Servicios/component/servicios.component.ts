@@ -43,8 +43,6 @@ export class ServiciosComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Escuchar el evento del componente hijo
     this.modalServicios.childReady.subscribe(() => {
-    // Realizar las acciones necesarias cuando el componente hijo esté listo
-    // Puedes realizar acciones adicionales después de cerrar el modal, si es necesario
     this.getServicios();
     });
   }
@@ -72,6 +70,7 @@ export class ServiciosComponent implements OnInit, AfterViewInit {
           ...element.payload.doc.data()
         });
       });
+      // Asigna los valores a this.listarServicios
       this.listarServicios = this.servicios;
     });
   }
@@ -135,7 +134,7 @@ export class ServiciosComponent implements OnInit, AfterViewInit {
 
   async createServicio(nuevoServicio: Servicios): Promise<void> {
     await this.serviciosService.crearServicio(nuevoServicio);
-    this.getServicios(); // Recarga las empresas después de crear una nueva
+    this.getServicios(); // Recarga los servicios después de crear uno nuevo
   }
 
   reiniciarDatos(): void {

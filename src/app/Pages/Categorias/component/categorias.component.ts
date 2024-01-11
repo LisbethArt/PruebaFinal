@@ -43,8 +43,6 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Escuchar el evento del componente hijo
     this.modalCategorias.childReady.subscribe(() => {
-    // Realizar las acciones necesarias cuando el componente hijo esté listo
-    // Puedes realizar acciones adicionales después de cerrar el modal, si es necesario
     this.getCategorias();
     });
   }
@@ -152,7 +150,7 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
     if (this.modalCategorias) {
       console.log('método editarCategoria: ', categoria);
   
-      // Llama a showModal con la empresa que se está editando (o sin argumentos para un nuevo registro)
+      // Llama a showModal con la categoría que se está editando (o sin argumentos para un nuevo registro)
       this.modalCategorias.showModal(categoria);
     } else {
       console.log('Error: No se proporcionó un objeto ModalEmpresasComponent.');

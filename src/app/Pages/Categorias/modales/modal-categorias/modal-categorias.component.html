@@ -14,7 +14,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="nombreCategoria" nzRequired>Nombre de categoría</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="El nombre de categoría es requerido">
-            <input nz-input id="nombreCategoria" formControlName="nombreCategoria" id="nombreCategoria" type="text" required>
+            <input nz-input id="nombreCategoria" formControlName="nombreCategoria" id="nombreCategoria" type="text" minlength="5" required>
           </nz-form-control>
         </nz-form-item>
       
@@ -22,7 +22,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="descripcion">Descripción</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10">
-            <textarea nz-input id="descripcion" formControlName="descripcion" id="descripcion" [nzAutosize]="{ minRows: 6}" type="text"></textarea>
+            <textarea nz-input id="descripcion" formControlName="descripcion" id="descripcion" [nzAutosize]="{ minRows: 6}" type="text" minlength="10"></textarea>
           </nz-form-control>
         </nz-form-item>
       

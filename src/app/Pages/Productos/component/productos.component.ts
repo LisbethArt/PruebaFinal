@@ -43,8 +43,6 @@ export class ProductosComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Escuchar el evento del componente hijo
     this.modalProductos.childReady.subscribe(() => {
-    // Realizar las acciones necesarias cuando el componente hijo esté listo
-    // Puedes realizar acciones adicionales después de cerrar el modal, si es necesario
     this.getProductos();
     });
   }
@@ -136,7 +134,7 @@ export class ProductosComponent implements OnInit, AfterViewInit {
 
   async createProducto(nuevoProducto: Productos): Promise<void> {
     await this.productosService.crearProducto(nuevoProducto);
-    this.getProductos(); // Recarga las empresas después de crear una nueva
+    this.getProductos(); // Recarga los productos después de crear uno nuevo
   }
 
   reiniciarDatos(): void {

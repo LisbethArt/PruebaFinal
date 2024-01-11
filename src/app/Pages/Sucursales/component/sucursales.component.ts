@@ -46,8 +46,6 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Escuchar el evento del componente hijo
     this.modalSucursales.childReady.subscribe(() => {
-    // Realizar las acciones necesarias cuando el componente hijo esté listo
-    // Puedes realizar acciones adicionales después de cerrar el modal, si es necesario
     this.getSucursales();
     });
   }
@@ -148,7 +146,7 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
 
   async createSucursal(nuevaSucursal: Sucursales): Promise<void> {
     await this.sucursalesService.crearSucursal(nuevaSucursal);
-    this.getSucursales(); // Recarga las empresas después de crear una nueva
+    this.getSucursales(); // Recarga las sucursales después de crear una nueva
   }
 
   reiniciarDatos(): void {

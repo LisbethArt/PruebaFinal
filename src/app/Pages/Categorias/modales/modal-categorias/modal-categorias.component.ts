@@ -30,7 +30,7 @@ export class ModalCategoriasComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.isVisible = false; // o true, dependiendo de tu lógica
+    this.isVisible = false;  
     this.setFormValues();
   }
 
@@ -161,7 +161,7 @@ export class ModalCategoriasComponent implements OnInit, AfterViewInit {
       await this.modalCategoriasService.crearCategoria(categoriaData);
     }
   
-    // Verifica que this.empresasComponent esté definido antes de llamar al método
+    // Verifica que this.categoriasComponent esté definido antes de llamar al método
     if (this.categoriasComponent && this.categoriasComponent.getCategorias) {
       this.categoriasComponent.getCategorias();
     }
