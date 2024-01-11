@@ -13,31 +13,31 @@
         <!-- Nombre del Producto -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="nombreProducto" nzRequired>Nombre del producto</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
-            <input nz-input id="nombreProducto" formControlName="nombreProducto" id="nombreProducto" type="text" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el nombre del producto">
+            <input nz-input id="nombreProducto" formControlName="nombreProducto" id="nombreProducto" type="text" minlength="5" required>
           </nz-form-control>
         </nz-form-item>
       
         <!-- Descripción -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="descripcion" nzRequired>Descripción</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
-            <textarea nz-input id="descripcion" formControlName="descripcion" id="descripcion" [nzAutosize]="{ minRows: 6}" type="text" required></textarea>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese la descripción" required>
+            <textarea nz-input id="descripcion" formControlName="descripcion" id="descripcion" [nzAutosize]="{ minRows: 6}" type="text" minlength="5" required></textarea>
           </nz-form-control>
         </nz-form-item>
       
         <!-- Funcionalidades -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="funcionalidades" nzRequired>Funcionalidades</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
-            <textarea nz-input id="funcionalidades" formControlName="funcionalidades" id="funcionalidades" [nzAutosize]="{ minRows: 6}" type="text" required></textarea>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese las funcionalidades" required>
+            <textarea nz-input id="funcionalidades" formControlName="funcionalidades" id="funcionalidades" [nzAutosize]="{ minRows: 6}" type="text" minlength="5" required></textarea>
           </nz-form-control>
         </nz-form-item>
       
         <!-- Multimedia -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="multimedia" nzRequired>Multimedia</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Agregue al menos una imagen" required>
             <!-- Puedes usar un componente de carga de archivos aquí -->
             <input name="multimedia" type="file" formControlName="multimedia" id="multimedia" (change)="subirMultimedia($event)" required/>
             <div class="multimedia">
@@ -53,22 +53,22 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="texto" nzRequired>Texto</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío">
-            <input nz-input id="texto" formControlName="texto" id="texto" type="text" required>
+            <input nz-input id="texto" formControlName="texto" id="texto" type="text" minlength="5" required>
           </nz-form-control>
         </nz-form-item>
       
         <!-- Descripción de caracteristicas -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="descripcionCaracteristica" nzRequired>Descripción de caracteristicas</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
-            <textarea nz-input id="descripcionCaracteristica" formControlName="descripcionCaracteristica" id="descripcionCaracteristica" [nzAutosize]="{ minRows: 6}" type="text" required></textarea>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese la descripción de las características" required>
+            <textarea nz-input id="descripcionCaracteristica" formControlName="descripcionCaracteristica" id="descripcionCaracteristica" [nzAutosize]="{ minRows: 6}" type="text" minlength="5" required></textarea>
           </nz-form-control>
         </nz-form-item>
       
         <!-- Empresa -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="empresa" nzRequired>Empresa</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
+          <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Seleccione la empresa" required>
             <nz-select nzPlaceHolder="Seleccione la empresa" formControlName="empresa">
               <nz-option *ngFor="let empresa of empresas" [nzValue]="empresa" [nzLabel]="empresa"></nz-option>
             </nz-select>
