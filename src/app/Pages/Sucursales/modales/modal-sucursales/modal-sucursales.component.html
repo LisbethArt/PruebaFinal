@@ -67,14 +67,38 @@
           </nz-form-control>
         </nz-form-item>
       
-        <!-- Horarios de sucursal -->
+        <!-- Horarios de sucursal 
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="horariosSucursal" nzRequired>Horarios de sucursal</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Este campo no puede estar vacío" required>
             <input nz-input name="horariosSucursal" formControlName="horariosSucursal" id="horariosSucursal" type="text">
           </nz-form-control>
+        </nz-form-item> -->
+
+        <!-- Horarios de sucursal -->
+        <nz-form-item [formGroup]="horarioForm">
+          <nz-form-label [nzSpan]="8" zRequired>Horarios de sucursal</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="14">
+            <div style="display: flex; align-items: center;">
+              <nz-select style="flex: 1;" formControlName="dia" nzPlaceHolder="Día">
+                <nz-option *ngFor="let dia of dias" [nzLabel]="dia" [nzValue]="dia" [nzDisabled]="diaSeleccionado(dia)"></nz-option>
+              </nz-select>
+              <nz-time-picker style="flex: 1; margin: 0 10px;" formControlName="horaInicio" [nzUse12Hours]="true" nzFormat="h:mm a" nzPlaceHolder="Inicio"></nz-time-picker>
+              <nz-time-picker style="flex: 1;" formControlName="horaFin" [nzUse12Hours]="true" nzFormat="h:mm a" nzPlaceHolder="Fin"></nz-time-picker>
+              <button nz-button nzType="primary" type="button" style="margin-left: 10px;" (click)="agregarHorario()">Agregar</button>
+            </div>
+          </nz-form-control>
         </nz-form-item>
-      
+
+        <nz-form-item>
+          <nz-form-label [nzSpan]="12" nzFor="horariosSucursal" nzRequired>Horarios seleccionados</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="12">
+            <nz-tag *ngFor="let horario of horarios; let i = index" nzMode="closeable" (nzOnClose)="borrarHorario(i)">
+              {{ horario.dia }}: {{ horario.horaInicio | date:'shortTime' }} - {{ horario.horaFin | date:'shortTime' }}
+            </nz-tag>
+          </nz-form-control>
+        </nz-form-item>
+
         <!-- Estado -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="estado" nzRequired>Estado</nz-form-label>

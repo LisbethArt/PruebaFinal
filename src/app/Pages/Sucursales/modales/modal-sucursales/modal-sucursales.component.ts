@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Sucursales } from '../../model/sucursales';
 import { ModalSucursalesService } from '../service/modal-sucursales.service';
 import { SucursalesComponent } from '../../component/sucursales.component';
+import { Timestamp } from '@firebase/firestore';
 
 @Component({
   selector: 'app-modal-sucursales',
@@ -24,6 +25,36 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
   editando = false;
   sucursalOriginal: Partial<Sucursales>;
   categorias: string[] = [];
+
+  dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  horarios = [];
+
+  horarioForm = new FormGroup({
+    dia: new FormControl('', Validators.required),
+    horaInicio: new FormControl(null, Validators.required),
+    horaFin: new FormControl(null, Validators.required)
+  });
+
+  agregarHorario() {
+    if (this.horarioForm.valid) {
+      const { dia, horaInicio, horaFin } = this.horarioForm.value;
+      const horario = { dia, horaInicio, horaFin };
+      this.horarios.push(horario);
+      this.validateForm.get('horariosSucursal').setValue([...this.validateForm.get('horariosSucursal').value, horario]);
+      this.horarioForm.reset();
+    } else {
+      // Muestra un mensaje de error
+    }
+  }
+  
+  borrarHorario(index: number) {
+    this.horarios.splice(index, 1);
+    this.validateForm.get('horariosSucursal').setValue(this.horarios);
+  }
+
+  diaSeleccionado(dia: string): boolean {
+    return this.horarios.some(horario => horario.dia === dia);
+  }
 
   constructor(private modalSucursalesService: ModalSucursalesService, private cd: ChangeDetectorRef) { 
     this.initForm();
@@ -66,7 +97,16 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
   setFormValues(): void {
     if (this.sucursalEditando) {
       console.log('setFormValues Sucursal: ', this.sucursalEditando);
-
+  
+      // Convierte los objetos Timestamp a Date
+      this.horarios = this.sucursalEditando.horariosSucursal ? (this.sucursalEditando.horariosSucursal as unknown as Array<{ dia: string, horaInicio: Timestamp, horaFin: Timestamp }>).map(horario => {
+        return {
+          dia: horario.dia,
+          horaInicio: horario.horaInicio.toDate(),
+          horaFin: horario.horaFin.toDate()
+        };
+      }) : [];
+  
       this.validateForm.patchValue({
         nombreSucursal: this.sucursalEditando.nombreSucursal || '',
         tipoSucursal: this.sucursalEditando.tipoSucursal || '',
@@ -76,7 +116,7 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
         nombreResponsable: this.sucursalEditando.nombreResponsable || '',
         correo: this.sucursalEditando.correo || '',
         telefono: this.sucursalEditando.telefono || '',
-        horariosSucursal: this.sucursalEditando.horariosSucursal || [],
+        horariosSucursal: this.horarios,
         fechaCreacion: this.sucursalEditando.fechaCreacion || '',
       });
       this.cd.detectChanges();
@@ -105,7 +145,8 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
   
       const nuevaSucursal = new Sucursales({
         ...this.validateForm.value,
-        ubicacion: this.validateForm.value.ubicacion // No necesitas crear una nueva instancia de Ubicacion
+        ubicacion: this.validateForm.value.ubicacion, // No necesitas crear una nueva instancia de Ubicacion
+        horariosSucursal: this.horarios // Asegúrate de que los horarios se envíen correctamente
       });
       // Si hay datos para editar, agrega el ID al objeto
       if (this.sucursalEditando && this.sucursalEditando.id) {
@@ -144,6 +185,8 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
       this.titulo = 'Crear nueva sucursal';
       this.sucursalEditando = {};
       this.editando = false;  // No estamos en modo de edición
+
+      this.horarioForm.reset();
     }
   
     // Muestra el modal después de configurar el estado
