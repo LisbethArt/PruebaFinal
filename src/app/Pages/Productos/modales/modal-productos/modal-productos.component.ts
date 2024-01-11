@@ -39,7 +39,6 @@ export class ModalProductosComponent  implements OnInit, AfterViewInit {
     this.isVisible = false;  
     this.setFormValues();
     this.modalProductosService.getEmpresas().subscribe(empresas => {
-    console.log(empresas);  // Agrega esta línea
     this.empresas = empresas;
   });
   }
@@ -70,7 +69,6 @@ export class ModalProductosComponent  implements OnInit, AfterViewInit {
 
   setFormValues(): void {
     if (this.productoEditando) {
-      console.log('método setFormValues: ', this.productoEditando);  // Imprime los datos de empresaEditando
   
       // Si hay datos para editar, establece los valores en el formulario
       this.validateForm.patchValue({
@@ -85,7 +83,6 @@ export class ModalProductosComponent  implements OnInit, AfterViewInit {
       });
       // Forzar una detección de cambios
       this.cd.detectChanges();
-      console.log('validateForm value after patch:', this.validateForm.value);  // Imprime los valores del formulario después de la actualización
     }
   }
 
@@ -95,9 +92,6 @@ export class ModalProductosComponent  implements OnInit, AfterViewInit {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
-    // Imprime el estado del formulario y sus controles
-    console.log('Form status:', this.validateForm.status);
-    console.log('Form controls:', this.validateForm.controls);
 
     // Verifica si el formulario es válido antes de proceder
     if (this.validateForm.valid) {
@@ -177,9 +171,7 @@ export class ModalProductosComponent  implements OnInit, AfterViewInit {
       // Eliminar todas las imágenes subidas
       this.multimediaRefs.forEach(ref => {
         ref.delete().subscribe(() => {
-          console.log('Archivo eliminado');
         }, error => {
-          console.log('Error al eliminar el archivo', error);
         });
       });
   
@@ -215,7 +207,6 @@ export class ModalProductosComponent  implements OnInit, AfterViewInit {
   
   subirMultimedia($event: any) {
     const file = $event.target.files[0];
-    console.log('subirMultimedia', file);
   
     // Validar el tipo de archivo
     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -242,9 +233,7 @@ export class ModalProductosComponent  implements OnInit, AfterViewInit {
         alert('Solo puedes subir un máximo de 1 video.');
         return;
       }
-      console.log('videoCount before:', this.videoCount);
       this.videoCount++;
-      console.log('videoCount after:', this.videoCount);
       }
   
     const maxSizeBytes = maxSizeMB * 1024 * 1024;
@@ -261,12 +250,11 @@ export class ModalProductosComponent  implements OnInit, AfterViewInit {
     const uploadTask = this.storage.upload(`productos/${file.name}`, file);
   
     uploadTask.then(response => {
-      console.log(response);
       // Obtén la URL de la imagen subida y agrégala al array de imágenes
       response.ref.getDownloadURL().then(url => {
         this.multimedia.push(url);
       });
-    }).catch(error => console.log(error));
+    }).catch();
   }
 
   resetCounters() {
@@ -291,7 +279,6 @@ export class ModalProductosComponent  implements OnInit, AfterViewInit {
         // Forzar la actualización de la vista
         this.cd.detectChanges();
       }, error => {
-        console.log(error);
       });
     }, () => {
       // Si la imagen no existe, simplemente elimínala del array

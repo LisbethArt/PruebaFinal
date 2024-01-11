@@ -83,8 +83,6 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
   
       // Asigna los valores a this.listarEmpresas
       this.listarEmpresas = this.empresas;
-  
-      //console.log(this.listarEmpresas);
     });
   }
 
@@ -165,12 +163,9 @@ export class EmpresasComponent implements OnInit, AfterViewInit {
 
   editarEmpresa(empresa?: Partial<Empresas>): void {
     if (this.modalEmpresas) {
-      console.log('método editarEmpresa: ', empresa);
-  
       // Llama a showModal con la empresa que se está editando (o sin argumentos para un nuevo registro)
       this.modalEmpresas.showModal(empresa);
     } else {
-      console.log('Error: No se proporcionó un objeto ModalEmpresasComponent.');
     }
   }
    

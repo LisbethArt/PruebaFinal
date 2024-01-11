@@ -34,7 +34,6 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
     this.isVisible = false;  
     this.setFormValues();
     this.modalServiciosService.getEmpresas().subscribe(empresas => {
-    console.log(empresas);  // Agrega esta línea
     this.empresas = empresas;
     });
   }
@@ -79,10 +78,6 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
 
   setFormValues(): void {
     if (this.servicioEditando) {
-      console.log('setFormServicios', this.servicioEditando);
-
-      // Agrega esta línea para verificar los objetos en duracionServicio
-      console.log('duracionServicio', this.servicioEditando.duracionServicio);
   
       this.validateForm.patchValue({
         nombreServicio: this.servicioEditando.nombreServicio || '',
@@ -107,10 +102,7 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
-    // Imprime el estado del formulario y sus controles
-    console.log('Form status servicios', this.validateForm.status);
-    console.log('Form value servicios', this.validateForm.controls);
-  
+
     // Verifica si el formulario es válido antes de proceder
     if (this.validateForm.valid) {
       this.isOkLoading = true; // Inicia la animación de carga
@@ -206,12 +198,8 @@ export class ModalServiciosComponent implements OnInit, AfterViewInit {
   }
 
   onCalendarChange(event: any): void {
-    console.log('Calendar change: ', event);
-    // Aquí puedes manejar el cambio de calendario
   }
   
   onOk(event: any): void {
-    console.log('OK: ', event);
-    // Aquí puedes manejar el evento OK
   }
 }

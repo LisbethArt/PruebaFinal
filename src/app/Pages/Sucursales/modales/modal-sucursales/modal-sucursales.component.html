@@ -9,12 +9,12 @@
     [nzWidth]="'50%'"
     >
     <div *nzModalContent>
-      <form [formGroup]="validateForm" nz-form (ngSubmit)="submitForm()">
+      <form [formGroup]="validateForm" nz-form (ngSubmit)="submitForm()" autocomplete="off">
         <!-- Nombre sucursal -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="nombreSucursal" nzRequired>Nombre sucursal</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el nombre de la sucursal">
-            <input nz-input id="nombreSucursal" formControlName="nombreSucursal" id="nombreSucursal" type="text" required>
+            <input nz-input id="nombreSucursal" formControlName="nombreSucursal" id="nombreSucursal" type="text" minlength="5" required>
           </nz-form-control>
         </nz-form-item>
       
@@ -22,7 +22,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="tipoSucursal" nzRequired>Tipo de sucursal</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el tipo de sucursal">
-            <input nz-input id="tipoSucursal" formControlName="tipoSucursal" id="tipoSucursal" type="text" required>
+            <input nz-input id="tipoSucursal" formControlName="tipoSucursal" id="tipoSucursal" type="text" minlength="5" required>
           </nz-form-control>
         </nz-form-item>
 
@@ -30,7 +30,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="direccion" nzRequired>Dirección</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese la dirección">
-            <input nz-input id="direccion" formControlName="direccion" id="direccion" type="text" required>
+            <input nz-input id="direccion" formControlName="direccion" id="direccion" type="text" minlength="5" required>
           </nz-form-control>
         </nz-form-item>
 
@@ -38,8 +38,8 @@
         <nz-form-item formGroupName="ubicacion">
           <nz-form-label [nzSpan]="10" nzFor="ubicacion" nzRequired>Ubicación</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Estos campos no puedes estar vacíos" required>
-            <input nz-input name="latitud" formControlName="latitud" id="latitud" placeholder="Latitud" type="number"><br><br>
-            <input nz-input name="longitud" formControlName="longitud" id="longitud" placeholder="Longitud" type="number"><br>
+            <input nz-input name="latitud" formControlName="latitud" id="latitud" placeholder="Latitud" type="number" minlength="5"><br><br>
+            <input nz-input name="longitud" formControlName="longitud" id="longitud" placeholder="Longitud" type="number" minlength="5"><br>
           </nz-form-control>
         </nz-form-item>
       
@@ -47,7 +47,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="nombreResponsable" nzRequired>Nombre del responsable</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el nombre del responsable" required>
-            <input nz-input name="nombreResponsable" formControlName="nombreResponsable" id="nombreResponsable" type="text">
+            <input nz-input name="nombreResponsable" formControlName="nombreResponsable" id="nombreResponsable" type="text" minlength="5">
           </nz-form-control>
         </nz-form-item>
       
@@ -55,7 +55,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="correo" nzRequired>Correo</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="El correo no es válido" required>
-            <input nz-input name="correo" formControlName="correo" id="correo" type="email">
+            <input nz-input name="correo" formControlName="correo" id="correo" type="email" minlength="5">
           </nz-form-control>
         </nz-form-item>
       
@@ -63,7 +63,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="telefono" nzRequired>Teléfono</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="10" nzErrorTip="Ingrese el teléfono" required>
-            <input nz-input name="telefono" formControlName="telefono" id="telefono" type="tel">
+            <input nz-input name="telefono" formControlName="telefono" id="telefono" maxlength="9" type="tel">
           </nz-form-control>
         </nz-form-item>
 

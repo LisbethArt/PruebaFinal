@@ -9,7 +9,7 @@
     [nzWidth]="'50%'"
     >
     <div *nzModalContent>
-      <form [formGroup]="validateForm" nz-form (ngSubmit)="submitForm()">
+      <form [formGroup]="validateForm" nz-form (ngSubmit)="submitForm()" autocomplete="off">
         <!-- Nombre servicio -->
         <nz-form-item>
           <nz-form-label [nzSpan]="10" nzFor="nombreServicio" nzRequired>Nombre servicio</nz-form-label>

@@ -152,12 +152,9 @@ export class ServiciosComponent implements OnInit, AfterViewInit {
 
   editarServicio(servicio?: Partial<Servicios>): void {
     if (this.modalServicios) {
-      console.log('método editarServicio: ', servicio);
-  
-      // Llama a showModal con la empresa que se está editando (o sin argumentos para un nuevo registro)
+      // Llama a showModal con el servicio que se está editando (o sin argumentos para un nuevo registro)
       this.modalServicios.showModal(servicio);
     } else {
-      console.log('Error: No se proporcionó un objeto ModalEmpresasComponent.');
     }
   }
    

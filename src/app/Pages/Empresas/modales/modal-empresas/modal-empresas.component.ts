@@ -38,7 +38,6 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
     this.isVisible = false;  
     this.setFormValues();
     this.modalEmpresasService.getCategorias().subscribe(categorias => {
-    console.log(categorias);  // Agrega esta línea
     this.categorias = categorias;
   });
   }
@@ -92,7 +91,6 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
 
   setFormValues(): void {
     if (this.empresaEditando) {
-      console.log('método setFormValues Empresa: ', this.empresaEditando);  // Imprime los datos de empresaEditando
   
       // Si hay datos para editar, establece los valores en el formulario
       this.validateForm.patchValue({
@@ -117,7 +115,6 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
       });
       // Forzar una detección de cambios
       this.cd.detectChanges();
-      console.log('validateForm value after patch:', this.validateForm.value);  // Imprime los valores del formulario después de la actualización
     }
   }
 
@@ -204,9 +201,7 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
       // Eliminar todas las imágenes subidas
       this.imagenesRefs.forEach(ref => {
         ref.delete().subscribe(() => {
-          console.log('Imagen eliminada');
         }, error => {
-          console.log('Error al eliminar la imagen', error);
         });
       });
   
@@ -244,7 +239,6 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   
   subirImagenes($event: any) {
   const file = $event.target.files[0];
-  console.log('subirImagen', file);
 
   // Validar el tipo de archivo
   const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -269,12 +263,11 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
   const uploadTask = this.storage.upload(`empresas/${file.name}`, file);
 
   uploadTask.then(response => {
-    console.log(response);
     // Obtén la URL de la imagen subida y agrégala al array de imágenes
     response.ref.getDownloadURL().then(url => {
       this.imagenes.push(url);
     });
-  }).catch(error => console.log(error));
+  }).catch();
 }
 
   eliminarImagen(event: Event, imagenUrl: string) {
@@ -294,7 +287,6 @@ export class ModalEmpresasComponent implements OnInit, AfterViewInit {
         // Forzar la actualización de la vista
         this.cd.detectChanges();
       }, error => {
-        console.log(error);
       });
     }, () => {
       // Si la imagen no existe, simplemente elimínala del array

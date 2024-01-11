@@ -152,12 +152,9 @@ export class ProductosComponent implements OnInit, AfterViewInit {
 
   editarProducto(producto?: Partial<Productos>): void {
     if (this.modalProductos) {
-      console.log('método editarProducto: ', producto);
-  
-      // Llama a showModal con la empresa que se está editando (o sin argumentos para un nuevo registro)
+      // Llama a showModal con el producto que se está editando (o sin argumentos para un nuevo registro)
       this.modalProductos.showModal(producto);
     } else {
-      console.log('Error: No se proporcionó un objeto ModalProductoComponent.');
     }
   }
    

@@ -56,7 +56,6 @@ export class ModalCategoriasComponent implements OnInit, AfterViewInit {
 
   setFormValues(): void {
     if (this.categoriaEditando) {
-      console.log('Método setFormValues Categorias: ', this.categoriaEditando);
 
       this.validateForm.patchValue({
         nombreCategoria: this.categoriaEditando.nombreCategoria,
@@ -66,7 +65,6 @@ export class ModalCategoriasComponent implements OnInit, AfterViewInit {
       });
 
       this.cd.detectChanges();
-      console.log('Categorias validateForm value after patch:', this.validateForm.value);  // Imprime los valores del formulario después de la actualización
     }
   }
 

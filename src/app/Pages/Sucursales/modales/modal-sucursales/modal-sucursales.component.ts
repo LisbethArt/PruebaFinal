@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, Input, EventEmitter, Output, ChangeDetectorRef, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Sucursales } from '../../model/sucursales';
 import { ModalSucursalesService } from '../service/modal-sucursales.service';
 import { SucursalesComponent } from '../../component/sucursales.component';
@@ -76,6 +76,13 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
     this.childReady.emit();
   }
 
+  telefonoValidador(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const valid = /^\d{4}-\d{4}$/.test(control.value);
+      return valid ? null : {invalidNumber: {value: control.value}};
+    };
+  }
+
   initForm(): void {
     this.validateForm = new FormGroup({
       nombreSucursal: new FormControl('', Validators.required),
@@ -87,16 +94,21 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
       }),
       estado: new FormControl('Activo', Validators.required),
       nombreResponsable: new FormControl('', Validators.required),
-      correo: new FormControl('', Validators.required),
-      telefono: new FormControl('', Validators.required),
+      correo: new FormControl('', [Validators.required, Validators.email]),
+      telefono: new FormControl('', [Validators.required, this.telefonoValidador()]),
       horariosSucursal: new FormControl([], Validators.required),
       fechaCreacion: new FormControl(''),
+    });
+    // Agrega el listener aquí
+    this.validateForm.get('telefono').valueChanges.subscribe(value => {
+      if (value.length === 4 && !value.includes('-')) {
+        this.validateForm.get('telefono').setValue(value + '-');
+      }
     });
   }
 
   setFormValues(): void {
     if (this.sucursalEditando) {
-      console.log('setFormValues Sucursal: ', this.sucursalEditando);
   
       // Convierte los objetos Timestamp a Date
       this.horarios = this.sucursalEditando.horariosSucursal ? (this.sucursalEditando.horariosSucursal as unknown as Array<{ dia: string, horaInicio: Timestamp, horaFin: Timestamp }>).map(horario => {
@@ -120,7 +132,6 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
         fechaCreacion: this.sucursalEditando.fechaCreacion || '',
       });
       this.cd.detectChanges();
-      console.log('validateForm', this.validateForm.value);
     }
   }
 
@@ -130,9 +141,6 @@ export class ModalSucursalesComponent implements OnInit, AfterViewInit {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
-
-    console.log('Form status', this.validateForm.status);
-    console.log('Form controls', this.validateForm.controls);
   
     // Verifica si el formulario es válido antes de proceder
     if (this.validateForm.valid) {

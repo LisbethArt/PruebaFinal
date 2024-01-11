@@ -61,7 +61,7 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
       }),
       estado: new FormControl('Activo', Validators.required),
       nombreResponsable: new FormControl('', Validators.required),
-      correo: new FormControl('', Validators.required),
+      correo: new FormControl('', [Validators.required, Validators.email]),
       telefono: new FormControl('', Validators.required),
       horariosSucursal: new FormControl([], Validators.required),
       fechaCreacion: new FormControl(''),
@@ -164,12 +164,10 @@ export class SucursalesComponent  implements OnInit, AfterViewInit {
 
   editarSucursal(sucursal?: Partial<Sucursales>): void {
     if (this.modalSucursales) {
-      console.log('método editarEmpresa: ', sucursal);
   
-      // Llama a showModal con la empresa que se está editando (o sin argumentos para un nuevo registro)
+      // Llama a showModal con la sucursal que se está editando (o sin argumentos para un nuevo registro)
       this.modalSucursales.showModal(sucursal);
     } else {
-      console.log('Error: No se proporcionó un objeto ModalSucursalesComponent.');
     }
   }
    
